@@ -1,0 +1,738 @@
+/**
+ * NoticePulse — Public Styles v3.1
+ *
+ * COMBINED FILE: noticepulse-public.css + noticepulse-pro-public.css
+ * merged into a single file. noticepulse-pro-public.css can be deleted
+ * and its wp_enqueue_style() call removed from class-noticepulse-public.php.
+ *
+ * Contents:
+ *   1.  Bar base
+ *   2.  Inner layout
+ *   3.  Text alignment
+ *   4.  Font size variants
+ *   5.  Height / padding variants
+ *   6.  Message
+ *   7.  CTA button
+ *   8.  Close button
+ *   9.  Body padding (sticky bars)
+ *   10. Device visibility
+ *   11. Entrance animations
+ *   12. Centered layout (all bar types)
+ *   13. Split layout (Email Capture & GDPR)
+ *   14. Countdown timer
+ *   15. GDPR consent buttons
+ *   16. Rotating ticker
+ *   17. Click-to-Call
+ *   18. Email capture form  ← FIXED: flex-wrap nowrap
+ *   19. Coupon copy
+ *   20. Responsive
+ *
+ * @package NoticePulse
+ * @since   3.1.0
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   1. BAR BASE
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar {
+	position: relative;
+	left: 0;
+	right: 0;
+	width: 100%;
+	z-index: 999999;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+.np-bar--top    { top: 0; }
+.np-bar--bottom { bottom: 0; }
+.np-bar--sticky { position: fixed; }
+
+/* ═══════════════════════════════════════════════════════════════
+   2. INNER LAYOUT
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar__inner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 0 20px;
+	gap: 14px;
+	width: 100%;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.np-bar__content {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	justify-content: center;
+	flex: none;
+	min-width: 0;
+	max-width: 860px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   3. TEXT ALIGNMENT
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar--align-left   .np-bar__content { justify-content: flex-start; }
+.np-bar--align-center .np-bar__content { justify-content: center; }
+.np-bar--align-right  .np-bar__content { justify-content: flex-end; }
+
+/* ═══════════════════════════════════════════════════════════════
+   4. FONT SIZE VARIANTS
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar--size-small  .np-bar__message { font-size: 12px; }
+.np-bar--size-medium .np-bar__message { font-size: 14px; }
+.np-bar--size-large  .np-bar__message { font-size: 17px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   5. HEIGHT / PADDING VARIANTS
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar--padding-compact .np-bar__inner { padding-top:  7px; padding-bottom:  7px; }
+.np-bar--padding-normal  .np-bar__inner { padding-top: 13px; padding-bottom: 13px; }
+.np-bar--padding-tall    .np-bar__inner { padding-top: 20px; padding-bottom: 20px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   6. MESSAGE
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar__message {
+	line-height: 1.5;
+	font-weight: 500;
+}
+
+.np-bar__message a { color: inherit; text-decoration: underline; }
+.np-bar__message strong { font-weight: 700; }
+
+/* ═══════════════════════════════════════════════════════════════
+   7. CTA BUTTON
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar__cta {
+	display: inline-flex;
+	align-items: center;
+	padding: 7px 20px;
+	font-size: 12.5px;
+	font-weight: 700;
+	text-decoration: none !important;
+	white-space: nowrap;
+	transition: opacity .17s ease, transform .1s ease, box-shadow .17s ease;
+	border: none;
+	cursor: pointer;
+	line-height: 1.4;
+	letter-spacing: .1px;
+	box-shadow: 0 2px 8px rgba( 0, 0, 0, .18 );
+	flex-shrink: 0;
+}
+
+.np-bar__cta:hover {
+	opacity: .9;
+	transform: translateY( -1px );
+	box-shadow: 0 4px 14px rgba( 0, 0, 0, .22 );
+	text-decoration: none !important;
+}
+
+.np-bar__cta:active { transform: translateY( 0 ); }
+
+/* ═══════════════════════════════════════════════════════════════
+   8. CLOSE BUTTON
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar__close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 22px;
+	line-height: 1;
+	padding: 4px;
+	margin: 0;
+	opacity: .65;
+	transition: opacity .17s, transform .1s;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	/* Always pulled to far right — out of content flow */
+	position: absolute;
+	right: 16px;
+	top: 50%;
+	transform: translateY( -50% );
+}
+
+.np-bar__close:hover {
+	opacity: 1;
+	background: rgba( 0, 0, 0, .12 );
+	transform: translateY( -50% ) scale( 1.1 );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   9. BODY PADDING (sticky bars)
+═══════════════════════════════════════════════════════════════ */
+
+body.np-has-top-bar    { padding-top:    var( --np-bar-height, 0px ); }
+body.np-has-bottom-bar { padding-bottom: var( --np-bar-height, 0px ); }
+
+/* ═══════════════════════════════════════════════════════════════
+   10. DEVICE VISIBILITY
+═══════════════════════════════════════════════════════════════ */
+
+@media ( min-width: 1025px ) {
+	.np-hide-desktop { display: none !important; }
+}
+
+@media ( min-width: 601px ) and ( max-width: 1024px ) {
+	.np-hide-tablet { display: none !important; }
+}
+
+@media ( max-width: 600px ) {
+	.np-hide-mobile { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   11. ENTRANCE ANIMATIONS
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar {
+	animation: np-slide-in .38s cubic-bezier( .34, 1.1, .64, 1 ) forwards;
+}
+
+.np-bar--bottom {
+	animation: np-slide-in-bottom .38s cubic-bezier( .34, 1.1, .64, 1 ) forwards;
+}
+
+@keyframes np-slide-in {
+	from { transform: translateY( -110% ); opacity: 0; }
+	to   { transform: translateY( 0 );     opacity: 1; }
+}
+
+@keyframes np-slide-in-bottom {
+	from { transform: translateY( 110% ); opacity: 0; }
+	to   { transform: translateY( 0 );    opacity: 1; }
+}
+
+.np-bar--hiding {
+	animation: np-slide-out .28s ease forwards !important;
+}
+
+.np-bar--bottom.np-bar--hiding {
+	animation: np-slide-out-bottom .28s ease forwards !important;
+}
+
+@keyframes np-slide-out {
+	from { transform: translateY( 0 );     opacity: 1; }
+	to   { transform: translateY( -110% ); opacity: 0; }
+}
+
+@keyframes np-slide-out-bottom {
+	from { transform: translateY( 0 );    opacity: 1; }
+	to   { transform: translateY( 110% ); opacity: 0; }
+}
+
+/* Named animation classes from class-np-animations.php */
+.np-bar--anim-fade {
+	animation-name: np-anim-fade;
+	animation-duration: .5s;
+	animation-fill-mode: both;
+}
+
+@keyframes np-anim-fade {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+.np-bar--anim-bounce.np-bar--top {
+	animation-name: np-anim-bounce-top;
+	animation-duration: .65s;
+	animation-fill-mode: both;
+}
+
+.np-bar--anim-bounce.np-bar--bottom {
+	animation-name: np-anim-bounce-bottom;
+	animation-duration: .65s;
+	animation-fill-mode: both;
+}
+
+@keyframes np-anim-bounce-top {
+	0%   { transform: translateY( -110% ); }
+	60%  { transform: translateY( 6px );   }
+	80%  { transform: translateY( -3px );  }
+	100% { transform: translateY( 0 );     }
+}
+
+@keyframes np-anim-bounce-bottom {
+	0%   { transform: translateY( 110% ); }
+	60%  { transform: translateY( -6px ); }
+	80%  { transform: translateY( 3px );  }
+	100% { transform: translateY( 0 );    }
+}
+
+.np-bar--anim-pulse .np-bar__cta {
+	animation: np-anim-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes np-anim-pulse {
+	0%, 100% { box-shadow: 0 2px 8px rgba( 0, 0, 0, .18 ); }
+	50%       { box-shadow: 0 2px 8px rgba( 0, 0, 0, .18 ), 0 0 0 5px rgba( 255, 255, 255, .22 ); }
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.np-bar,
+	.np-bar--bottom,
+	.np-bar--hiding,
+	.np-bar--bottom.np-bar--hiding,
+	.np-bar--anim-fade,
+	.np-bar--anim-bounce.np-bar--top,
+	.np-bar--anim-bounce.np-bar--bottom {
+		animation: none !important;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   12. CENTERED LAYOUT (per bar type)
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar[data-bar-type="standard"] .np-bar__inner,
+.np-bar[data-bar-type="countdown"] .np-bar__inner,
+.np-bar[data-bar-type="coupon_copy"] .np-bar__inner,
+.np-bar[data-bar-type="click_to_call"] .np-bar__inner,
+.np-bar[data-bar-type="ticker"] .np-bar__inner {
+	justify-content: center;
+}
+
+.np-bar[data-bar-type="standard"] .np-bar__content,
+.np-bar[data-bar-type="coupon_copy"] .np-bar__content,
+.np-bar[data-bar-type="click_to_call"] .np-bar__content,
+.np-bar[data-bar-type="ticker"] .np-bar__content {
+	flex: none;
+	max-width: 860px;
+	justify-content: center;
+}
+
+.np-bar[data-bar-type="countdown"] .np-bar__content {
+	flex: none;
+	max-width: 860px;
+	justify-content: center;
+	align-items: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   13. SPLIT LAYOUT — Email Capture & GDPR
+   Message on left (~50%), action on right
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar[data-bar-type="email_capture"] .np-bar__inner,
+.np-bar[data-bar-type="gdpr"]          .np-bar__inner {
+	justify-content: space-between;
+}
+
+.np-bar[data-bar-type="email_capture"] .np-bar__content,
+.np-bar[data-bar-type="gdpr"]          .np-bar__content {
+	justify-content: flex-start;
+	flex: 1;
+	max-width: none;
+	flex-wrap: nowrap; /* keep message + form on one line */
+}
+
+.np-bar[data-bar-type="email_capture"] .np-bar__message,
+.np-bar[data-bar-type="gdpr"]          .np-bar__message {
+	flex: 0 1 50%;
+	text-align: left;
+}
+
+.np-bar[data-bar-type="email_capture"] .np-email-form,
+.np-bar[data-bar-type="gdpr"]          .np-gdpr-actions {
+	flex-shrink: 0;
+	margin-left: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   14. COUNTDOWN TIMER
+═══════════════════════════════════════════════════════════════ */
+
+.np-countdown {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	flex-shrink: 0;
+}
+
+.np-cd-block {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-width: 42px;
+	background: rgba( 0, 0, 0, .22 );
+	border: 1px solid rgba( 255, 255, 255, .12 );
+	border-radius: 7px;
+	padding: 4px 6px 5px;
+	backdrop-filter: blur( 4px );
+}
+
+.np-cd-num {
+	font-size: 18px;
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -.5px;
+	font-variant-numeric: tabular-nums;
+	color: inherit;
+}
+
+.np-cd-lbl {
+	font-size: 8px;
+	opacity: .65;
+	text-transform: uppercase;
+	letter-spacing: .8px;
+	margin-top: 2px;
+	font-weight: 600;
+}
+
+.np-cd-sep {
+	font-size: 20px;
+	font-weight: 800;
+	opacity: .5;
+	align-self: flex-start;
+	margin-top: 3px;
+	line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   15. GDPR CONSENT BAR
+═══════════════════════════════════════════════════════════════ */
+
+.np-gdpr-actions {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.np-gdpr-policy-link {
+	font-size: 11px;
+	color: inherit;
+	opacity: .7;
+	text-decoration: underline;
+	white-space: nowrap;
+	transition: opacity .15s;
+}
+
+.np-gdpr-policy-link:hover { opacity: 1; color: inherit; }
+
+.np-gdpr-btn {
+	display: inline-flex;
+	align-items: center;
+	height: 34px;
+	padding: 0 18px;
+	border: none;
+	border-radius: 6px;
+	font-size: 12px;
+	font-weight: 700;
+	cursor: pointer;
+	white-space: nowrap;
+	transition: opacity .15s, transform .1s;
+	line-height: 1;
+	font-family: inherit;
+}
+
+.np-gdpr-btn:hover  { opacity: .88; transform: translateY( -1px ); }
+.np-gdpr-btn:active { transform: translateY( 0 ); }
+
+.np-gdpr-btn--accept {
+    background: var(--np-btn-bg, rgba(255,255,255,.95));
+    color: var(--np-btn-txt, #1d2327);
+	box-shadow: 0 2px 8px rgba( 0, 0, 0, .15 );
+}
+
+.np-gdpr-btn--decline {
+	background: rgba( 255, 255, 255, .12 );
+	color: inherit;
+	border: 1px solid rgba( 255, 255, 255, .35 );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   16. ROTATING TICKER
+═══════════════════════════════════════════════════════════════ */
+
+.np-ticker-nav {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.np-ticker-arrow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border: none;
+	border-radius: 50%;
+	background: rgba( 255, 255, 255, .18 );
+	color: inherit;
+	font-size: 16px;
+	line-height: 1;
+	cursor: pointer;
+	transition: background .15s;
+	padding: 0;
+	font-family: inherit;
+}
+
+.np-ticker-arrow:hover { background: rgba( 255, 255, 255, .32 ); }
+
+.np-ticker-dots {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.np-ticker-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: rgba( 255, 255, 255, .35 );
+	cursor: pointer;
+	transition: background .2s, transform .2s;
+}
+
+.np-ticker-dot--active {
+	background: rgba( 255, 255, 255, .95 );
+	transform: scale( 1.3 );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   17. CLICK-TO-CALL
+═══════════════════════════════════════════════════════════════ */
+
+.np-call-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	height: 36px;
+	padding: 0 20px;
+	border-radius: 6px;
+    background: var(--np-btn-bg, rgba(255,255,255,.95));
+    color: var(--np-btn-txt, #1d2327) !important;
+	font-size: 13px;
+	font-weight: 700;
+	text-decoration: none !important;
+	white-space: nowrap;
+	flex-shrink: 0;
+	transition: opacity .15s, transform .1s;
+	box-shadow: 0 2px 8px rgba( 0, 0, 0, .18 );
+	font-family: inherit;
+}
+
+.np-call-btn:hover {
+	opacity: .9;
+	transform: translateY( -1px );
+	color: #1d2327 !important;
+	text-decoration: none !important;
+}
+
+.np-call-btn:active { transform: translateY( 0 ); }
+
+.np-call-hours {
+	font-size: 11px;
+	opacity: .7;
+	white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   18. EMAIL CAPTURE FORM
+   FIX: flex-wrap changed from wrap → nowrap so the submit button
+   always stays on the same line as the email input.
+   FIX: min-width reduced (200px → 160px) + max-width added so
+   input never crowds out the button.
+   FIX: flex-shrink: 0 on button prevents it from being squeezed.
+═══════════════════════════════════════════════════════════════ */
+
+.np-bar__inner .np-email-form {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	flex-shrink: 0;
+	flex-wrap: nowrap!important;
+	margin-right: 30px;
+}
+
+.np-email-form .np-email-input {
+	height: 36px;
+	padding: 5px 14px;
+	border: 1.5px solid rgba( 255, 255, 255, .4 );
+	border-radius: 5px;
+	background: rgba( 255, 255, 255, .14 );
+	color: inherit;
+	font-size: 13px;
+	outline: none;
+	min-width: 280px;  /* FIX: was 200px */
+	max-width: 300px;  /* FIX: added — prevents input taking all available space */
+	width: 100%;
+	transition: border-color .15s, background .15s;
+	font-family: inherit;
+}
+
+.np-email-form .np-email-input::placeholder { color: rgba( 255, 255, 255, .55 ); }
+
+.np-email-form .np-email-input:focus {
+	border-color: rgba( 255, 255, 255, .8 );
+	background: rgba( 255, 255, 255, .2 );
+}
+
+.np-email-btn {
+	height: 36px;
+	padding: 0 16px;
+    background: var(--np-btn-bg, rgba(255,255,255,.95));
+    color: var(--np-btn-txt, #1d2327);
+	border: none;
+	border-radius: 6px;
+	font-size: 12px;
+	font-weight: 700;
+	cursor: pointer;
+	white-space: nowrap;
+	flex-shrink: 0; /* FIX: added — button never gets squeezed by input */
+	transition: opacity .15s, transform .1s;
+	box-shadow: 0 2px 8px rgba( 0, 0, 0, .15 );
+	font-family: inherit;
+}
+
+.np-email-form .np-email-btn:hover  { opacity: .9; transform: translateY( -1px ); }
+.np-email-form .np-email-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+.np-email-form .np-email-success {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	background: rgba( 34, 197, 94, .2 );
+	border: 1px solid rgba( 34, 197, 94, .4 );
+	padding: 5px 14px;
+	border-radius: 20px;
+	white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   19. COUPON COPY
+═══════════════════════════════════════════════════════════════ */
+
+.np-coupon-wrap {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.np-coupon-code {
+	display: inline-flex;
+	align-items: center;
+	padding: 5px 14px;
+	background: rgba( 255, 255, 255, .14 );
+	border: 1.5px dashed rgba( 255, 255, 255, .5 );
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 800;
+	letter-spacing: 2.5px;
+	cursor: pointer;
+	user-select: all;
+	font-family: 'Courier New', monospace;
+	transition: background .15s;
+}
+
+.np-coupon-code:hover { background: rgba( 255, 255, 255, .22 ); }
+
+.np-coupon-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 36px;
+	padding: 0 18px;
+    background: var(--np-btn-bg, rgba(255,255,255,.95));
+    color: var(--np-btn-txt, #1d2327);
+	border: none;
+	border-radius: 6px;
+	font-size: 12px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: opacity .15s, transform .1s;
+	white-space: nowrap;
+	box-shadow: 0 2px 8px rgba( 0, 0, 0, .15 );
+	font-family: inherit;
+}
+
+.np-coupon-btn:hover { opacity: .9; transform: translateY( -1px ); }
+
+.np-coupon-btn::before { content: '📋'; font-size: 11px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   20. RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+
+@media ( max-width: 768px ) {
+
+	/* All bars: stack on small screens */
+	.np-bar__inner   { justify-content: center !important; }
+	.np-bar__content { flex: none; max-width: 100%; justify-content: center !important; }
+
+	/* Split layout collapses to stacked centered */
+	.np-bar[data-bar-type="email_capture"] .np-bar__content,
+	.np-bar[data-bar-type="gdpr"]          .np-bar__content {
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		flex-wrap: wrap; /* allow wrap on mobile only */
+	}
+
+	.np-bar[data-bar-type="email_capture"] .np-bar__message,
+	.np-bar[data-bar-type="gdpr"]          .np-bar__message {
+		flex: none;
+		text-align: center;
+		width: 100%;
+	}
+
+	.np-bar[data-bar-type="email_capture"] .np-email-form,
+	.np-bar[data-bar-type="gdpr"]          .np-gdpr-actions {
+		margin-left: 0;
+		justify-content: center;
+		width: 100%;
+	}
+
+	/* Email form goes full width on mobile */
+	.np-email-form  { width: 100%; flex-wrap: wrap; }
+	.np-email-input { min-width: 0; max-width: 100%; flex: 1 1 100%; }
+	.np-email-btn   { flex: 1 1 100%; }
+
+	/* Close button on mobile */
+	.np-bar__close { right: 10px; top: 8px; transform: none; }
+	.np-bar__close:hover { transform: scale( 1.1 ); }
+
+	/* Countdown on mobile */
+	.np-countdown { gap: 2px; }
+	.np-cd-block  { min-width: 36px; }
+	.np-cd-num    { font-size: 15px; }
+
+	/* Misc */
+	.np-call-hours   { display: none; }
+	.np-coupon-wrap  { justify-content: center; }
+	.np-coupon-code  { letter-spacing: 1.5px; }
+	.np-gdpr-actions { flex-wrap: wrap; justify-content: center; }
+}
+
+@media ( max-width: 480px ) {
+	.np-bar__inner { padding-left: 10px !important; padding-right: 36px !important; }
+	.np-cd-block   { min-width: 30px; padding: 3px 4px; }
+	.np-cd-num     { font-size: 13px; }
+	.np-cd-lbl     { font-size: 7px; }
+	.np-cd-sep     { font-size: 15px; }
+}

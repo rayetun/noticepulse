@@ -1,0 +1,15 @@
+.git
+.github
+.gitignore
+.distignore
+node_modules
+*.zip
+*.md
+*.sh
+Gruntfile.js
+package.json
+package-lock.json
+phpcs.xml
+phpunit.xml
+.editorconfig
+tests/

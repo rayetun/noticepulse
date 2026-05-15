@@ -1,0 +1,401 @@
+/**
+ * NoticePulse — Template Library CSS
+ *
+ * Covers:
+ *  - Modal overlay + slide-in panel
+ *  - Category filter tabs
+ *  - Template card grid + mini bar preview
+ *  - Confirm dialog (Option B)
+ *  - Success / error toast notification
+ *  - "Browse Templates" button styles
+ *
+ * All selectors are np-tmpl- prefixed to avoid collisions.
+ *
+ * @package NoticePulse
+ * @since   2.1.0
+ */
+
+/* ── Browse Templates button ─────────────────────────────────────────────── */
+
+#np-browse-templates {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 8px 18px;
+	background: transparent;
+	border: 1.5px solid #7c5cfc;
+	border-radius: 8px;
+	color: #7c5cfc;
+	font-size: 13px;
+	font-weight: 600;
+	font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+	cursor: pointer;
+	transition: all .15s ease;
+	white-space: nowrap;
+	line-height: 1;
+	height: auto;
+}
+#np-browse-templates:hover {
+	background: #7c5cfc;
+	color: #fff;
+}
+#np-browse-templates:disabled {
+	opacity: .6;
+	cursor: not-allowed;
+}
+
+/* ── Overlay ─────────────────────────────────────────────────────────────── */
+
+.np-tmpl-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 100050; /* above WP admin bar (z: 99999) */
+	background: rgba(0, 0, 0, .72);
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 40px 16px 24px;
+	overflow-y: auto;
+	backdrop-filter: blur(3px);
+}
+
+/* Prevent body scroll while modal is open */
+body.np-tmpl-open { overflow: hidden; }
+
+/* ── Modal panel ─────────────────────────────────────────────────────────── */
+
+.np-tmpl-modal {
+	background: #12121f;
+	border: 1px solid #2a2a3e;
+	border-radius: 18px;
+	width: 100%;
+	max-width: 960px;
+	box-shadow: 0 32px 80px rgba(0, 0, 0, .6);
+	display: flex;
+	flex-direction: column;
+	max-height: calc(100vh - 80px);
+	overflow: hidden;
+	animation: np-tmpl-slidein .22s cubic-bezier(.22, 1, .36, 1);
+}
+
+@keyframes np-tmpl-slidein {
+	from { opacity: 0; transform: translateY(-18px) scale(.97); }
+	to   { opacity: 1; transform: translateY(0)     scale(1);   }
+}
+
+/* ── Modal header ────────────────────────────────────────────────────────── */
+
+.np-tmpl-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 24px 28px 20px;
+	border-bottom: 1px solid #1e1e32;
+	flex-shrink: 0;
+	gap: 12px;
+}
+.np-tmpl-header__left {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+.np-tmpl-header__icon {
+	font-size: 28px;
+	line-height: 1;
+}
+.np-tmpl-header__title {
+	font-size: 18px;
+	font-weight: 700;
+	color: #f0f0f0;
+	margin: 0 0 3px;
+	line-height: 1.2;
+	font-family: 'DM Sans', -apple-system, sans-serif;
+}
+.np-tmpl-header__sub {
+	font-size: 12px;
+	color: #666;
+	margin: 0;
+}
+.np-tmpl-close {
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
+	background: #1e1e32;
+	border: 1px solid #2a2a3e;
+	color: #888;
+	font-size: 14px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	transition: all .12s;
+	line-height: 1;
+}
+.np-tmpl-close:hover { background: #2a2a3e; color: #f0f0f0; }
+
+/* ── Category filter tabs ────────────────────────────────────────────────── */
+
+.np-tmpl-cats {
+	display: flex;
+	gap: 6px;
+	padding: 16px 28px;
+	border-bottom: 1px solid #1e1e32;
+	flex-shrink: 0;
+	flex-wrap: wrap;
+}
+.np-tmpl-cat {
+	padding: 6px 14px;
+	border-radius: 20px;
+	border: 1px solid #2a2a3e;
+	background: transparent;
+	color: #888;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all .12s;
+	font-family: inherit;
+	white-space: nowrap;
+	line-height: 1;
+	height: auto;
+}
+.np-tmpl-cat:hover { border-color: #7c5cfc; color: #a78bfa; }
+.np-tmpl-cat--active {
+	background: #7c5cfc;
+	border-color: #7c5cfc;
+	color: #fff;
+}
+
+/* ── Template grid ───────────────────────────────────────────────────────── */
+
+.np-tmpl-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 16px;
+	padding: 24px 28px;
+	overflow-y: auto;
+	flex: 1;
+}
+@media (max-width: 760px) { .np-tmpl-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .np-tmpl-grid { grid-template-columns: 1fr; } }
+
+/* ── Template card ───────────────────────────────────────────────────────── */
+
+.np-tmpl-card {
+	background: #1a1a2e;
+	border: 1.5px solid #2a2a3e;
+	border-radius: 12px;
+	overflow: hidden;
+	transition: border-color .15s, transform .15s, box-shadow .15s;
+	cursor: default;
+}
+.np-tmpl-card:hover {
+	border-color: #7c5cfc;
+	transform: translateY(-2px);
+	box-shadow: 0 8px 28px rgba(124, 92, 252, .18);
+}
+
+/* Mini bar preview strip */
+.np-tmpl-preview {
+	padding: 12px 14px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	min-height: 62px;
+	overflow: hidden; /* clip scrolling preview */
+}
+.np-tmpl-preview__msg {
+	font-size: 10.5px;
+	font-weight: 500;
+	line-height: 1.4;
+	flex: 1;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+@keyframes np-preview-scroll {
+	0%   { transform: translateX(30%); }
+	100% { transform: translateX(-100%); }
+}
+.np-tmpl-preview__btn {
+	font-size: 10px;
+	font-weight: 700;
+	padding: 5px 10px;
+	border-radius: 5px;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+/* Card footer */
+.np-tmpl-card__footer {
+	padding: 12px 14px 14px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	border-top: 1px solid #1e1e32;
+}
+.np-tmpl-card__meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+}
+.np-tmpl-card__emoji { font-size: 18px; flex-shrink: 0; line-height: 1; }
+.np-tmpl-card__name {
+	font-size: 12px;
+	font-weight: 700;
+	color: #e0e0f0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.np-tmpl-card__type {
+	font-size: 10px;
+	color: #555;
+	margin-top: 1px;
+}
+
+/* Use Template button */
+.np-tmpl-apply-btn {
+	padding: 6px 12px;
+	border-radius: 7px;
+	background: #7c5cfc;
+	border: none;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background .12s;
+	white-space: nowrap;
+	flex-shrink: 0;
+	font-family: inherit;
+	line-height: 1;
+	height: auto;
+}
+.np-tmpl-apply-btn:hover { background: #6d4de8; }
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+
+.np-tmpl-empty {
+	padding: 48px 24px;
+	text-align: center;
+	color: #444;
+	margin: 0 auto;
+}
+.np-tmpl-empty span { font-size: 32px; display: block; margin-bottom: 10px; }
+.np-tmpl-empty p    { font-size: 13px; margin: 0; }
+
+/* ── Confirm dialog (Option B) ───────────────────────────────────────────── */
+
+.np-tmpl-confirm-wrap {
+	position: fixed;
+	inset: 0;
+	z-index: 100060; /* above the modal */
+	background: rgba(0, 0, 0, .55);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+.np-tmpl-confirm-box {
+	background: #1a1a2e;
+	border: 1px solid #2a2a3e;
+	border-radius: 16px;
+	padding: 32px 28px;
+	max-width: 420px;
+	width: 100%;
+	text-align: center;
+	box-shadow: 0 24px 64px rgba(0, 0, 0, .5);
+	animation: np-tmpl-slidein .18s cubic-bezier(.22, 1, .36, 1);
+}
+.np-tmpl-confirm-icon {
+	font-size: 36px;
+	margin-bottom: 14px;
+	line-height: 1;
+}
+.np-tmpl-confirm-title {
+	font-size: 17px;
+	font-weight: 700;
+	color: #f0f0f0;
+	margin: 0 0 10px;
+	font-family: 'DM Sans', -apple-system, sans-serif;
+}
+.np-tmpl-confirm-msg {
+	font-size: 13px;
+	color: #888;
+	line-height: 1.6;
+	margin: 0 0 24px;
+}
+.np-tmpl-confirm-msg strong { color: #c8c8e8; }
+.np-tmpl-confirm-actions {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+}
+.np-btn-confirm-cancel {
+	padding: 9px 20px;
+	border-radius: 9px;
+	background: transparent;
+	border: 1px solid #3a3a4a;
+	color: #888;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all .12s;
+	font-family: inherit;
+	line-height: 1;
+	height: auto;
+}
+.np-btn-confirm-cancel:hover { border-color: #7c5cfc; color: #a78bfa; }
+.np-btn-confirm-ok {
+	padding: 9px 20px;
+	border-radius: 9px;
+	background: #7c5cfc;
+	border: none;
+	color: #fff;
+	font-size: 13px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background .12s;
+	font-family: inherit;
+	line-height: 1;
+	height: auto;
+}
+.np-btn-confirm-ok:hover { background: #6d4de8; }
+
+/* ── Toast notification ──────────────────────────────────────────────────── */
+
+.np-tmpl-toast {
+	position: fixed;
+	bottom: 28px;
+	right: 24px;
+	z-index: 100070;
+	padding: 13px 20px;
+	border-radius: 10px;
+	font-size: 13px;
+	font-weight: 600;
+	font-family: 'DM Sans', -apple-system, sans-serif;
+	max-width: 380px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, .4);
+	opacity: 0;
+	transform: translateY(12px);
+	transition: opacity .25s, transform .25s;
+	pointer-events: none;
+}
+.np-tmpl-toast--visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+.np-tmpl-toast--success {
+	background: #0d3322;
+	border: 1px solid #22d3a5;
+	color: #22d3a5;
+}
+.np-tmpl-toast--error {
+	background: #3b0f0f;
+	border: 1px solid #f87171;
+	color: #f87171;
+}
