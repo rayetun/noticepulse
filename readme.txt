@@ -3,7 +3,7 @@ Contributors:      rayetun
 Donate link:       https://wise.com/pay/me/mdrayhanu2
 Tags:              notification bar, announcement bar, cookie notice, countdown timer, header bar
 Requires at least: 6.2
-Tested up to:      6.9
+Tested up to:      7.0
 Requires PHP:      7.4
 Stable tag:        2.1.3
 License:           GPLv2 or later
