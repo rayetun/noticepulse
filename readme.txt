@@ -5,7 +5,7 @@ Tags:              notification bar, announcement bar, cookie notice, countdown 
 Requires at least: 6.2
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        2.1.3
+Stable tag:        2.1.4
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -297,17 +297,14 @@ Yes. Analytics tracking uses AJAX so it works correctly with full-page caching. 
 
 Yes. Go to **NoticePulse → Settings** to export all bars as a JSON file. Import on any other site running NoticePulse — existing bars are never overwritten.
 
-= Where can I get support? =
 
+---
+
+== 🤝 Support ==
 Post in the WordPress.org support forum. We aim to respond within 3 business days.
 
 If Urgent You can contact me here:
 Email: rayetun2.0@gmail.com
-
----
-
-== Contributors ==
-rayetun
 
 ---
 
@@ -335,6 +332,8 @@ https://rayetun.com
 ---
 
 == Changelog ==
+= 2.1.4 =
+* Confirmed compatibility with WordPress 7.0.
 
 = 2.1.3 =
 * Security: All admin view output now wrapped with esc_html() or esc_attr().
