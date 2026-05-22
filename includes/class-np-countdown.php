@@ -35,13 +35,16 @@ class NoticePulse_Countdown {
 		if ( ! $end_ts || $end_ts < time() ) { return $attrs; }
 
 		$attrs .= sprintf(
-			' data-countdown="%d" data-countdown-days="%s" data-countdown-hours="%s" data-countdown-mins="%s" data-countdown-secs="%s" data-countdown-hide="%d"',
+			' data-countdown="%d" data-countdown-days="%s" data-countdown-hours="%s" data-countdown-mins="%s" data-countdown-secs="%s" data-countdown-hide="%d" data-countdown-show-hours="%d" data-countdown-show-mins="%d" data-countdown-show-secs="%d"',
 			$end_ts,
 			esc_attr( $meta['label_days']   ?? 'Days' ),
 			esc_attr( $meta['label_hours']  ?? 'Hours' ),
 			esc_attr( $meta['label_mins']   ?? 'Mins' ),
 			esc_attr( $meta['label_secs']   ?? 'Secs' ),
-			(int) ( $meta['hide_on_expire'] ?? 1 )
+			(int) ( $meta['hide_on_expire'] ?? 1 ),
+			(int) ( $meta['show_hours']     ?? 1 ),
+			(int) ( $meta['show_mins']      ?? 1 ),
+			(int) ( $meta['show_seconds']   ?? 1 )
 		);
 		return $attrs;
 	}
@@ -71,6 +74,9 @@ class NoticePulse_Countdown {
 			'label_hours'    => sanitize_text_field( wp_unslash( $_POST['countdown_label_hours'] ?? 'Hours' ) ),
 			'label_mins'     => sanitize_text_field( wp_unslash( $_POST['countdown_label_mins']  ?? 'Mins' ) ),
 			'label_secs'     => sanitize_text_field( wp_unslash( $_POST['countdown_label_secs']  ?? 'Secs' ) ),
+			'show_hours'     => isset( $_POST['countdown_show_hours']   ) ? 1 : 0,
+			'show_mins'      => isset( $_POST['countdown_show_mins']    ) ? 1 : 0,
+			'show_seconds'   => isset( $_POST['countdown_show_seconds'] ) ? 1 : 0,
 			'hide_on_expire' => isset( $_POST['countdown_hide_on_expire'] ) ? 1 : 0,
 		);
 

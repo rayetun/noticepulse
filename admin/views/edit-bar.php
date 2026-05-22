@@ -10,7 +10,7 @@
  * Per-type sections only contain their UNIQUE fields.
  *
  * @package NoticePulse
- * @since   2.1.0
+ * @since   2.1.4
  *
  * @var object|null $bar    Bar object or null for new bar.
  * @var bool        $is_new True when creating a new bar.
@@ -340,7 +340,25 @@ $np_bar_types = array(
 						<div class="np-field"><label><?php esc_html_e( 'Days Label', 'noticepulse' ); ?></label><input type="text" name="countdown_label_days"  value="<?php echo esc_attr( $np_countdown['label_days']  ?? 'Days' ); ?>" class="small-text"></div>
 						<div class="np-field"><label><?php esc_html_e( 'Hours Label', 'noticepulse' ); ?></label><input type="text" name="countdown_label_hours" value="<?php echo esc_attr( $np_countdown['label_hours'] ?? 'Hours' ); ?>" class="small-text"></div>
 						<div class="np-field"><label><?php esc_html_e( 'Mins Label', 'noticepulse' ); ?></label><input type="text" name="countdown_label_mins"  value="<?php echo esc_attr( $np_countdown['label_mins']  ?? 'Mins' ); ?>" class="small-text"></div>
-						<div class="np-field"><label><?php esc_html_e( 'Secs Label', 'noticepulse' ); ?></label><input type="text" name="countdown_label_secs"  value="<?php echo esc_attr( $np_countdown['label_secs']  ?? 'Secs' ); ?>" class="small-text"></div>
+						<div class="np-field"><label><?php esc_html_e( 'Secs Label', 'noticepulse' ); ?></label><input type="text" name="countdown_label_secs"  value="<?php echo esc_attr( $np_countdown['label_secs'] ?? 'Secs' ); ?>" class="small-text"></div>
+						<div class="np-field">
+							<label class="np-field__lbl"><?php esc_html_e( 'Display Units', 'noticepulse' ); ?></label>
+							<p class="np-field__desc" style="margin-bottom:8px;"><?php esc_html_e( 'Choose which time units to show. Days is always displayed.', 'noticepulse' ); ?></p>
+							<div class="np-checks-col">
+								<label class="np-check-item">
+									<input type="checkbox" disabled checked> <?php esc_html_e( 'Days (always shown)', 'noticepulse' ); ?>
+								</label>
+								<label class="np-check-item">
+									<input type="checkbox" name="countdown_show_hours" value="1" <?php checked( $np_countdown['show_hours'] ?? 1, 1 ); ?>> <?php esc_html_e( 'Hours', 'noticepulse' ); ?>
+								</label>
+								<label class="np-check-item">
+									<input type="checkbox" name="countdown_show_mins" value="1" <?php checked( $np_countdown['show_mins'] ?? 1, 1 ); ?>> <?php esc_html_e( 'Minutes', 'noticepulse' ); ?>
+								</label>
+								<label class="np-check-item">
+									<input type="checkbox" name="countdown_show_seconds" value="1" <?php checked( $np_countdown['show_seconds'] ?? 1, 1 ); ?>> <?php esc_html_e( 'Seconds', 'noticepulse' ); ?>
+								</label>
+							</div>
+						</div>
 					</div>
 					<div class="np-field-row">
 						<div class="np-field"><label class="np-field__lbl"><?php esc_html_e( 'CTA Button Label', 'noticepulse' ); ?></label><input type="text" name="countdown_cta_label" value="<?php echo esc_attr( $np_d['cta_label'] ); ?>" placeholder="<?php esc_attr_e( 'Shop Now', 'noticepulse' ); ?>"></div>

@@ -5,7 +5,7 @@ Tags:              notification bar, announcement bar, cookie notice, countdown 
 Requires at least: 6.2
 Tested up to:      7.0
 Requires PHP:      7.4
-Stable tag:        2.1.4
+Stable tag:        2.1.5
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -332,6 +332,11 @@ https://rayetun.com
 ---
 
 == Changelog ==
+
+= 2.1.5 =
+* New: Countdown timer Display Units option — show or hide Hours, Minutes,
+  and Seconds independently. Days is always shown.
+
 = 2.1.4 =
 * Confirmed compatibility with WordPress 7.0.
 

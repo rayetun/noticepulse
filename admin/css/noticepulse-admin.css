@@ -1,18 +1,5 @@
 /**
- * NoticePulse Admin — Combined Design System v3.1
- *
- * COMBINED FILE: noticepulse-admin.css + noticepulse-pro-admin.css
- * merged into one. noticepulse-pro-admin.css can be deleted and its
- * wp_enqueue_style() call removed from class-noticepulse-admin.php.
- *
- * COLOR PICKER FIX (v3.1):
- *   Removed `background: var(--np-panel) !important` from
- *   .wp-color-result.button. That rule was overriding iris's
- *   inline style="background-color:#hex" via !important, which
- *   prevented the color swatch from ever appearing.
- *
- * Design language: "Refined Dark Utility"
- * Inspired by Linear, Vercel, Raycast — dark panel, violet accent, mono data.
+ * NoticePulse Admin CSS
  *
  * Contents:
  *   A. Design tokens
@@ -1036,6 +1023,7 @@ h1.np-edit-title {
 	border-radius: 50%;
 	flex-shrink: 0;
 }
+
 .np-settings-info-dot--green { background: #22d3a5; }
 .np-settings-info-dot--blue  { background: #60a5fa; }
 .np-settings-info-dot--warn  { background: #fbbf24; }
@@ -1064,7 +1052,6 @@ h1.np-edit-title {
 	background: var(--np-accent, #7c3aed);
 	color: #fff !important;
 	box-shadow: 0 4px 14px rgba(124,58,237,.3), inset 0 1px 0 rgba(255,255,255,.1);
-	margin-top: 10px;
 }
 
 .np-settings-btn--primary:hover {
@@ -1080,7 +1067,6 @@ h1.np-edit-title {
 	cursor: not-allowed;
 	transform: none;
 	box-shadow: none;
-	margin-top: 10px;
 }
 
 .np-settings-btn--danger {
@@ -1304,97 +1290,32 @@ h1.np-edit-title {
 	.np-settings-card__body   { padding: 14px 16px 18px; }
 }
 
-/* ── Support Card ──────────────────────────────────────────────────────────── */
-
-.np-settings-card--support {
-	border: 1px solid rgba(124, 92, 252, 0.25);
-	background: linear-gradient(
-		135deg,
-		rgba(124, 92, 252, 0.06) 0%,
-		rgba(34, 211, 165, 0.04) 100%
-	);
-}
-
-.np-support-body {
+/* ── Countdown Display Units checkboxes ─────────────────────────────────── */
+.np-checks-col {
 	display: flex;
 	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 15px;
+}
+.np-check-item {
+	display: flex;
 	align-items: center;
-	text-align: center;
-	gap: 12px;
-	padding: 20px 16px;
-}
-
-.np-support-heart {
-	font-size: 28px;
-	line-height: 1;
-	animation: np-pulse-heart 2.4s ease-in-out infinite;
-}
-
-@keyframes np-pulse-heart {
-	0%, 100% { transform: scale(1);    opacity: 1;    }
-	50%       { transform: scale(1.15); opacity: 0.85; }
-}
-
-.np-support-text {
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
-}
-
-.np-support-text strong {
-	color: var(--np-text);
-	font-size: 13px;
-}
-
-.np-support-text span {
-	color: var(--np-muted);
-	font-size: 12px;
-	line-height: 1.5;
-}
-
-.np-support-actions {
-	display: flex;
-	flex-direction: column;
 	gap: 8px;
-	width: 25%;
-}
-
-.np-support-btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-	padding: 9px 20px;
-	border-radius: 8px;
 	font-size: 13px;
-	font-weight: 600;
-	text-decoration: none;
-	color: #ffffff;
-	background: linear-gradient(135deg, #7c5cfc, #5b3fd4);
-	transition: opacity 0.15s, transform 0.15s;
-	border: none;
+	color: var(--np-text);
 	cursor: pointer;
 }
-
-.np-support-btn:hover {
-	opacity: 0.88;
-	transform: translateY(-1px);
-	color: #ffffff;
-	text-decoration: none;
+.np-check-item input[type="checkbox"] {
+	margin: 0;
+	cursor: pointer;
+}
+.np-check-item input[disabled] {
+	opacity: 0.45;
+	cursor: not-allowed;
 }
 
-.np-support-review {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 4px;
-	font-size: 12px;
-	color: var(--np-muted);
-	text-decoration: none;
-	transition: color 0.15s;
-}
-
-.np-support-review:hover {
-	color: #f59e0b;
-	text-decoration: none;
-}
+/* ── Countdown Display Units checkboxes ─────────────────────────────────── */
+.np-checks-col { display:flex; flex-direction:column; gap:6px; }
+.np-check-item { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--np-text); cursor:pointer; }
+.np-check-item input[type="checkbox"] { margin:0; cursor:pointer; }
+.np-check-item input[disabled] { opacity:0.45; cursor:not-allowed; }

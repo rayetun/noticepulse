@@ -3,7 +3,7 @@
  * Plugin Name:       NoticePulse — Notification Bar, Announcement Bar & Cookie Notice
  * Plugin URI:        https://wordpress.org/plugins/noticepulse/
  * Description:       The most powerful free notification bar plugin for WordPress. Countdown timers, exit-intent, A/B testing, geo-targeting, email capture, gradients, animations, Google Fonts, and more — all free.
- * Version:           2.1.4
+ * Version:           2.1.5
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            Md Rayhan Uddin
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NOTICEPULSE_VERSION',         '2.1.4' );
+define( 'NOTICEPULSE_VERSION',         '2.1.5' );
 define( 'NOTICEPULSE_PLUGIN_DIR',      plugin_dir_path( __FILE__ ) );
 define( 'NOTICEPULSE_PLUGIN_URL',      plugin_dir_url( __FILE__ ) );
 define( 'NOTICEPULSE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

@@ -7,7 +7,7 @@
  * CTA always appears to the right of the countdown.
  *
  * @package NoticePulse
- * @since   2.1.0
+ * @since   2.1.3
  */
 ( function () {
 	'use strict';
@@ -19,7 +19,10 @@
 		var labelD   = bar.getAttribute( 'data-countdown-days' )  || 'Days';
 		var labelH   = bar.getAttribute( 'data-countdown-hours' ) || 'Hours';
 		var labelM   = bar.getAttribute( 'data-countdown-mins' )  || 'Mins';
-		var labelS   = bar.getAttribute( 'data-countdown-secs' )  || 'Secs';
+		var labelS    = bar.getAttribute( 'data-countdown-secs' )       || 'Secs';
+		var showHours = bar.getAttribute( 'data-countdown-show-hours' ) !== '0';
+		var showMins  = bar.getAttribute( 'data-countdown-show-mins' )  !== '0';
+		var showSecs  = bar.getAttribute( 'data-countdown-show-secs' )  !== '0';
 		var hideOnEnd= bar.getAttribute( 'data-countdown-hide' ) === '1';
 		var barId    = bar.getAttribute( 'data-bar-id' ) || '0';
 
@@ -34,14 +37,21 @@
 		// Build countdown widget.
 		var widget = document.createElement( 'div' );
 		widget.className = 'np-countdown';
-		widget.innerHTML =
-			'<span class="np-cd-block"><span class="np-cd-num" id="np-cd-d-' + barId + '">00</span><span class="np-cd-lbl">' + labelD + '</span></span>' +
-			'<span class="np-cd-sep">:</span>' +
-			'<span class="np-cd-block"><span class="np-cd-num" id="np-cd-h-' + barId + '">00</span><span class="np-cd-lbl">' + labelH + '</span></span>' +
-			'<span class="np-cd-sep">:</span>' +
-			'<span class="np-cd-block"><span class="np-cd-num" id="np-cd-m-' + barId + '">00</span><span class="np-cd-lbl">' + labelM + '</span></span>' +
-			'<span class="np-cd-sep">:</span>' +
-			'<span class="np-cd-block"><span class="np-cd-num" id="np-cd-s-' + barId + '">00</span><span class="np-cd-lbl">' + labelS + '</span></span>';
+		// Build timer HTML — Days always shown; Hours, Mins, Secs are optional.
+		var timerHtml = '<span class="np-cd-block"><span class="np-cd-num" id="np-cd-d-' + barId + '">00</span><span class="np-cd-lbl">' + labelD + '</span></span>';
+		if ( showHours ) {
+			timerHtml += '<span class="np-cd-sep">:</span>' +
+			             '<span class="np-cd-block"><span class="np-cd-num" id="np-cd-h-' + barId + '">00</span><span class="np-cd-lbl">' + labelH + '</span></span>';
+		}
+		if ( showMins ) {
+			timerHtml += '<span class="np-cd-sep">:</span>' +
+			             '<span class="np-cd-block"><span class="np-cd-num" id="np-cd-m-' + barId + '">00</span><span class="np-cd-lbl">' + labelM + '</span></span>';
+		}
+		if ( showSecs ) {
+			timerHtml += '<span class="np-cd-sep">:</span>' +
+			             '<span class="np-cd-block"><span class="np-cd-num" id="np-cd-s-' + barId + '">00</span><span class="np-cd-lbl">' + labelS + '</span></span>';
+		}
+		widget.innerHTML = timerHtml;
 
 		// Insert timer BEFORE the CTA button so layout is:
 		// [Message text] [Timer] [CTA Button]
