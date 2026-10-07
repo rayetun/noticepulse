@@ -213,12 +213,16 @@ class NoticePulse_Public {
 		// Build inline styles.
 		// FIX: Include --np-btn-bg and --np-btn-txt as CSS custom properties so
 		// JS button-building scripts can read user's saved colors via getComputedStyle.
+		// --np-btn-radius lets EVERY bar type's button (GDPR / email / coupon /
+		// call / carousel) honour the Button Style setting — not just the
+		// standard CTA. Feature button CSS reads var(--np-btn-radius).
 		$bar_style = sprintf(
-			'background-color:%s;color:%s;--np-btn-bg:%s;--np-btn-txt:%s;',
+			'background-color:%s;color:%s;--np-btn-bg:%s;--np-btn-txt:%s;--np-btn-radius:%s;',
 			esc_attr( sanitize_hex_color( $bar->bg_color ) ),
 			esc_attr( sanitize_hex_color( $bar->text_color ) ),
 			esc_attr( sanitize_hex_color( $bar->btn_bg_color ) ),
-			esc_attr( sanitize_hex_color( $bar->btn_txt_color ) )
+			esc_attr( sanitize_hex_color( $bar->btn_txt_color ) ),
+			esc_attr( $this->get_border_radius( $bar->btn_radius ) )
 		);
 
 		/**
@@ -275,6 +279,12 @@ class NoticePulse_Public {
 		$type_class     = 'np-bar--type-' . sanitize_html_class( isset( $bar->bar_type ) ? $bar->bar_type : 'standard' );
 		$device_class   = implode( ' ', $device_classes );
 
+		// Hide the GDPR "Decline" button when the Elements toggle is off. The
+		// feature script still builds it; CSS hides it (no front-end JS change).
+		$np_el_all      = NoticePulse_DB::get_meta( $bar, 'elements' );
+		$np_decline_off = ( 'gdpr' === ( isset( $bar->bar_type ) ? $bar->bar_type : 'standard' ) )
+			&& isset( $np_el_all['decline']['enabled'] ) && ! $np_el_all['decline']['enabled'];
+
 		$all_classes = trim( implode( ' ', array_filter( array(
 			'np-bar',
 			$position_class,
@@ -284,14 +294,24 @@ class NoticePulse_Public {
 			$align_class,
 			$type_class,
 			$device_class,
+			$np_decline_off ? 'np-hide-decline' : '',
 		) ) ) );
 
 		?>
 		<div class="<?php echo esc_attr( $all_classes ); ?>" style="<?php echo esc_attr( $bar_style ); ?>" <?php echo $data_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> role="banner" aria-label="<?php esc_attr_e( 'Site notification', 'noticepulse' ); ?>">
 			<div class="np-bar__inner">
 				<div class="np-bar__content">
-					<span class="np-bar__message"><?php echo wp_kses( $bar->message, $this->allowed_message_tags() ); ?></span>
-					<?php if ( ! empty( $bar->cta_label ) ) : // FIX: label alone is enough; URL is optional ?>
+					<?php
+					$np_type   = isset( $bar->bar_type ) ? $bar->bar_type : 'standard';
+					$np_el     = NoticePulse_DB::get_meta( $bar, 'elements' );
+					$np_icon   = ! empty( $np_el['icon']['enabled'] ) && '' !== ( $np_el['icon']['value'] ?? '' );
+					$np_msg_on = isset( $np_el['message']['enabled'] ) ? (bool) $np_el['message']['enabled'] : true;
+					if ( 'ticker' === $np_type ) { $np_msg_on = true; } // the carousel needs the message node to exist.
+					$np_cta_on = isset( $np_el['cta']['enabled'] ) ? (bool) $np_el['cta']['enabled'] : true;
+					?>
+					<?php if ( $np_icon ) : ?><span class="np-bar__icon"><?php echo esc_html( $np_el['icon']['value'] ); ?></span><?php endif; ?>
+					<?php if ( $np_msg_on ) : ?><span class="np-bar__message"><?php echo wp_kses( $bar->message, $this->allowed_message_tags() ); ?></span><?php endif; ?>
+					<?php if ( ! empty( $bar->cta_label ) && $np_cta_on ) : // label alone is enough; URL is optional ?>
 						<a class="np-bar__cta"
 							href="<?php echo ! empty( $bar->cta_url ) ? esc_url( $bar->cta_url ) : '#'; ?>"
 							target="<?php echo esc_attr( $bar->cta_target ); ?>"

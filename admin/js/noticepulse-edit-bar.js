@@ -51,6 +51,21 @@
 				msgLabelEl.textContent = msgLabels[ type ] + ' ';
 				if ( star ) { msgLabelEl.appendChild( star ); }
 			}
+
+			// 4. Show only the element toggles relevant to this bar type.
+			//    (Carousel has no standalone message/CTA; only standard & countdown
+			//     use the core CTA; Decline belongs to the GDPR bar.)
+			var elVisible = {
+				icon:    true,
+				message: 'ticker' !== type,
+				cta:     ( 'standard' === type || 'countdown' === type ),
+				decline: ( 'gdpr' === type )
+			};
+			document.querySelectorAll( '.np-element-row[data-el]' ).forEach( function ( row ) {
+				var key = row.getAttribute( 'data-el' );
+				var show = ( key in elVisible ) ? elVisible[ key ] : true;
+				row.style.display = show ? '' : 'none';
+			} );
 		}
 
 		selector.querySelectorAll( '.np-type-radio' ).forEach( function ( radio ) {
@@ -98,29 +113,70 @@
 			} );
 			jsonInput.value = JSON.stringify( msgs );
 			if ( emptyEl ) { emptyEl.style.display = msgs.length ? 'none' : ''; }
+			if ( window.npRefreshPreview ) { window.npRefreshPreview(); }
 		}
 
 		function makeItem( t, l, u ) {
 			var div = document.createElement( 'div' );
 			div.className = 'np-ticker-item';
-			div.innerHTML = '<span class="np-ticker-drag">⠿</span><div class="np-ticker-fields"><input type="text" class="np-ticker-text large-text" placeholder="Message text…" value="' + esc(t) + '"><div class="np-ticker-cta"><input type="text" class="np-ticker-cta-label" placeholder="CTA Label" value="' + esc(l) + '"><input type="url" class="np-ticker-cta-url" placeholder="https://" value="' + esc(u) + '"></div></div><button type="button" class="np-ticker-remove">✕</button>';
+			div.innerHTML = '<span class="np-ticker-drag" title="Drag to reorder">⠿</span><div class="np-ticker-fields"><input type="text" class="np-ticker-text large-text" placeholder="Message text…" value="' + esc(t) + '"><div class="np-ticker-cta"><input type="text" class="np-ticker-cta-label" placeholder="CTA Label" value="' + esc(l) + '"><input type="url" class="np-ticker-cta-url" placeholder="https://" value="' + esc(u) + '"></div></div><button type="button" class="np-ticker-remove">✕</button>';
 			return div;
 		}
 
-		function bindItem( item ) {
-			var rb = item.querySelector( '.np-ticker-remove' );
-			if ( rb ) { rb.addEventListener( 'click', function () { item.remove(); syncJSON(); } ); }
-			item.querySelectorAll( 'input' ).forEach( function ( i ) { i.addEventListener( 'input', syncJSON ); } );
-		}
+		// DELEGATED remove + input — works for rows added here AND rows injected by
+		// a template apply (which this builder previously never bound).
+		itemsEl.addEventListener( 'click', function ( e ) {
+			var btn = e.target.closest( '.np-ticker-remove' );
+			if ( ! btn ) { return; }
+			var row = btn.closest( '.np-ticker-item' );
+			if ( row ) { row.remove(); syncJSON(); }
+		} );
+		itemsEl.addEventListener( 'input', function ( e ) {
+			if ( e.target.closest( '.np-ticker-item' ) ) { syncJSON(); }
+		} );
 
-		itemsEl.querySelectorAll( '.np-ticker-item' ).forEach( bindItem );
+		// Drag-to-reorder from the ⠿ handle (native HTML5 drag, delegated).
+		var dragRow = null;
+		itemsEl.addEventListener( 'mousedown', function ( e ) {
+			var handle = e.target.closest( '.np-ticker-drag' );
+			if ( handle ) {
+				var row = handle.closest( '.np-ticker-item' );
+				if ( row ) { row.setAttribute( 'draggable', 'true' ); }
+			}
+		} );
+		itemsEl.addEventListener( 'dragstart', function ( e ) {
+			dragRow = e.target.closest( '.np-ticker-item' );
+			if ( dragRow ) {
+				e.dataTransfer.effectAllowed = 'move';
+				try { e.dataTransfer.setData( 'text/plain', '' ); } catch ( err ) {}
+				dragRow.classList.add( 'np-ticker-item--dragging' );
+			}
+		} );
+		itemsEl.addEventListener( 'dragover', function ( e ) {
+			if ( ! dragRow ) { return; }
+			e.preventDefault();
+			var over = e.target.closest( '.np-ticker-item' );
+			if ( ! over || over === dragRow ) { return; }
+			var rect  = over.getBoundingClientRect();
+			var after = ( e.clientY - rect.top ) > rect.height / 2;
+			itemsEl.insertBefore( dragRow, after ? over.nextSibling : over );
+		} );
+		itemsEl.addEventListener( 'dragend', function () {
+			if ( dragRow ) {
+				dragRow.classList.remove( 'np-ticker-item--dragging' );
+				dragRow.removeAttribute( 'draggable' );
+			}
+			dragRow = null;
+			syncJSON();
+		} );
+
 		addBtn.addEventListener( 'click', function () {
 			var item = makeItem( '', '', '' );
 			itemsEl.appendChild( item );
-			bindItem( item );
 			var fi = item.querySelector( '.np-ticker-text' );
 			if ( fi ) { fi.focus(); }
 			if ( emptyEl ) { emptyEl.style.display = 'none'; }
+			syncJSON();
 		} );
 	}
 
@@ -203,6 +259,7 @@
 		initToggle( 'np-gradient-toggle', 'np-gradient-fields' );
 		initToggle( 'np-ab-toggle',       'np-ab-fields' );
 		initToggle( 'np-geo-toggle',      'np-geo-fields' );
+		initToggle( 'np-el-icon',         'np-el-icon-val' );
 		initTickerBuilder();
 		initFrequencySelector();
 		initTriggerSelector();

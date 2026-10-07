@@ -175,6 +175,10 @@ body.np-tmpl-open { overflow: hidden; }
 	padding: 24px 28px;
 	overflow-y: auto;
 	flex: 1;
+	/* Rows size to their content; items align to the top so cards never get
+	   stretched/collapsed when the grid scrolls (fixes the cramped "All" tab). */
+	grid-auto-rows: max-content;
+	align-items: start;
 }
 @media (max-width: 760px) { .np-tmpl-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .np-tmpl-grid { grid-template-columns: 1fr; } }

@@ -108,10 +108,24 @@
 .np-bar__message {
 	line-height: 1.5;
 	font-weight: 500;
+	/* Let the message shrink and wrap instead of forcing horizontal overflow. */
+	min-width: 0;
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 .np-bar__message a { color: inherit; text-decoration: underline; }
 .np-bar__message strong { font-weight: 700; }
+
+/* Optional leading icon (bar_meta.elements.icon) */
+.np-bar__icon {
+	display: inline-flex;
+	align-items: center;
+	line-height: 1;
+	font-size: 1.15em;
+	flex-shrink: 0;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    7. CTA BUTTON
@@ -460,6 +474,9 @@ body.np-has-bottom-bar { padding-bottom: var( --np-bar-height, 0px ); }
 	border: 1px solid rgba( 255, 255, 255, .35 );
 }
 
+/* Elements toggle: hide the Decline button when disabled (bar_meta.elements.decline). */
+.np-bar.np-hide-decline .np-gdpr-btn--decline { display: none !important; }
+
 /* ═══════════════════════════════════════════════════════════════
    16. ROTATING TICKER
 ═══════════════════════════════════════════════════════════════ */
@@ -676,14 +693,48 @@ body.np-has-bottom-bar { padding-bottom: var( --np-bar-height, 0px ); }
 .np-coupon-btn::before { content: '📋'; font-size: 11px; }
 
 /* ═══════════════════════════════════════════════════════════════
+   BUTTON STYLE (radius) — applies to EVERY bar type's button.
+   Placed after all button rules so it wins; the standard CTA keeps its
+   own inline radius. Value comes from --np-btn-radius set per bar.
+═══════════════════════════════════════════════════════════════ */
+.np-bar__cta,
+.np-gdpr-btn,
+.np-email-btn,
+.np-coupon-btn,
+.np-call-btn {
+	border-radius: var( --np-btn-radius, 6px );
+}
+
+/* ═══════════════════════════════════════════════════════════════
    20. RESPONSIVE
 ═══════════════════════════════════════════════════════════════ */
 
 @media ( max-width: 768px ) {
 
-	/* All bars: stack on small screens */
-	.np-bar__inner   { justify-content: center !important; }
-	.np-bar__content { flex: none; max-width: 100%; justify-content: center !important; }
+	/* All bars: wrap + center so nothing overflows horizontally on small screens */
+	.np-bar__inner   {
+		justify-content: center !important;
+		flex-wrap: wrap;
+		padding-left: 14px;
+		padding-right: 40px; /* clear the absolutely-positioned close button */
+		row-gap: 8px;
+	}
+	/* Beat the per-type width rules (section 12/13) so content is constrained
+	   to the viewport and actually wraps instead of overflowing. */
+	.np-bar__content,
+	.np-bar[data-bar-type="standard"] .np-bar__content,
+	.np-bar[data-bar-type="countdown"] .np-bar__content,
+	.np-bar[data-bar-type="coupon_copy"] .np-bar__content,
+	.np-bar[data-bar-type="click_to_call"] .np-bar__content,
+	.np-bar[data-bar-type="ticker"] .np-bar__content {
+		flex: 1 1 100% !important;
+		max-width: 100% !important;
+		min-width: 0;
+		justify-content: center !important;
+		flex-wrap: wrap;
+		gap: 8px 10px;
+		text-align: center;
+	}
 
 	/* Split layout collapses to stacked centered */
 	.np-bar[data-bar-type="email_capture"] .np-bar__content,
@@ -708,10 +759,18 @@ body.np-has-bottom-bar { padding-bottom: var( --np-bar-height, 0px ); }
 		width: 100%;
 	}
 
-	/* Email form goes full width on mobile */
-	.np-email-form  { width: 100%; flex-wrap: wrap; }
-	.np-email-input { min-width: 0; max-width: 100%; flex: 1 1 100%; }
-	.np-email-btn   { flex: 1 1 100%; }
+	/* Email form goes full width on mobile.
+	   Higher specificity + !important to beat the base rule
+	   `.np-email-form .np-email-input { min-width: 280px }` (section 18),
+	   which otherwise keeps the input too wide and overflows on phones. */
+	.np-bar__inner .np-email-form { width: 100%; flex-wrap: wrap; margin-right: 0; }
+	.np-email-form .np-email-input {
+		min-width: 0 !important;
+		max-width: 100% !important;
+		width: 100%;
+		flex: 1 1 100%;
+	}
+	.np-email-form .np-email-btn { flex: 1 1 100%; }
 
 	/* Close button on mobile */
 	.np-bar__close { right: 10px; top: 8px; transform: none; }

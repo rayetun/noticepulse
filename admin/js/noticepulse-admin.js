@@ -34,8 +34,14 @@
 
 			$input.wpColorPicker( {
 				defaultColor : defaultColor,
-				change       : function () { setTimeout( updatePreview, 50 ); },
-				clear        : function () { setTimeout( updatePreview, 50 ); },
+				change       : function () {
+					setTimeout( updatePreview, 50 );
+					if ( window.npRefreshPreview ) { window.npRefreshPreview(); }
+				},
+				clear        : function () {
+					setTimeout( updatePreview, 50 );
+					if ( window.npRefreshPreview ) { window.npRefreshPreview(); }
+				},
 			} );
 		} );
 	}
@@ -198,6 +204,48 @@
 		}
 	}
 
+	// ── List page: AJAX active toggle (no reload, bottom-right toast) ───────────
+	function initListToggles() {
+		if ( ! $( '.np2-toggle-switch[data-bar-id]' ).length || typeof noticepulseAdmin === 'undefined' ) { return; }
+		$( document ).on( 'click', '.np2-toggle-switch[data-bar-id]', function ( e ) {
+			e.preventDefault();
+			var $t = $( this );
+			if ( $t.data( 'busy' ) ) { return; }
+			$t.data( 'busy', true );
+			$.post( noticepulseAdmin.ajaxUrl, {
+				action: 'noticepulse_toggle_bar_ajax',
+				nonce:  noticepulseAdmin.nonce,
+				bar_id: $t.data( 'bar-id' )
+			} ).done( function ( resp ) {
+				if ( resp && resp.success && resp.data ) {
+					var on = !! resp.data.active;
+					$t.toggleClass( 'np2-toggle-switch--on', on );
+					$t.closest( '.np2-bar-card' )
+						.toggleClass( 'np2-bar-card--active', on )
+						.toggleClass( 'np2-bar-card--inactive', ! on );
+					npToast( resp.data.message || '', 'success' );
+				} else {
+					npToast( ( resp && resp.data && resp.data.message ) || 'Could not update.', 'error' );
+				}
+			} ).fail( function () {
+				npToast( 'Network error. Please try again.', 'error' );
+			} ).always( function () {
+				$t.data( 'busy', false );
+			} );
+		} );
+	}
+
+	// Lightweight bottom-right toast (used on the list page).
+	function npToast( message, type ) {
+		var $t = $( '<div class="np-toast np-toast--' + ( 'error' === type ? 'error' : 'success' ) + '"></div>' ).text( message );
+		$( 'body' ).append( $t );
+		setTimeout( function () { $t.addClass( 'np-toast--visible' ); }, 10 );
+		setTimeout( function () {
+			$t.removeClass( 'np-toast--visible' );
+			setTimeout( function () { $t.remove(); }, 300 );
+		}, 3000 );
+	}
+
 	// ── Boot ───────────────────────────────────────────────────────────────────
 	$( function () {
 		initColorPickers();
@@ -207,6 +255,7 @@
 		initPreviewListeners();
 		initFormValidation();
 		initResetAll();
+		initListToggles();
 		updatePreview();
 		updateGradientPreview();
 	} );

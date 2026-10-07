@@ -167,5 +167,7 @@ $np_nonce       = wp_create_nonce( 'noticepulse_analytics' );
 		</div>
 	</div>
 
+	<?php NoticePulse_Admin::support_section(); ?>
+
 </div><!-- .np-wrap -->
 

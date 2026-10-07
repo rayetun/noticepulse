@@ -152,31 +152,6 @@ $np_notice = isset( $_GET['np_notice'] ) ? sanitize_key( $_GET['np_notice'] ) : 
 					</form>
 				</div>
 			</div>
-			<!-- Support card -->
-			<div class="np-settings-card np-settings-card--support">
-				<div class="np-settings-card__body np-support-body">
-					<div class="np-support-heart">❤️</div>
-					<div class="np-support-text">
-						<strong><?php esc_html_e( 'Enjoying NoticePulse?', 'noticepulse' ); ?></strong>
-						<span><?php esc_html_e( "It's free &mdash; and always will be. If it helps your site, a small donation keeps development going.", 'noticepulse' ); ?></span>
-					</div>
-					<div class="np-support-actions">
-						<a href="https://wise.com/pay/me/mdrayhanu2"
-						   target="_blank"
-						   rel="noopener noreferrer"
-						   class="np-support-btn">
-							<?php esc_html_e( 'Support this plugin', 'noticepulse' ); ?> ❤️
-						</a>
-						<a href="https://wordpress.org/support/plugin/noticepulse/reviews/#new-post"
-						   target="_blank"
-						   rel="noopener noreferrer"
-						   class="np-support-review">
-							★ <?php esc_html_e( 'Leave a review', 'noticepulse' ); ?>
-						</a>
-					</div>
-				</div>
-			</div>
-
 		</div><!-- /left column -->
 
 		<!-- RIGHT COLUMN -->
@@ -298,5 +273,7 @@ $np_notice = isset( $_GET['np_notice'] ) ? sanitize_key( $_GET['np_notice'] ) : 
 		</div><!-- /right column -->
 
 	</div><!-- /.np-settings-grid -->
+
+	<?php NoticePulse_Admin::support_section(); ?>
 
 </div><!-- /.np-wrap -->

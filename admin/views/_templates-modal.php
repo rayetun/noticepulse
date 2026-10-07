@@ -2,9 +2,11 @@
 /**
  * NoticePulse — Template Library Modal.
  *
- * Template IDs and preview data here MUST match class-np-templates.php exactly.
- * The AJAX handler (np_get_template) looks up templates by their 'id' field,
- * so any mismatch returns "Template not found" → error toast.
+ * SINGLE SOURCE OF TRUTH (since 2.2.0): the cards are generated directly from
+ * NoticePulse_Templates::get_all_templates(). Each card's preview colours,
+ * message and CTA come from get_card_preview() — derived from the same fields
+ * that applying the template injects — so the card always matches the result.
+ * (Previously a second hand-maintained registry lived here and drifted.)
  *
  * @package NoticePulse
  * @since   2.1.0
@@ -12,294 +14,20 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-/**
- * Display-only registry — mirrors class-np-templates.php IDs exactly.
- * Only preview colours/text are stored here; full field values come from AJAX.
- *
- * @var array $np_template_registry
- */
-$np_template_registry = array(
 
-	// ── Announcement ─────────────────────────────────────────────────────────
-	array(
-		'id'       => 'free-shipping',        // ← matches class-np-templates.php
-		'label'    => 'Free Shipping',
-		'category' => 'announcement',
-		'bar_type' => 'standard',
-		'emoji'    => '🚚',
-		'preview'  => array(
-			'message'  => '🚚 Free shipping on all orders today!',
-			'bg'       => '#16a34a',
-			'text'     => '#ffffff',
-			'btn'      => '#ffffff',
-			'btn_text' => '#16a34a',
-			'cta'      => 'Shop Now',
-		),
-	),
-	array(
-		'id'       => 'black-friday',
-		'label'    => 'Black Friday',
-		'category' => 'announcement',
-		'bar_type' => 'standard',
-		'emoji'    => '🖤',
-		'preview'  => array(
-			'message'  => '🖤 BLACK FRIDAY — 40% off everything!',
-			'bg'       => '#0a0a0a',
-			'text'     => '#f5f0e8',
-			'btn'      => '#f59e0b',
-			'btn_text' => '#0a0a0a',
-			'cta'      => 'Grab the Deal',
-		),
-	),
-	array(
-		'id'       => 'summer-sale',
-		'label'    => 'Summer Sale',
-		'category' => 'announcement',
-		'bar_type' => 'standard',
-		'emoji'    => '☀️',
-		'preview'  => array(
-			'message'  => '☀️ Summer Sale — up to 50% off selected items!',
-			'bg'       => '#f97316',
-			'text'     => '#ffffff',
-			'btn'      => '#ffffff',
-			'btn_text' => '#f97316',
-			'cta'      => 'Shop the Sale',
-		),
-	),
-	array(
-		'id'       => 'new-arrival',
-		'label'    => 'New Arrival',
-		'category' => 'announcement',
-		'bar_type' => 'standard',
-		'emoji'    => '✨',
-		'preview'  => array(
-			'message'  => '✨ New collection just dropped — be the first to explore.',
-			'bg'       => '#7c3aed',
-			'text'     => '#ffffff',
-			'btn'      => '#ffffff',
-			'btn_text' => '#7c3aed',
-			'cta'      => 'Explore Now',
-		),
-	),
-	array(
-		'id'       => 'flash-sale',
-		'label'    => 'Flash Sale',
-		'category' => 'announcement',
-		'bar_type' => 'standard',
-		'emoji'    => '⚡',
-		'preview'  => array(
-			'message'  => '⚡ 4-hour flash sale — 30% off sitewide. Hurry!',
-			'bg'       => '#dc2626',
-			'text'     => '#ffffff',
-			'btn'      => '#fef2f2',
-			'btn_text' => '#dc2626',
-			'cta'      => 'Shop Now',
-		),
-	),
+$np_templates = class_exists( 'NoticePulse_Templates' ) ? NoticePulse_Templates::get_all_templates() : array();
+$np_tpl_count = count( $np_templates );
 
-	// ── GDPR ─────────────────────────────────────────────────────────────────
-	array(
-		'id'       => 'gdpr-minimal',
-		'label'    => 'GDPR Minimal',
-		'category' => 'gdpr',
-		'bar_type' => 'gdpr',
-		'emoji'    => '🍪',
-		'preview'  => array(
-			'message'  => 'We use cookies to improve your browsing experience.',
-			'bg'       => '#1e293b',
-			'text'     => '#e2e8f0',
-			'btn'      => '#7c5cfc',
-			'btn_text' => '#ffffff',
-			'cta'      => 'Accept All',
-		),
-	),
-	array(
-		'id'       => 'gdpr-friendly',
-		'label'    => 'GDPR Friendly',
-		'category' => 'gdpr',
-		'bar_type' => 'gdpr',
-		'emoji'    => '🔒',
-		'preview'  => array(
-			'message'  => '🍪 We value your privacy. We use cookies to personalise content.',
-			'bg'       => '#0f172a',
-			'text'     => '#f1f5f9',
-			'btn'      => '#22d3a5',
-			'btn_text' => '#0f172a',
-			'cta'      => '✓ Accept All Cookies',
-		),
-	),
-
-	// ── Countdown ────────────────────────────────────────────────────────────
-	array(
-		'id'       => 'sale-ends',
-		'label'    => 'Sale Ends Soon',
-		'category' => 'countdown',
-		'bar_type' => 'countdown',
-		'emoji'    => '⏱',
-		'preview'  => array(
-			'message'  => '⏳ Sale ends in: 02:14:37',
-			'bg'       => '#dc2626',
-			'text'     => '#ffffff',
-			'btn'      => '#ffffff',
-			'btn_text' => '#dc2626',
-			'cta'      => 'Shop Now',
-		),
-	),
-	array(
-		'id'       => 'limited-offer',
-		'label'    => 'Limited Offer',
-		'category' => 'countdown',
-		'bar_type' => 'countdown',
-		'emoji'    => '🔥',
-		'preview'  => array(
-			'message'  => '🔥 Limited offer ends in: 00:59:12',
-			'bg'       => '#7c3aed',
-			'text'     => '#ffffff',
-			'btn'      => '#fbbf24',
-			'btn_text' => '#1d2327',
-			'cta'      => 'Claim Offer',
-		),
-	),
-
-	// ── Email Capture ────────────────────────────────────────────────────────
-	array(
-		'id'       => 'newsletter',
-		'label'    => 'Newsletter Signup',
-		'category' => 'email_capture',
-		'bar_type' => 'email_capture',
-		'emoji'    => '📧',
-		'preview'  => array(
-			'message'  => '📧 Get 10% off your first order — join our newsletter!',
-			'bg'       => '#1a73e8',
-			'text'     => '#ffffff',
-			'btn'      => '#ffffff',
-			'btn_text' => '#1a73e8',
-			'cta'      => 'Get 10% Off',
-		),
-	),
-	array(
-		'id'       => 'lead-magnet',
-		'label'    => 'Lead Magnet',
-		'category' => 'email_capture',
-		'bar_type' => 'email_capture',
-		'emoji'    => '🎁',
-		'preview'  => array(
-			'message'  => '🎁 Get our free beginner\'s guide — no spam, ever.',
-			'bg'       => '#0f172a',
-			'text'     => '#e2e8f0',
-			'btn'      => '#22d3a5',
-			'btn_text' => '#0f172a',
-			'cta'      => 'Send Me the Guide',
-		),
-	),
-
-	// ── Coupon ───────────────────────────────────────────────────────────────
-	array(
-		'id'       => 'coupon-20',
-		'label'    => '20% Off Coupon',
-		'category' => 'coupon_copy',
-		'bar_type' => 'coupon_copy',
-		'emoji'    => '🎟',
-		'preview'  => array(
-			'message'  => '🎟 Use code below for 20% off your order!',
-			'bg'       => '#16a34a',
-			'text'     => '#ffffff',
-			'btn'      => '#ffffff',
-			'btn_text' => '#16a34a',
-			'cta'      => 'SAVE20',
-		),
-	),
-	array(
-		'id'       => 'welcome10',
-		'label'    => 'Welcome 10%',
-		'category' => 'coupon_copy',
-		'bar_type' => 'coupon_copy',
-		'emoji'    => '👋',
-		'preview'  => array(
-			'message'  => '👋 Welcome! Get 10% off your first order.',
-			'bg'       => '#7c3aed',
-			'text'     => '#ffffff',
-			'btn'      => '#ede9fe',
-			'btn_text' => '#7c3aed',
-			'cta'      => 'WELCOME10',
-		),
-	),
-
-	// ── Click-to-Call ────────────────────────────────────────────────────────
-	array(
-		'id'       => 'call-us',
-		'label'    => 'Call Us Now',
-		'category' => 'click_to_call',
-		'bar_type' => 'click_to_call',
-		'emoji'    => '📞',
-		'preview'  => array(
-			'message'  => 'Questions? Our team is ready to help.',
-			'bg'       => '#0ea5e9',
-			'text'     => '#ffffff',
-			'btn'      => '#ffffff',
-			'btn_text' => '#0ea5e9',
-			'cta'      => '📞 Call Us Now',
-		),
-	),
-
-	// ── Text Carousel ─────────────────────────────────────────────────────────
-	array(
-		'id'       => 'carousel-promo',
-		'label'    => 'Promo Carousel',
-		'category' => 'ticker',
-		'bar_type' => 'ticker',
-		'emoji'    => '🎠',
-		'preview'  => array(
-			'message'  => '🚚 Free shipping  •  ⚡ Flash Sale  •  🎁 Free gift',
-			'bg'       => '#7c3aed',
-			'text'     => '#ffffff',
-			'btn'      => '#ffffff',
-			'btn_text' => '#7c3aed',
-			'cta'      => 'Shop Now',
-		),
-	),
-	array(
-		'id'       => 'carousel-features',
-		'label'    => 'Feature Highlights',
-		'category' => 'ticker',
-		'bar_type' => 'ticker',
-		'emoji'    => '✨',
-		'preview'  => array(
-			'message'  => '✅ 10,000+ customers  •  🔒 SSL secure  •  ↩ 30-day returns',
-			'bg'       => '#0f172a',
-			'text'     => '#e2e8f0',
-			'btn'      => '#7c3aed',
-			'btn_text' => '#ffffff',
-			'cta'      => 'Our Policy',
-		),
-	),
-	array(
-		'id'       => 'carousel-announcements',
-		'label'    => 'Announcements',
-		'category' => 'ticker',
-		'bar_type' => 'ticker',
-		'emoji'    => '📢',
-		'preview'  => array(
-			'message'  => '🎉 Grand opening sale  •  📅 New arrivals Monday  •  🏆 #1 rated',
-			'bg'       => '#f59e0b',
-			'text'     => '#1a1a1a',
-			'btn'      => '#1a1a1a',
-			'btn_text' => '#f59e0b',
-			'cta'      => 'Get Directions',
-		),
-	),
-
-);
-
+// Curated category labels (display only — not template data, so no drift risk).
 $np_categories = array(
-	'all'           => 'All',
-	'announcement'  => '📢 Announcement',
-	'gdpr'          => '🍪 GDPR',
-	'countdown'     => '⏳ Countdown',
-	'email_capture' => '📧 Email',
-	'coupon_copy'   => '🎟 Coupon',
-	'click_to_call' => '📞 Call',
-	'ticker'        => '🎠 Carousel',
+	'all'           => __( 'All', 'noticepulse' ),
+	'announcement'  => '📢 ' . __( 'Announcement', 'noticepulse' ),
+	'gdpr'          => '🍪 ' . __( 'GDPR', 'noticepulse' ),
+	'countdown'     => '⏳ ' . __( 'Countdown', 'noticepulse' ),
+	'email_capture' => '📧 ' . __( 'Email', 'noticepulse' ),
+	'coupon_copy'   => '🎟 ' . __( 'Coupon', 'noticepulse' ),
+	'click_to_call' => '📞 ' . __( 'Call', 'noticepulse' ),
+	'ticker'        => '🎠 ' . __( 'Carousel', 'noticepulse' ),
 );
 ?>
 
@@ -312,7 +40,12 @@ $np_categories = array(
 				<span class="np-tmpl-header__icon">🎨</span>
 				<div>
 					<h2 class="np-tmpl-header__title"><?php esc_html_e( 'Template Library', 'noticepulse' ); ?></h2>
-					<p class="np-tmpl-header__sub"><?php esc_html_e( '17 ready-made templates — pick one to pre-fill your bar instantly.', 'noticepulse' ); ?></p>
+					<p class="np-tmpl-header__sub">
+						<?php
+						/* translators: %d: number of ready-made templates. */
+						echo esc_html( sprintf( _n( '%d ready-made template — pick one to pre-fill your bar instantly.', '%d ready-made templates — pick one to pre-fill your bar instantly.', $np_tpl_count, 'noticepulse' ), $np_tpl_count ) );
+						?>
+					</p>
 				</div>
 			</div>
 			<button type="button" class="np-tmpl-close" id="np-tmpl-close" aria-label="<?php esc_attr_e( 'Close', 'noticepulse' ); ?>">✕</button>
@@ -331,38 +64,42 @@ $np_categories = array(
 
 		<!-- Template grid -->
 		<div class="np-tmpl-grid" id="np-tmpl-grid">
-			<?php foreach ( $np_template_registry as $np_tpl ) :
-				$np_p = $np_tpl['preview'];
+			<?php
+			foreach ( $np_templates as $np_tpl ) :
+				$np_p    = NoticePulse_Templates::get_card_preview( $np_tpl );
+				$np_type = $np_p['type'];
 			?>
 			<div class="np-tmpl-card"
 			     data-id="<?php echo esc_attr( $np_tpl['id'] ); ?>"
-			     data-cat="<?php echo esc_attr( $np_tpl['category'] ); ?>"
-			     data-type="<?php echo esc_attr( $np_tpl['bar_type'] ); ?>"
-			     data-label="<?php echo esc_attr( $np_tpl['label'] ); ?>">
+			     data-cat="<?php echo esc_attr( isset( $np_tpl['category'] ) ? $np_tpl['category'] : $np_type ); ?>"
+			     data-type="<?php echo esc_attr( $np_type ); ?>"
+			     data-label="<?php echo esc_attr( $np_tpl['name'] ); ?>">
 
-				<!-- Mini bar preview -->
+				<!-- Mini bar preview (derived from the template's real fields) -->
 				<div class="np-tmpl-preview" style="background:<?php echo esc_attr( $np_p['bg'] ); ?>;">
 					<span class="np-tmpl-preview__msg" style="color:<?php echo esc_attr( $np_p['text'] ); ?>;">
 						<?php echo esc_html( $np_p['message'] ); ?>
 					</span>
+					<?php if ( '' !== $np_p['cta'] ) : ?>
 					<span class="np-tmpl-preview__btn" style="background:<?php echo esc_attr( $np_p['btn'] ); ?>; color:<?php echo esc_attr( $np_p['btn_text'] ); ?>;">
 						<?php echo esc_html( $np_p['cta'] ); ?>
 					</span>
+					<?php endif; ?>
 				</div>
 
 				<!-- Footer -->
 				<div class="np-tmpl-card__footer">
 					<div class="np-tmpl-card__meta">
-						<span class="np-tmpl-card__emoji"><?php echo esc_html( $np_tpl['emoji'] ); ?></span>
+						<span class="np-tmpl-card__emoji"><?php echo esc_html( isset( $np_tpl['emoji'] ) ? $np_tpl['emoji'] : '🎨' ); ?></span>
 						<div>
-							<div class="np-tmpl-card__name"><?php echo esc_html( $np_tpl['label'] ); ?></div>
-							<div class="np-tmpl-card__type"><?php echo esc_html( ucwords( str_replace( '_', ' ', $np_tpl['bar_type'] ) ) ); ?></div>
+							<div class="np-tmpl-card__name"><?php echo esc_html( $np_tpl['name'] ); ?></div>
+							<div class="np-tmpl-card__type"><?php echo esc_html( ucwords( str_replace( '_', ' ', $np_type ) ) ); ?></div>
 						</div>
 					</div>
 					<button type="button"
 					        class="np-tmpl-apply-btn"
 					        data-id="<?php echo esc_attr( $np_tpl['id'] ); ?>"
-					        data-label="<?php echo esc_attr( $np_tpl['label'] ); ?>">
+					        data-label="<?php echo esc_attr( $np_tpl['name'] ); ?>">
 						<?php esc_html_e( 'Use Template', 'noticepulse' ); ?>
 					</button>
 				</div>

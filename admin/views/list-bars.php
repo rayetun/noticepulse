@@ -35,16 +35,31 @@ $np_total_ctr = $np_total_impressions > 0
 <div class="np2-hero">
 	<div class="np2-hero__left">
 		<div class="np2-hero__logo">
-			<svg width="34" height="34" viewBox="0 0 34 34" fill="none">
-				<rect width="34" height="34" rx="9" fill="url(#npg)"/>
-				<path d="M9 12h16M9 17h12M9 22h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
-				<circle cx="26" cy="12" r="3.5" fill="#fbbf24"/>
+			<svg width="30" height="30" viewBox="0 0 256 256" fill="none" aria-hidden="true">
 				<defs>
-					<linearGradient id="npg" x1="0" y1="0" x2="34" y2="34">
-						<stop stop-color="#6d28d9"/>
-						<stop offset="1" stop-color="#4f46e5"/>
+					<linearGradient id="nph-wave" x1="0" y1="0" x2="1" y2="1">
+						<stop offset="0" stop-color="#a78bfa"/>
+						<stop offset="1" stop-color="#34e0b0"/>
 					</linearGradient>
+					<style>
+						@keyframes nphIn  { 0%,100% { opacity:.7; transform:scale(.97); } 50% { opacity:1;  transform:scale(1.03); } }
+						@keyframes nphOut { 0%,100% { opacity:.25; transform:scale(.97); } 50% { opacity:.6; transform:scale(1.06); } }
+						.nph-wave    { transform-box: fill-box; transform-origin: center; }
+						.nph-in  { animation: nphIn  2.6s ease-in-out infinite; }
+						.nph-out { animation: nphOut 2.6s ease-in-out infinite .55s; }
+						@media (prefers-reduced-motion: reduce) { .nph-wave { animation: none; } }
+					</style>
 				</defs>
+				<g transform="translate(128,128) scale(.82) translate(-128,-128)">
+					<g fill="none" stroke="url(#nph-wave)" stroke-linecap="round">
+						<path class="nph-wave nph-out" d="M226 58 a 76 76 0 0 1 0 108" stroke-width="11"/>
+						<path class="nph-wave nph-out" d="M30 166 a 76 76 0 0 1 0 -108" stroke-width="11"/>
+						<path class="nph-wave nph-in"  d="M202 80 a 48 48 0 0 1 0 64"  stroke-width="12"/>
+						<path class="nph-wave nph-in"  d="M54 144 a 48 48 0 0 1 0 -64"  stroke-width="12"/>
+					</g>
+					<path fill="#fff" d="M128 44 c -34 0 -58 27 -58 61 c 0 26 -5 40 -17 54 c -8 9 -2 21 11 21 h 128 c 13 0 19 -12 11 -21 c -12 -14 -17 -28 -17 -54 c 0 -34 -24 -61 -58 -61 z"/>
+					<path fill="#fff" d="M106 188 h44 c 0 13 -10 23 -22 23 c -12 0 -22 -10 -22 -23 z"/>
+				</g>
 			</svg>
 		</div>
 		<div class="np2-hero__title">
@@ -136,17 +151,17 @@ $np_total_ctr = $np_total_impressions > 0
 		$np_bbg         = sanitize_hex_color( $bar->btn_bg_color ) ?: '#ffffff';
 		$np_bfg         = sanitize_hex_color( $bar->btn_txt_color ) ?: '#1a73e8';
 
-		// Bar type label.
+		// Bar type icon (SVG name — see NoticePulse_Admin::svg()).
 		$np_type_labels = array(
-			'standard'      => '📢',
-			'gdpr'          => '🍪',
-			'ticker'        => '🔄',
-			'click_to_call' => '📞',
-			'countdown'     => '⏱',
-			'email_capture' => '📧',
-			'coupon_copy'   => '🎟',
+			'standard'      => 'announcement',
+			'gdpr'          => 'cookie',
+			'ticker'        => 'carousel',
+			'click_to_call' => 'phone',
+			'countdown'     => 'clock',
+			'email_capture' => 'mail',
+			'coupon_copy'   => 'ticket',
 		);
-		$np_type_icon = isset( $np_type_labels[ $bar->bar_type ] ) ? $np_type_labels[ $bar->bar_type ] : '📢';
+		$np_type_icon = isset( $np_type_labels[ $bar->bar_type ] ) ? $np_type_labels[ $bar->bar_type ] : 'announcement';
 
 		// Check if gradient is active.
 		$np_meta = $bar->bar_meta ? json_decode( $bar->bar_meta, true ) : array();
@@ -161,7 +176,7 @@ $np_total_ctr = $np_total_impressions > 0
 
 		<!-- Preview strip -->
 		<div class="np2-bar-card__preview" style="background:<?php echo esc_attr( $np_preview_bg ); ?>">
-			<span class="np2-bar-card__type-icon"><?php echo esc_html( $np_type_icon ); ?></span>
+			<span class="np2-bar-card__type-icon" style="color:<?php echo esc_attr( $np_fg ); ?>"><?php NoticePulse_Admin::svg( $np_type_icon, 18 ); ?></span>
 			<span class="np2-bar-card__preview-msg" style="color:<?php echo esc_attr( $np_fg ); ?>">
 				<?php echo esc_html( wp_trim_words( wp_strip_all_tags( $bar->message ), 10 ) ); ?>
 			</span>
@@ -181,6 +196,7 @@ $np_total_ctr = $np_total_impressions > 0
 				</a>
 				<a href="<?php echo esc_url( $np_toggle_url ); ?>"
 					class="np2-toggle-switch <?php echo esc_attr( $bar->is_active ? 'np2-toggle-switch--on' : '' ); ?>"
+					data-bar-id="<?php echo esc_attr( $np_bid ); ?>"
 					title="<?php echo $bar->is_active ? esc_attr__( 'Deactivate', 'noticepulse' ) : esc_attr__( 'Activate', 'noticepulse' ); ?>">
 					<span class="np2-toggle-switch__knob"></span>
 				</a>
@@ -239,5 +255,7 @@ $np_total_ctr = $np_total_impressions > 0
 
 </div><!-- /.np2-bars-grid -->
 <?php endif; ?>
+
+<?php NoticePulse_Admin::support_section(); ?>
 
 </div><!-- /.np-wrap -->

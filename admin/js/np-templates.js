@@ -214,17 +214,43 @@
 		setColor( 'text_color',    fields.text_color    );
 		setColor( 'btn_bg_color',  fields.btn_bg_color  );
 		setColor( 'btn_txt_color', fields.btn_txt_color );
+		setColor( 'close_color',   fields.close_color   );
 
 		// ── 4. Design options (if present in template) ────────────────────────
 		setSelectField( 'select[name="btn_radius"]',  fields.btn_radius  );
 		setSelectField( 'select[name="bar_padding"]', fields.bar_padding );
 		setSelectField( 'select[name="font_size"]',   fields.font_size   );
+		setRadioByName( 'text_align', fields.text_align );
+		setRadioByName( 'position',   fields.position   );
+
+		// ── 4b. Gradient background (bar_meta.gradient) ───────────────────────
+		if ( barMeta.gradient ) {
+			setCheckbox( '#np-gradient-toggle', barMeta.gradient.enabled );
+			setColor( 'gradient_color1', barMeta.gradient.color1 );
+			setColor( 'gradient_color2', barMeta.gradient.color2 );
+			setRadioByName( 'gradient_type', barMeta.gradient.type );
+			setField( 'input[name="gradient_angle"]', barMeta.gradient.angle );
+		}
+
+		// ── 4c. Elements — per-element visibility (fields.elements) ───────────
+		if ( fields.elements ) {
+			var el = fields.elements;
+			if ( el.icon ) {
+				setCheckbox( '#np-el-icon', el.icon.enabled );
+				setField( '#np-el-icon-val', el.icon.value );
+			}
+			if ( el.message ) { setCheckbox( 'input[name="element_message_enabled"]', el.message.enabled ); }
+			if ( el.cta )     { setCheckbox( 'input[name="element_cta_enabled"]',     el.cta.enabled ); }
+			if ( el.decline ) { setCheckbox( 'input[name="element_decline_enabled"]', el.decline.enabled ); }
+		}
 
 		// ── 5. GDPR bar_meta fields ───────────────────────────────────────────
 		if ( barMeta.gdpr ) {
 			setField( 'input[name="gdpr_accept_label"]',  barMeta.gdpr.accept_label  );
 			setField( 'input[name="gdpr_decline_label"]', barMeta.gdpr.decline_label );
 			setField( 'input[name="gdpr_policy_label"]',  barMeta.gdpr.policy_label  );
+			setField( 'input[name="gdpr_policy_url"]',    barMeta.gdpr.policy_url    );
+			setField( 'input[name="gdpr_cookie_name"]',   barMeta.gdpr.cookie_name   );
 			setField( 'input[name="gdpr_cookie_days"]',   barMeta.gdpr.cookie_days   );
 		}
 
@@ -265,8 +291,13 @@
 				'#np-ticker-json',
 				barMeta.ticker.messages
 			);
-			setSelectField( 'input[name="ticker_speed"]',      barMeta.ticker.speed      );
-			setSelectField( 'input[name="ticker_transition"]', barMeta.ticker.transition  );
+			// FIX: speed is a NUMBER input and transition is a RADIO group —
+			// the old setSelectField() silently failed on both.
+			setField( 'input[name="ticker_speed"]',      barMeta.ticker.speed );
+			setRadioByName( 'ticker_transition',         barMeta.ticker.transition );
+			setCheckbox( 'input[name="ticker_pause_hover"]', barMeta.ticker.pause_hover );
+			setCheckbox( 'input[name="ticker_show_arrows"]', barMeta.ticker.show_arrows );
+			setCheckbox( 'input[name="ticker_show_dots"]',   barMeta.ticker.show_dots );
 		}
 
 		// ── 11. Switch to Content tab so user sees the pre-filled fields ──────
@@ -290,7 +321,21 @@
 		if ( value === undefined || value === null ) { return; }
 		var $el = $( selector );
 		if ( ! $el.length ) { return; }
-		$el.val( value ).trigger( 'input' ).trigger( 'change' );
+		$el.val( value );
+		fireNative( $el, [ 'input', 'change' ] );
+	}
+
+	/**
+	 * Dispatch NATIVE DOM events so BOTH jQuery (.on) and native
+	 * addEventListener() handlers fire. jQuery's own .trigger() does NOT reach
+	 * native listeners — which is why toggles wired with initToggle()
+	 * (gradient fields, icon value field) stayed hidden after a template apply.
+	 */
+	function fireNative( $el, types ) {
+		$el.each( function () {
+			var node = this;
+			types.forEach( function ( t ) { node.dispatchEvent( new Event( t, { bubbles: true } ) ); } );
+		} );
 	}
 
 	/**
@@ -305,6 +350,28 @@
 		if ( $el.find( 'option[value="' + value + '"]' ).length ) {
 			$el.val( value ).trigger( 'change' );
 		}
+	}
+
+	/**
+	 * Check / uncheck a checkbox. Skipped when the value is undefined so a
+	 * template that omits a flag leaves the current state untouched.
+	 */
+	function setCheckbox( selector, on ) {
+		if ( on === undefined || on === null ) { return; }
+		var $el = $( selector );
+		if ( ! $el.length ) { return; }
+		$el.prop( 'checked', !! Number( on ) || true === on );
+		fireNative( $el, [ 'change' ] );
+	}
+
+	/**
+	 * Select a radio button by its name + value, then fire change so any
+	 * dependent UI (and the live preview) updates.
+	 */
+	function setRadioByName( name, value ) {
+		if ( value === undefined || value === null || '' === value ) { return; }
+		var $el = $( '#np-bar-form [name="' + name + '"][value="' + value + '"]' );
+		if ( $el.length ) { $el.prop( 'checked', true ); fireNative( $el, [ 'change' ] ); }
 	}
 
 	/**
@@ -332,7 +399,7 @@
 			// Picker not yet initialised — raw value will be read on focus.
 		}
 
-		$input.trigger( 'change' );
+		fireNative( $input, [ 'change' ] );
 	}
 
 	/**

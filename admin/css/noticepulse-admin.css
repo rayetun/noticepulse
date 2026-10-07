@@ -1319,3 +1319,84 @@ h1.np-edit-title {
 .np-check-item { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--np-text); cursor:pointer; }
 .np-check-item input[type="checkbox"] { margin:0; cursor:pointer; }
 .np-check-item input[disabled] { opacity:0.45; cursor:not-allowed; }
+
+/* ── Elements (per-element show/hide) ───────────────────────────────────── */
+.np-elements-list { display:flex; flex-direction:column; gap:12px; margin-bottom:6px; }
+.np-element-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.np-el-icon-input { width:72px; text-align:center; font-size:18px; line-height:1.2; }
+
+/* ── Carousel message drag-to-reorder ───────────────────────────────────── */
+.np-ticker-drag { cursor:grab; user-select:none; }
+.np-ticker-drag:active { cursor:grabbing; }
+.np-ticker-item--dragging { opacity:.45; }
+
+/* ── Generic bottom-right toast (list page AJAX toggle) ─────────────────── */
+.np-toast {
+	position:fixed; bottom:28px; right:24px; z-index:100080;
+	padding:12px 18px; border-radius:10px; font-size:13px; font-weight:600;
+	max-width:360px; box-shadow:0 8px 32px rgba(0,0,0,.4);
+	opacity:0; transform:translateY(12px); transition:opacity .25s, transform .25s;
+	pointer-events:none;
+}
+.np-toast--visible { opacity:1; transform:translateY(0); }
+.np-toast--success { background:#0d3322; border:1px solid #22d3a5; color:#22d3a5; }
+.np-toast--error   { background:#3b0f0f; border:1px solid #f87171; color:#f87171; }
+
+/* ── SVG icon chrome (bar-type selector + tabs) ─────────────────────────── */
+.np-ico { display:block; }
+.np-type-btn__icon {
+	display:inline-flex; align-items:center; justify-content:center;
+	color:#8b8b9e; filter:none;
+}
+.np-type-btn:hover .np-type-btn__icon,
+.np-type-btn--active .np-type-btn__icon { color:var(--np-accent-light, #a78bfa); filter:none; }
+.np-tab-btn__icon { display:inline-flex; align-items:center; }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Support card — shared across All Bars, Analytics, Settings
+   ─────────────────────────────────────────────────────────────────────────── */
+.np-support {
+	margin: 28px 0 10px;
+	padding: 22px 26px;
+	display: flex;
+	align-items: center;
+	gap: 22px;
+	flex-wrap: wrap;
+	background: linear-gradient(135deg, rgba(124,58,237,.14), rgba(79,70,229,.05));
+	border: 1px solid rgba(124,58,237,.28);
+	border-radius: 16px;
+}
+.np-support__icon {
+	width: 52px; height: 52px; flex-shrink: 0;
+	display: flex; align-items: center; justify-content: center;
+	border-radius: 14px;
+	background: linear-gradient(135deg, #7c3aed, #4f46e5);
+	color: #fff;
+	box-shadow: 0 8px 20px rgba(124,58,237,.38);
+}
+.np-support__icon svg { width: 26px; height: 26px; }
+.np-support__text { flex: 1 1 320px; min-width: 240px; }
+.np-support__text h3 { margin: 0 0 5px; font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; }
+.np-support__text p  { margin: 0; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.55); max-width: 640px; }
+.np-support__actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.np-support__btn {
+	display: inline-flex; align-items: center; gap: 7px;
+	padding: 9px 16px; border-radius: 9px;
+	font-size: 13px; font-weight: 600; line-height: 1;
+	text-decoration: none !important; white-space: nowrap;
+	border: 1px solid transparent; cursor: pointer;
+	transition: var(--np-t, all .15s ease);
+}
+.np-support__btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.np-support__btn--review  { background: #f59e0b; color: #1a1205 !important; }
+.np-support__btn--review:hover  { background: #fbbf24; color: #1a1205 !important; }
+.np-support__btn--donate  { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: #fff !important; }
+.np-support__btn--donate:hover  { filter: brightness(1.09); color: #fff !important; }
+.np-support__btn--support { background: rgba(255,255,255,.05); color: rgba(255,255,255,.85) !important; border-color: rgba(255,255,255,.16); }
+.np-support__btn--support:hover { background: rgba(255,255,255,.1); color: #fff !important; }
+@media (max-width: 782px) {
+	.np-support { flex-direction: column; align-items: flex-start; gap: 16px; }
+	.np-support__text { flex: 0 0 auto; width: 100%; min-width: 0; }
+	.np-support__actions { width: 100%; }
+	.np-support__btn { flex: 1 1 auto; justify-content: center; }
+}

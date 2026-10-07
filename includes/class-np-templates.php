@@ -416,6 +416,183 @@ class NoticePulse_Templates {
 				),
 			),
 
+			// ── Premium set (2.2.0): gradients, leading icons, light/dark ──────
+
+			array(
+				'id'       => 'gradient-mega-sale',
+				'name'     => 'Mega Sale (Gradient)',
+				'category' => 'announcement',
+				'emoji'    => '🔥',
+				'preview'  => '🔥 Mega Sale — up to 60% off everything!',
+				'fields'   => array(
+					'bar_type'      => 'standard',
+					'message'       => 'Mega Sale is here — up to <strong>60% off</strong> everything!',
+					'cta_label'     => 'Shop the Sale',
+					'cta_url'       => '',
+					'bg_color'      => '#7c3aed',
+					'text_color'    => '#ffffff',
+					'btn_bg_color'  => '#ffffff',
+					'btn_txt_color' => '#7c3aed',
+					'btn_radius'    => 'pill',
+					'bar_padding'   => 'normal',
+					'font_size'     => 'medium',
+					'text_align'    => 'center',
+					'elements'      => array( 'icon' => array( 'enabled' => 1, 'value' => '🔥' ) ),
+					'bar_meta'      => array( 'gradient' => array(
+						'enabled' => 1, 'color1' => '#ec4899', 'color2' => '#8b5cf6', 'type' => 'linear', 'angle' => 135,
+					) ),
+				),
+			),
+
+			array(
+				'id'       => 'minimal-light',
+				'name'     => 'Minimal (Light)',
+				'category' => 'announcement',
+				'emoji'    => '◻️',
+				'preview'  => 'New collection now available.',
+				'fields'   => array(
+					'bar_type'      => 'standard',
+					'message'       => 'New collection now available.',
+					'cta_label'     => 'Browse',
+					'cta_url'       => '',
+					'bg_color'      => '#ffffff',
+					'text_color'    => '#111111',
+					'btn_bg_color'  => '#111111',
+					'btn_txt_color' => '#ffffff',
+					'close_color'   => '#111111',
+					'btn_radius'    => 'sharp',
+					'bar_padding'   => 'normal',
+					'font_size'     => 'medium',
+					'text_align'    => 'center',
+				),
+			),
+
+			array(
+				'id'       => 'minimal-dark',
+				'name'     => 'Minimal (Dark)',
+				'category' => 'announcement',
+				'emoji'    => '◼️',
+				'preview'  => 'New collection now available.',
+				'fields'   => array(
+					'bar_type'      => 'standard',
+					'message'       => 'New collection now available.',
+					'cta_label'     => 'Browse',
+					'cta_url'       => '',
+					'bg_color'      => '#0a0a0a',
+					'text_color'    => '#f5f5f5',
+					'btn_bg_color'  => '#f5f5f5',
+					'btn_txt_color' => '#0a0a0a',
+					'close_color'   => '#f5f5f5',
+					'btn_radius'    => 'sharp',
+					'bar_padding'   => 'normal',
+					'font_size'     => 'medium',
+					'text_align'    => 'center',
+				),
+			),
+
+			array(
+				'id'       => 'launch-countdown',
+				'name'     => 'Launch Countdown',
+				'category' => 'countdown',
+				'emoji'    => '🚀',
+				'preview'  => '🚀 Launching in: [timer]',
+				'fields'   => array(
+					'bar_type'      => 'countdown',
+					'message'       => 'Launching in:',
+					'bg_color'      => '#0ea5e9',
+					'text_color'    => '#ffffff',
+					'btn_bg_color'  => '#ffffff',
+					'btn_txt_color' => '#0369a1',
+					'btn_radius'    => 'pill',
+					'elements'      => array( 'icon' => array( 'enabled' => 1, 'value' => '🚀' ) ),
+					'bar_meta'      => array(
+						'gradient'  => array( 'enabled' => 1, 'color1' => '#06b6d4', 'color2' => '#3b82f6', 'type' => 'linear', 'angle' => 120 ),
+						'countdown' => array(
+							'label_days' => 'Days', 'label_hours' => 'Hrs', 'label_mins' => 'Min', 'label_secs' => 'Sec',
+							'show_hours' => 1, 'show_mins' => 1, 'show_seconds' => 1, 'hide_on_expire' => 1,
+						),
+					),
+				),
+			),
+
+			array(
+				'id'       => 'vip-email',
+				'name'     => 'VIP List',
+				'category' => 'email_capture',
+				'emoji'    => '⭐',
+				'preview'  => '⭐ Join the VIP list for early access',
+				'fields'   => array(
+					'bar_type'      => 'email_capture',
+					'message'       => 'Join the VIP list for early access & exclusive drops.',
+					'bg_color'      => '#0f172a',
+					'text_color'    => '#e2e8f0',
+					'elements'      => array( 'icon' => array( 'enabled' => 1, 'value' => '⭐' ) ),
+					'bar_meta'      => array( 'email' => array(
+						'placeholder' => 'you@example.com', 'btn_label' => 'Join VIP',
+						'success_msg' => '🎉 Welcome to the VIP list!', 'provider' => 'none',
+					) ),
+				),
+			),
+
+			array(
+				'id'       => 'holiday-coupon',
+				'name'     => 'Holiday Gift',
+				'category' => 'coupon_copy',
+				'emoji'    => '🎁',
+				'preview'  => '🎁 Holiday gift: 25% off with HOLIDAY25',
+				'fields'   => array(
+					'bar_type'      => 'coupon_copy',
+					'message'       => 'Our holiday gift to you — <strong>25% off</strong> any order!',
+					'bg_color'      => '#e11d48',
+					'text_color'    => '#ffffff',
+					'elements'      => array( 'icon' => array( 'enabled' => 1, 'value' => '🎁' ) ),
+					'bar_meta'      => array(
+						'gradient' => array( 'enabled' => 1, 'color1' => '#f43f5e', 'color2' => '#f59e0b', 'type' => 'linear', 'angle' => 95 ),
+						'coupon'   => array( 'code' => 'HOLIDAY25', 'btn_label' => 'Copy Code', 'success_label' => '✓ Copied!' ),
+					),
+				),
+			),
+
+			array(
+				'id'       => 'gdpr-compact',
+				'name'     => 'GDPR Compact',
+				'category' => 'gdpr',
+				'emoji'    => '🍪',
+				'preview'  => 'We use cookies to enhance your experience.',
+				'fields'   => array(
+					'bar_type'      => 'gdpr',
+					'message'       => 'We use cookies to enhance your experience.',
+					'bg_color'      => '#1e293b',
+					'text_color'    => '#e2e8f0',
+					// One-button (Accept only) consent — the Decline button is hidden
+					// via the per-element toggle added in 2.2.0.
+					'elements'      => array( 'decline' => array( 'enabled' => 0 ) ),
+					'bar_meta'      => array( 'gdpr' => array(
+						'accept_label' => 'Got it', 'decline_label' => 'Decline',
+						'policy_label' => 'Learn more', 'cookie_days' => 365,
+					) ),
+				),
+			),
+
+			array(
+				'id'       => 'support-line',
+				'name'     => 'Support Line',
+				'category' => 'click_to_call',
+				'emoji'    => '☎️',
+				'preview'  => '☎️ Need help? Call our team',
+				'fields'   => array(
+					'bar_type'      => 'click_to_call',
+					'message'       => 'Need help? Our support team is one tap away.',
+					'bg_color'      => '#2563eb',
+					'text_color'    => '#ffffff',
+					'elements'      => array( 'icon' => array( 'enabled' => 1, 'value' => '☎️' ) ),
+					'bar_meta'      => array(
+						'gradient' => array( 'enabled' => 1, 'color1' => '#4f46e5', 'color2' => '#2563eb', 'type' => 'linear', 'angle' => 135 ),
+						'call'     => array( 'btn_label' => '☎️ Call Support', 'mobile_only' => 0 ),
+					),
+				),
+			),
+
 		);
 	}
 
@@ -432,6 +609,68 @@ class NoticePulse_Templates {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Derive the modal card's preview display from a template's REAL fields.
+	 *
+	 * This is the single source of truth: the card a user sees is computed from
+	 * the same data that applying the template injects, so preview === result.
+	 *
+	 * @param array $tpl A template from get_all_templates().
+	 * @return array { bg, text, btn, btn_text, message, cta, type }
+	 */
+	public static function get_card_preview( $tpl ) {
+		$f    = isset( $tpl['fields'] ) && is_array( $tpl['fields'] ) ? $tpl['fields'] : array();
+		$meta = isset( $f['bar_meta'] ) && is_array( $f['bar_meta'] ) ? $f['bar_meta'] : array();
+		$type = isset( $f['bar_type'] ) ? $f['bar_type'] : 'standard';
+
+		// Background — a gradient wins when enabled, else the solid colour.
+		$bg = isset( $f['bg_color'] ) ? $f['bg_color'] : '#1a73e8';
+		if ( ! empty( $meta['gradient']['enabled'] ) ) {
+			$g   = $meta['gradient'];
+			$c1  = isset( $g['color1'] ) ? $g['color1'] : '#7c3aed';
+			$c2  = isset( $g['color2'] ) ? $g['color2'] : '#4f46e5';
+			$bg  = ( isset( $g['type'] ) && 'radial' === $g['type'] )
+				? 'radial-gradient(circle, ' . $c1 . ', ' . $c2 . ')'
+				: 'linear-gradient(' . ( isset( $g['angle'] ) ? (int) $g['angle'] : 135 ) . 'deg, ' . $c1 . ', ' . $c2 . ')';
+		}
+
+		// CTA label shown on the card differs per bar type.
+		$cta = isset( $f['cta_label'] ) ? $f['cta_label'] : '';
+		switch ( $type ) {
+			case 'gdpr':
+				$cta = isset( $meta['gdpr']['accept_label'] ) ? $meta['gdpr']['accept_label'] : 'Accept All';
+				break;
+			case 'email_capture':
+				$cta = isset( $meta['email']['btn_label'] ) ? $meta['email']['btn_label'] : 'Subscribe';
+				break;
+			case 'coupon_copy':
+				$cta = isset( $meta['coupon']['code'] ) ? $meta['coupon']['code'] : 'SAVE20';
+				break;
+			case 'click_to_call':
+				$cta = isset( $meta['call']['btn_label'] ) ? $meta['call']['btn_label'] : '📞 Call Us';
+				break;
+			case 'ticker':
+				if ( ! empty( $meta['ticker']['messages'][0]['cta_label'] ) ) {
+					$cta = $meta['ticker']['messages'][0]['cta_label'];
+				}
+				break;
+		}
+
+		$message = ( isset( $tpl['preview'] ) && is_string( $tpl['preview'] ) )
+			? $tpl['preview']
+			: ( isset( $f['message'] ) ? $f['message'] : '' );
+
+		return array(
+			'bg'       => $bg,
+			'text'     => isset( $f['text_color'] ) ? $f['text_color'] : '#ffffff',
+			'btn'      => isset( $f['btn_bg_color'] ) ? $f['btn_bg_color'] : '#ffffff',
+			'btn_text' => isset( $f['btn_txt_color'] ) ? $f['btn_txt_color'] : '#1a73e8',
+			'message'  => $message,
+			'cta'      => $cta,
+			'type'     => $type,
+		);
 	}
 
 	// ─────────────────────────────────────────────────────────────────────────

@@ -84,6 +84,14 @@ $np_geo       = $np_meta['geo']       ?? array();
 $np_ga4       = $np_meta['ga4']       ?? array();
 $np_freq      = $np_meta['frequency'] ?? array();
 $np_anim      = $np_meta['animation'] ?? array();
+$np_elements  = $np_meta['elements']  ?? array();
+
+// Per-element visibility (backward-compatible: absence = current behaviour).
+$np_el_icon_on  = ! empty( $np_elements['icon']['enabled'] );
+$np_el_icon_val = $np_elements['icon']['value'] ?? '';
+$np_el_msg_on     = isset( $np_elements['message']['enabled'] ) ? (bool) $np_elements['message']['enabled'] : true;
+$np_el_cta_on     = isset( $np_elements['cta']['enabled'] )     ? (bool) $np_elements['cta']['enabled']     : true;
+$np_el_decline_on = isset( $np_elements['decline']['enabled'] ) ? (bool) $np_elements['decline']['enabled'] : true;
 
 // Message placeholders per bar type (used by JS)
 $np_msg_placeholders = array(
@@ -98,13 +106,13 @@ $np_msg_placeholders = array(
 
 // Bar type definitions
 $np_bar_types = array(
-	'standard'      => array( 'icon' => '📢', 'label' => 'Announcement' ),
-	'gdpr'          => array( 'icon' => '🍪', 'label' => 'Cookie / GDPR' ),
-	'ticker'        => array( 'icon' => '🎠', 'label' => 'Text Carousel' ),
-	'click_to_call' => array( 'icon' => '📞', 'label' => 'Click-to-Call' ),
-	'countdown'     => array( 'icon' => '⏱',  'label' => 'Countdown' ),
-	'email_capture' => array( 'icon' => '📧', 'label' => 'Email Capture' ),
-	'coupon_copy'   => array( 'icon' => '🎟', 'label' => 'Coupon Copy' ),
+	'standard'      => array( 'icon' => 'announcement', 'label' => 'Announcement' ),
+	'gdpr'          => array( 'icon' => 'cookie',       'label' => 'Cookie / GDPR' ),
+	'ticker'        => array( 'icon' => 'carousel',     'label' => 'Text Carousel' ),
+	'click_to_call' => array( 'icon' => 'phone',        'label' => 'Click-to-Call' ),
+	'countdown'     => array( 'icon' => 'clock',        'label' => 'Countdown' ),
+	'email_capture' => array( 'icon' => 'mail',         'label' => 'Email Capture' ),
+	'coupon_copy'   => array( 'icon' => 'ticket',       'label' => 'Coupon Copy' ),
 );
 ?>
 
@@ -143,7 +151,7 @@ $np_bar_types = array(
 				<?php foreach ( $np_bar_types as $np_tk => $np_tv ) : ?>
 				<label class="np-type-btn <?php echo esc_attr( $np_cur_type === $np_tk ? 'np-type-btn--active' : '' ); ?>" data-type="<?php echo esc_attr( $np_tk ); ?>">
 					<input type="radio" name="bar_type" value="<?php echo esc_attr( $np_tk ); ?>" <?php checked( $np_cur_type, $np_tk ); ?> class="np-type-radio">
-					<span class="np-type-btn__icon"><?php echo esc_html( $np_tv['icon']);?></span>
+					<span class="np-type-btn__icon"><?php NoticePulse_Admin::svg( $np_tv['icon'], 22 ); ?></span>
 					<span class="np-type-btn__label"><?php echo esc_html( $np_tv['label'] ); ?></span>
 				</label>
 				<?php endforeach; ?>
@@ -151,11 +159,11 @@ $np_bar_types = array(
 
 			<!-- ── TABS ─────────────────────────────────────────────────── -->
 			<div class="np-tabs" id="np-tabs">
-				<button type="button" class="np-tab-btn np-tab-btn--active" data-tab="content"><span class="np-tab-btn__icon">✏️</span><?php esc_html_e( 'Content', 'noticepulse' ); ?></button>
-				<button type="button" class="np-tab-btn" data-tab="design"><span class="np-tab-btn__icon">🎨</span><?php esc_html_e( 'Design', 'noticepulse' ); ?></button>
-				<button type="button" class="np-tab-btn" data-tab="display"><span class="np-tab-btn__icon">📐</span><?php esc_html_e( 'Display', 'noticepulse' ); ?></button>
-				<button type="button" class="np-tab-btn" data-tab="triggers"><span class="np-tab-btn__icon">⚡</span><?php esc_html_e( 'Triggers', 'noticepulse' ); ?></button>
-				<button type="button" class="np-tab-btn" data-tab="advanced"><span class="np-tab-btn__icon">🔬</span><?php esc_html_e( 'Advanced', 'noticepulse' ); ?></button>
+				<button type="button" class="np-tab-btn np-tab-btn--active" data-tab="content"><span class="np-tab-btn__icon"><?php NoticePulse_Admin::svg( 'edit', 17 ); ?></span><?php esc_html_e( 'Content', 'noticepulse' ); ?></button>
+				<button type="button" class="np-tab-btn" data-tab="design"><span class="np-tab-btn__icon"><?php NoticePulse_Admin::svg( 'palette', 17 ); ?></span><?php esc_html_e( 'Design', 'noticepulse' ); ?></button>
+				<button type="button" class="np-tab-btn" data-tab="display"><span class="np-tab-btn__icon"><?php NoticePulse_Admin::svg( 'layout', 17 ); ?></span><?php esc_html_e( 'Display', 'noticepulse' ); ?></button>
+				<button type="button" class="np-tab-btn" data-tab="triggers"><span class="np-tab-btn__icon"><?php NoticePulse_Admin::svg( 'zap', 17 ); ?></span><?php esc_html_e( 'Triggers', 'noticepulse' ); ?></button>
+				<button type="button" class="np-tab-btn" data-tab="advanced"><span class="np-tab-btn__icon"><?php NoticePulse_Admin::svg( 'sliders', 17 ); ?></span><?php esc_html_e( 'Advanced', 'noticepulse' ); ?></button>
 			</div>
 
 			<!-- ══════════════════════════════════════════════════════════ -->
@@ -428,6 +436,49 @@ $np_bar_types = array(
 					</div>
 				</div>
 
+				<!-- ─── ELEMENTS: per-element show / hide ──────────────────── -->
+				<div class="np-panel-section" id="np-elements-section">
+					<h3 class="np-section-title">🧩 <?php esc_html_e( 'Elements', 'noticepulse' ); ?></h3>
+					<p class="np-section-desc"><?php esc_html_e( 'Show or hide the parts of your bar.', 'noticepulse' ); ?></p>
+
+					<div class="np-elements-list">
+						<div class="np-element-row" data-el="icon">
+							<label class="np-toggle-switch-label">
+								<input type="checkbox" name="element_icon_enabled" value="1" id="np-el-icon" <?php checked( $np_el_icon_on, true ); ?>>
+								<span class="np-toggle-pill"></span>
+								<span><?php esc_html_e( 'Leading icon', 'noticepulse' ); ?></span>
+							</label>
+							<input type="text" name="element_icon_value" id="np-el-icon-val" class="np-el-icon-input" maxlength="8" placeholder="🎉" value="<?php echo esc_attr( $np_el_icon_val ); ?>" <?php echo $np_el_icon_on ? '' : 'style="display:none"'; ?>>
+						</div>
+
+						<div class="np-element-row" data-el="message">
+							<label class="np-toggle-switch-label">
+								<input type="checkbox" name="element_message_enabled" value="1" <?php checked( $np_el_msg_on, true ); ?>>
+								<span class="np-toggle-pill"></span>
+								<span><?php esc_html_e( 'Message text', 'noticepulse' ); ?></span>
+							</label>
+						</div>
+
+						<div class="np-element-row" data-el="cta">
+							<label class="np-toggle-switch-label">
+								<input type="checkbox" name="element_cta_enabled" value="1" <?php checked( $np_el_cta_on, true ); ?>>
+								<span class="np-toggle-pill"></span>
+								<span><?php esc_html_e( 'CTA button', 'noticepulse' ); ?></span>
+							</label>
+						</div>
+
+						<div class="np-element-row" data-el="decline">
+							<label class="np-toggle-switch-label">
+								<input type="checkbox" name="element_decline_enabled" value="1" <?php checked( $np_el_decline_on, true ); ?>>
+								<span class="np-toggle-pill"></span>
+								<span><?php esc_html_e( 'Decline button', 'noticepulse' ); ?></span>
+							</label>
+						</div>
+					</div>
+
+					<p class="np-field__desc"><?php esc_html_e( 'The close button is toggled in the Display tab. Countdown units and carousel arrows/dots have their own toggles above.', 'noticepulse' ); ?></p>
+				</div>
+
 			</div><!-- /#np-tab-content -->
 
 			<!-- ══════════════════════════════════════════════════════════ -->
@@ -630,20 +681,6 @@ $np_bar_types = array(
 				<?php endif; ?>
 			</div>
 
-			<div class="np-sidebar-card np-sidebar-card--preview">
-				<div class="np-sidebar-card__title"><?php esc_html_e('Live Preview','noticepulse');?> <span class="np-preview-position" id="np-preview-pos"><?php echo 'bottom'===$np_d['position']?'↓ Bottom':'↑ Top';?></span></div>
-				<div class="np-preview-shell">
-					<div id="np-live-preview" class="np-preview-bar">
-						<div class="np-preview-bar__content">
-							<span id="np-preview-message"><?php echo esc_html($np_d['message']?wp_strip_all_tags($np_d['message']):__('Your bar message appears here.','noticepulse'));?></span>
-							<span id="np-preview-cta" class="np-preview-bar__cta" <?php echo empty($np_d['cta_label'])?'style="display:none"':'';?>><?php echo esc_html($np_d['cta_label']);?></span>
-						</div>
-						<span class="np-preview-bar__close">×</span>
-					</div>
-				</div>
-				<p class="np-sidebar-card__desc"><?php esc_html_e('Updates as you type.','noticepulse');?></p>
-			</div>
-
 			<?php if ( ! $is_new ) :
 				$np_s   = NoticePulse_Analytics::get_bar_stats( $np_bar_id );
 				$np_si  = (int) $np_s['impressions'];
@@ -664,5 +701,29 @@ $np_bar_types = array(
 		</div><!-- /.np-edit-sidebar -->
 	</div><!-- /.np-edit-layout -->
 </form>
+
+<!-- ── FULL-WIDTH LIVE PREVIEW DOCK ───────────────────────────────────────── -->
+<div class="np-preview-dock" id="np-preview-dock">
+	<div class="np-preview-dock__bar">
+		<div class="np-preview-dock__title">
+			<span class="np-preview-dock__led"></span>
+			<?php esc_html_e( 'Live Preview', 'noticepulse' ); ?>
+			<span class="np-preview-dock__hint"><?php esc_html_e( 'Updates as you type', 'noticepulse' ); ?></span>
+		</div>
+		<div class="np-preview-dock__tools">
+			<span class="np-preview-devices">
+				<button type="button" class="np-preview-device np-preview-device--active" data-device="desktop" aria-label="<?php esc_attr_e( 'Desktop preview', 'noticepulse' ); ?>">🖥</button>
+				<button type="button" class="np-preview-device" data-device="mobile" aria-label="<?php esc_attr_e( 'Mobile preview', 'noticepulse' ); ?>">📱</button>
+			</span>
+			<button type="button" class="np-preview-dock__collapse" id="np-preview-collapse" aria-label="<?php esc_attr_e( 'Collapse preview', 'noticepulse' ); ?>" aria-expanded="true">
+				<span class="np-preview-dock__chev">▾</span>
+			</button>
+		</div>
+	</div>
+	<div class="np-preview-stage" id="np-preview-stage">
+		<iframe id="np-preview-frame" class="np-preview-frame" title="<?php esc_attr_e( 'Live bar preview', 'noticepulse' ); ?>"></iframe>
+	</div>
+</div>
+
 <?php include NOTICEPULSE_PLUGIN_DIR . 'admin/views/_templates-modal.php'; ?>
 </div><!-- /.np-wrap -->

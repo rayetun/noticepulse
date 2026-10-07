@@ -1,0 +1,198 @@
+/**
+ * NoticePulse — Live Preview dock (admin) styles.
+ *
+ * A full-width preview dock pinned to the bottom of the screen so the bar
+ * renders at realistic width and stays visible while editing. The bar itself
+ * is styled by the real public stylesheet loaded INSIDE the iframe — nothing
+ * here affects the bar's appearance, only its dock/frame.
+ *
+ * @package NoticePulse
+ * @since   2.2.0
+ */
+
+/* Fallback room so the fixed dock never hides the form / footer.
+   JS (syncDockSpace) refines this to the dock's exact height.
+   The dark background matches the plugin wrap so the reserved space below the
+   editor never reveals the light default WP admin background behind the dock. */
+#wpbody-content { padding-bottom: 150px; background: #0f0f13; }
+body.np-dock-collapsed #wpbody-content { padding-bottom: 60px; }
+
+/* Our padded content is taller than WP's admin-menu backdrop, so the light
+   default body colour peeks through in the menu column / corners at the very
+   bottom. Darken the body (editor screens only — this CSS loads only here). */
+body.wp-admin { background: #0f0f13; }
+
+/* ── Dock shell ─────────────────────────────────────────────────────────── */
+.np-preview-dock {
+	position: fixed;
+	left: 160px;              /* WP admin menu width */
+	right: 0;
+	bottom: 0;
+	z-index: 9990;
+	background: #14161d;
+	border-top: 1px solid rgba( 255, 255, 255, .09 );
+	box-shadow: 0 -10px 30px rgba( 0, 0, 0, .35 );
+	transition: left .2s ease;
+}
+
+/* Follow the collapsed (folded) admin menu + responsive overlay menu. */
+body.folded .np-preview-dock,
+body.auto-fold.folded .np-preview-dock { left: 36px; }
+
+@media ( max-width: 782px ) {
+	.np-preview-dock { left: 0; }
+}
+
+/* ── Header bar ─────────────────────────────────────────────────────────── */
+.np-preview-dock__bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	height: 46px;
+	padding: 0 18px;
+	box-sizing: border-box;
+}
+
+.np-preview-dock__title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: .4px;
+	text-transform: uppercase;
+	color: #e5e7eb;
+}
+
+.np-preview-dock__led {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #22c55e;
+	box-shadow: 0 0 0 0 rgba( 34, 197, 94, .5 );
+	animation: np-dock-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes np-dock-pulse {
+	0%, 100% { box-shadow: 0 0 0 0 rgba( 34, 197, 94, .45 ); }
+	50%      { box-shadow: 0 0 0 5px rgba( 34, 197, 94, 0 ); }
+}
+
+.np-preview-dock__pos {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .2px;
+	text-transform: none;
+	color: #a5b4fc;
+	background: rgba( 124, 92, 252, .16 );
+	padding: 2px 9px;
+	border-radius: 20px;
+}
+
+.np-preview-dock__hint {
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: .2px;
+	text-transform: none;
+	color: #6b7280;
+}
+
+@media ( max-width: 600px ) { .np-preview-dock__hint { display: none; } }
+
+.np-preview-dock__tools {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+/* ── Device toggle ─────────────────────────────────────────────────────── */
+.np-preview-devices {
+	display: inline-flex;
+	gap: 3px;
+	background: rgba( 255, 255, 255, .07 );
+	padding: 3px;
+	border-radius: 8px;
+}
+
+.np-preview-device {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 24px;
+	border: 0;
+	background: transparent;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 13px;
+	line-height: 1;
+	opacity: .55;
+	transition: background .15s, opacity .15s;
+}
+
+.np-preview-device:hover { opacity: .9; }
+
+.np-preview-device--active {
+	background: rgba( 124, 92, 252, .9 );
+	opacity: 1;
+}
+
+/* ── Collapse button ───────────────────────────────────────────────────── */
+.np-preview-dock__collapse {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 24px;
+	border: 0;
+	background: rgba( 255, 255, 255, .07 );
+	border-radius: 6px;
+	cursor: pointer;
+	color: #cbd5e1;
+	transition: background .15s;
+}
+
+.np-preview-dock__collapse:hover { background: rgba( 255, 255, 255, .14 ); }
+
+.np-preview-dock__chev {
+	display: inline-block;
+	font-size: 12px;
+	line-height: 1;
+	transition: transform .2s ease;
+}
+
+.np-preview-dock--collapsed .np-preview-dock__chev { transform: rotate( 180deg ); }
+
+/* ── Stage + frame ─────────────────────────────────────────────────────── */
+.np-preview-stage {
+	background: #eef1f5;
+	overflow: hidden;
+	transition: height .2s ease;
+}
+
+.np-preview-dock--collapsed .np-preview-stage {
+	height: 0 !important;
+}
+
+.np-preview-frame {
+	display: block;
+	width: 100%;
+	height: 64px;   /* default; np-live-preview.js sizes it to the bar */
+	border: 0;
+	background: #eef1f5;
+}
+
+/* Mobile device: narrow, centered frame on a dark "desk" that matches the dock. */
+.np-preview-stage--mobile {
+	background: #14161d;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 0;
+}
+
+.np-preview-stage--mobile .np-preview-frame {
+	width: 390px;
+	max-width: 100%;
+}

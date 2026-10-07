@@ -3,9 +3,9 @@ Contributors:      rayetun
 Donate link:       https://wise.com/pay/me/mdrayhanu2
 Tags:              notification bar, announcement bar, cookie notice, countdown timer, header bar
 Requires at least: 6.2
-Tested up to:      7.0
+Tested up to:      7.1
 Requires PHP:      7.4
-Stable tag:        2.1.5
+Stable tag:        2.2.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,9 +46,9 @@ Show a phone number with a tap-to-call button for mobile visitors. Works with te
 
 ---
 
-= 🎨 17 Pre-Built Templates — Launch in Seconds =
+= 🎨 25 Pre-Built Templates — Launch in Seconds =
 
-NoticePulse includes **17 professionally designed templates** organized by bar type. One click applies the full design — colors, message, CTA, and settings pre-filled. Customize to your brand and publish.
+NoticePulse includes **25 professionally designed templates** organized by bar type, including gradient, light, and dark designs. One click applies the full design — colors, message, CTA, and settings pre-filled. A WYSIWYG preview shows exactly what you will get. Customize to your brand and publish.
 
 **Announcement:** Free Shipping, Black Friday, Summer Sale, New Arrival, Flash Sale
 **GDPR:** GDPR Minimal, GDPR Friendly
@@ -118,8 +118,10 @@ NoticePulse includes **17 professionally designed templates** organized by bar t
 
 **Admin & Tools**
 * Dark-themed, distraction-free admin interface
-* Live preview sidebar — updates in real time as you design
-* Template library with 14 pre-built designs and instant one-click apply
+* WYSIWYG live preview dock — renders the real bar with a desktop/mobile toggle, updating in real time as you design
+* Per-element show/hide controls — toggle the icon, message, CTA, and decline button per bar
+* No-reload editing — bars save over AJAX with no page refresh
+* Template library with 25 pre-built designs and instant one-click apply
 * Export all bars as a JSON backup
 * Import bars from a JSON file — existing bars are always preserved
 * Danger Zone — delete all data with a single confirmed click
@@ -251,7 +253,7 @@ Privacy Policy: https://www.brevo.com/legal/privacypolicy/
 
 = Is NoticePulse completely free? =
 
-Yes. Every feature — all 7 bar types, unlimited bars, analytics, 14 templates, email integrations, A/B testing, geo-targeting, and exit intent — is completely free. There is no paid version.
+Yes. Every feature — all 7 bar types, unlimited bars, analytics, 25 templates, email integrations, A/B testing, geo-targeting, and exit intent — is completely free. There is no paid version.
 
 = How many notification bars can I have? =
 
@@ -333,6 +335,21 @@ https://rayetun.com
 
 == Changelog ==
 
+= 2.2.0 =
+* New: True WYSIWYG live preview — a full-width preview dock at the bottom of the editor renders the actual bar as visitors will see it, with a desktop/mobile device toggle. Updates instantly as you type, with no page reload.
+* New: Per-element show/hide controls — toggle the leading icon, message text, CTA button, and GDPR decline button on or off per bar. Controls appear only for the elements a bar type actually supports.
+* New: Leading icon element with a choice of modern line icons.
+* New: 8 premium templates (25 total), including gradient, light, and dark designs. The template library and preview cards now render from a single source of truth, so previews always match what you get.
+* New: No-reload saving — bars save over AJAX with an inline toast, and enabling/disabling a bar on the All Bars screen no longer reloads the page.
+* New: Distraction-free dashboard — third-party admin notices are hidden on NoticePulse screens so they no longer hijack the editor.
+* New: Refreshed brand icon and banner.
+* Fix: All bar types are now fully responsive on mobile — no overflow or clipped buttons on small screens (existing bars included).
+* Fix: Button Style (Sharp / Rounded / Pill) now applies to every bar type's button, not just the Announcement bar.
+* Fix: Carousel template speed and transition settings now apply correctly when a template is loaded.
+* Fix: Template fields (gradient, carousel, etc.) now reveal correctly when a template is applied.
+* Tested up to WordPress 7.1.
+* All existing bars and settings are preserved — this is a non-breaking update with no database changes.
+
 = 2.1.5 =
 * New: Countdown timer Display Units option — show or hide Hours, Minutes,
   and Seconds independently. Days is always shown.
@@ -375,6 +392,9 @@ https://rayetun.com
 ---
 
 == Upgrade Notice ==
+
+= 2.2.0 =
+Premium editor rebuild — WYSIWYG live preview, per-element show/hide controls, no-reload saving, 25 templates, and fully responsive bars. All existing bars preserved, no database changes. Safe to update.
 
 = 2.1.3 =
 Security and compliance update. Fully aligned with WordPress.org coding standards. Safe to update — no breaking changes, no database modifications.
