@@ -1,7 +1,7 @@
 === NoticePulse — Notification Bar, Announcement Bar & Cookie Notice ===
 Contributors:      rayetun
 Donate link:       https://wise.com/pay/me/mdrayhanu2
-Tags:              notification bar, announcement bar, cookie notice, countdown timer, free shipping bar
+Tags:              notification bar, announcement bar, cookie notice, promo bar, free shipping bar
 Requires at least: 6.2
 Tested up to:      7.1
 Requires PHP:      7.4
@@ -161,13 +161,14 @@ NoticePulse includes **30+ professionally designed templates** organized by bar 
 
 = 🌐 Who Uses NoticePulse? =
 
-* **eCommerce stores** — free shipping announcements, flash sale countdowns, coupon codes
-* **Agencies** — GDPR cookie consent bars for client sites
-* **SaaS companies** — product launch announcements, feature update banners
-* **Bloggers & media** — newsletter signups, breaking news carousels
+* **WooCommerce stores** — live free-shipping progress bars ("You're $20 away from FREE shipping!"), flash-sale countdowns, auto-copy coupon codes
+* **Agencies** — cookie notice bars and promo bars for client sites
+* **SaaS companies** — product launch announcements, feature update banners, scrolling release notes
+* **Bloggers & media** — newsletter signups, scrolling news tickers, breaking-news carousels
 * **Restaurants & local businesses** — click-to-call bars for mobile visitors
 * **Event organizers** — ticket sale countdowns, registration deadline timers
 * **Email marketers** — inline capture bars synced to Mailchimp, Klaviyo, and more
+* **Deal & affiliate sites** — scrolling marquee strips of rotating offers and promo bars
 
 ---
 
@@ -177,12 +178,12 @@ NoticePulse optionally connects to external services for specific features. Each
 
 ---
 
-**ipapi.co — Geo-Targeting Country Detection**
+**ipapi.co — Geo-Targeting Country Detection (optional fallback, off by default)**
 
-Used when a bar has Geo-Targeting enabled. The visitor's IP address is sent to ipapi.co to determine their two-letter country code (e.g. "US", "DE"). The result is cached server-side for one hour — no repeat API calls are made for the same IP within that window. If no active bar has geo-targeting enabled, no request is ever made.
+Geo-targeting detects the visitor's country from your server/CDN request headers (e.g. Cloudflare) first, which sends no data anywhere. ipapi.co is only used as a fallback, and only if you turn it on under Settings → Privacy & Geo-Targeting. When enabled, the visitor's IP address is sent to ipapi.co to determine their two-letter country code (e.g. "US", "DE"), cached server-side for one hour. With the fallback off (the default), or when a country header is present, no request is ever made. No request is made if no active bar has geo-targeting enabled.
 
-Data sent: visitor IP address.
-Sent when: a page loads containing an active bar with geo-targeting configured.
+Data sent: visitor IP address (only when the fallback is enabled and no country header is available).
+Sent when: a page loads containing an active bar with geo-targeting configured, the ipapi.co fallback is enabled, and no CDN/host country header is present.
 Service URL: https://ipapi.co
 Terms of Service: https://ipapi.co/terms/
 Privacy Policy: https://ipapi.co/privacy/
