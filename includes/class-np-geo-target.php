@@ -2,11 +2,11 @@
 /**
  * NoticePulse — Geo-Targeting.
  *
- * Filters active bars by visitor country using a lightweight
- * server-side IP lookup. No external API dependency — uses
- * WordPress's own ip-geolocation mechanism if available,
- * otherwise falls back to a free ipapi.co request cached in
- * a transient (1-hour TTL per IP).
+ * Filters active bars by visitor country. Country is read from
+ * request headers set by Cloudflare / CDNs / the host first (no
+ * external call); an optional ipapi.co fallback (off by default,
+ * cached in a transient) can be enabled for hosts that don't set
+ * a country header.
  *
  * Bar is removed from the active list before it is rendered,
  * so no flicker occurs on the frontend.
@@ -102,11 +102,26 @@ class NoticePulse_Geo_Target {
 
 	/**
 	 * Get the current visitor's 2-letter ISO country code.
-	 * Result is cached in a transient for 1 hour per IP.
+	 *
+	 * Resolution order:
+	 *   1. Request headers set by Cloudflare / CDNs / the host (no external call).
+	 *   2. ipapi.co lookup — only if the admin opted in (off by default). This
+	 *      preserves pre-2.3.0 behavior for installs that were already using geo.
 	 *
 	 * @return string  2-letter code (e.g. 'US') or empty string.
 	 */
 	private function get_visitor_country() {
+		// 1. Header-based country (privacy-friendly, no third-party request).
+		$header_country = $this->get_country_from_headers();
+		if ( '' !== $header_country ) {
+			return $header_country;
+		}
+
+		// 2. Optional ipapi.co fallback (disabled by default).
+		if ( ! get_option( 'noticepulse_geo_ipapi_fallback' ) ) {
+			return '';
+		}
+
 		$ip = $this->get_visitor_ip();
 		if ( empty( $ip ) ) { return ''; }
 
@@ -140,6 +155,37 @@ class NoticePulse_Geo_Target {
 		set_transient( $cache_key, $country, HOUR_IN_SECONDS );
 
 		return $country;
+	}
+
+	/**
+	 * Read a 2-letter country code from common CDN / host request headers.
+	 * No external request. Returns '' when no usable code is present.
+	 *
+	 * @return string
+	 */
+	private function get_country_from_headers() {
+		$headers = array(
+			'HTTP_CF_IPCOUNTRY',             // Cloudflare
+			'HTTP_CLOUDFRONT_VIEWER_COUNTRY', // AWS CloudFront
+			'HTTP_X_COUNTRY_CODE',           // some hosts / load balancers
+			'HTTP_GEOIP_COUNTRY_CODE',       // nginx/Apache GeoIP module
+			'HTTP_X_GEO_COUNTRY',
+		);
+
+		foreach ( $headers as $header ) {
+			if ( empty( $_SERVER[ $header ] ) ) {
+				continue;
+			}
+			$code = strtoupper(
+				substr( sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) ), 0, 2 )
+			);
+			// Cloudflare uses XX (unknown) and T1 (Tor) — treat as no match.
+			if ( preg_match( '/^[A-Z]{2}$/', $code ) && ! in_array( $code, array( 'XX', 'T1' ), true ) ) {
+				return $code;
+			}
+		}
+
+		return '';
 	}
 
 	/**

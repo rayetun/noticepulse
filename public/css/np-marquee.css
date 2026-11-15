@@ -1,0 +1,75 @@
+/**
+ * NoticePulse — Marquee / News Ticker styles.
+ *
+ * Loaded only when a marquee bar is active. The JS builds the track; this file
+ * provides the clipping viewport and the scroll keyframe.
+ *
+ * @since 2.3.0
+ */
+
+/* Full-bleed: the marquee should scroll across the entire bar width, so drop
+   the centered max-width/padding the core applies to the inner + content. */
+.np-marquee-bar .np-bar__inner {
+	max-width: none;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+/* The content node normally centers children with flex; for a marquee it must
+   become a full-width clipping viewport the track can overflow. */
+.np-marquee-bar .np-bar__content {
+	display: block;
+	width: 100%;
+	max-width: none;
+	min-width: 0;
+	overflow: hidden;
+}
+
+/* Keep the scrolling text clear of the (absolutely-positioned) close button
+   on the right, in browsers that support :has(). */
+.np-marquee-bar .np-bar__inner:has( .np-bar__close ) .np-marquee {
+	padding-right: 44px;
+}
+
+.np-marquee {
+	width: 100%;
+	overflow: hidden;
+}
+
+.np-marquee__track {
+	display: inline-flex;
+	flex-wrap: nowrap;
+	white-space: nowrap;
+	will-change: transform;
+	animation-name: np-marquee-x;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+.np-marquee__item {
+	display: inline-block;
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+@keyframes np-marquee-x {
+	from { transform: translateX( 0 ); }
+	to   { transform: translateX( var( --np-mq-shift, -100% ) ); }
+}
+
+/* Pause while the pointer is over the bar (opt-in via the pause-hover class). */
+.np-marquee--pause-hover:hover .np-marquee__track {
+	animation-play-state: paused;
+}
+
+/* Reduced motion: no scroll, let the single message wrap/read normally. */
+.np-marquee-bar--static .np-bar__message {
+	white-space: normal;
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.np-marquee__track {
+		animation: none;
+		transform: none;
+	}
+}

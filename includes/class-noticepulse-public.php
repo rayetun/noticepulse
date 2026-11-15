@@ -306,11 +306,18 @@ class NoticePulse_Public {
 					$np_el     = NoticePulse_DB::get_meta( $bar, 'elements' );
 					$np_icon   = ! empty( $np_el['icon']['enabled'] ) && '' !== ( $np_el['icon']['value'] ?? '' );
 					$np_msg_on = isset( $np_el['message']['enabled'] ) ? (bool) $np_el['message']['enabled'] : true;
-					if ( 'ticker' === $np_type ) { $np_msg_on = true; } // the carousel needs the message node to exist.
+					if ( 'ticker' === $np_type || 'marquee' === $np_type ) { $np_msg_on = true; } // carousel/marquee need the message node to exist.
 					$np_cta_on = isset( $np_el['cta']['enabled'] ) ? (bool) $np_el['cta']['enabled'] : true;
+
+					// A feature module may fully own the markup for its own bar type.
+					// Default false → core renders the standard icon/message/CTA below.
+					$np_custom = apply_filters( 'noticepulse_render_bar_type', false, $np_type, $bar );
 					?>
+					<?php if ( false !== $np_custom ) : ?>
+						<?php echo wp_kses_post( $np_custom ); ?>
+					<?php else : ?>
 					<?php if ( $np_icon ) : ?><span class="np-bar__icon"><?php echo esc_html( $np_el['icon']['value'] ); ?></span><?php endif; ?>
-					<?php if ( $np_msg_on ) : ?><span class="np-bar__message"><?php echo wp_kses( $bar->message, $this->allowed_message_tags() ); ?></span><?php endif; ?>
+					<?php if ( $np_msg_on ) : ?><span class="np-bar__message"><?php echo wp_kses( apply_filters( 'noticepulse_bar_message', $bar->message, $bar ), $this->allowed_message_tags() ); ?></span><?php endif; ?>
 					<?php if ( ! empty( $bar->cta_label ) && $np_cta_on ) : // label alone is enough; URL is optional ?>
 						<a class="np-bar__cta"
 							href="<?php echo ! empty( $bar->cta_url ) ? esc_url( $bar->cta_url ) : '#'; ?>"
@@ -321,6 +328,7 @@ class NoticePulse_Public {
 							aria-label="<?php echo esc_attr( $bar->cta_label ); ?>"
 						><?php echo esc_html( $bar->cta_label ); ?></a>
 					<?php endif; ?>
+					<?php endif; // noticepulse_render_bar_type ?>
 				</div>
 
 				<?php if ( $bar->show_close ) : ?>

@@ -71,6 +71,8 @@ $np_cur_type   = $np_d['bar_type'];
 // bar_meta sub-arrays
 $np_gdpr      = $np_meta['gdpr']      ?? array();
 $np_ticker    = $np_meta['ticker']    ?? array();
+$np_marquee   = $np_meta['marquee']   ?? array();
+$np_woo       = $np_meta['woo']       ?? array();
 $np_call      = $np_meta['call']      ?? array();
 $np_countdown = $np_meta['countdown'] ?? array();
 $np_email     = $np_meta['email']     ?? array();
@@ -98,10 +100,12 @@ $np_msg_placeholders = array(
 	'standard'      => '🎉 Free shipping on all orders today!',
 	'gdpr'          => 'We use cookies to improve your experience. Accept to continue.',
 	'ticker'        => 'Shown in the preview — your carousel messages appear here.',
+	'marquee'       => '🚚 Free shipping on all orders · 🎉 20% off this week · 📞 Call us anytime',
 	'click_to_call' => 'Get a free quote today! Call us now.',
 	'countdown'     => '⏳ Sale ends in:',
 	'email_capture' => '📧 Get 10% off — join our newsletter!',
 	'coupon_copy'   => '🎟 Use code below for 20% off your order!',
+	'woo_free_shipping' => "You're {free_shipping_left} away from FREE shipping! 🚚",
 );
 
 // Bar type definitions
@@ -109,11 +113,17 @@ $np_bar_types = array(
 	'standard'      => array( 'icon' => 'announcement', 'label' => 'Announcement' ),
 	'gdpr'          => array( 'icon' => 'cookie',       'label' => 'Cookie / GDPR' ),
 	'ticker'        => array( 'icon' => 'carousel',     'label' => 'Text Carousel' ),
+	'marquee'       => array( 'icon' => 'marquee',      'label' => 'Marquee' ),
 	'click_to_call' => array( 'icon' => 'phone',        'label' => 'Click-to-Call' ),
 	'countdown'     => array( 'icon' => 'clock',        'label' => 'Countdown' ),
 	'email_capture' => array( 'icon' => 'mail',         'label' => 'Email Capture' ),
 	'coupon_copy'   => array( 'icon' => 'ticket',       'label' => 'Coupon Copy' ),
 );
+
+// WooCommerce-only bar types (the type card is hidden when Woo is inactive).
+if ( class_exists( 'WooCommerce' ) ) {
+	$np_bar_types['woo_free_shipping'] = array( 'icon' => 'truck', 'label' => 'Free Shipping' );
+}
 ?>
 
 <div class="wrap np-wrap np-wrap--edit np-wrap--v2">
@@ -190,10 +200,12 @@ $np_bar_types = array(
 								'standard'      => __( 'Message', 'noticepulse' ),
 								'gdpr'          => __( 'Cookie Notice Message', 'noticepulse' ),
 								'ticker'        => __( 'Fallback Message (shown if JS disabled)', 'noticepulse' ),
+								'marquee'       => __( 'Scrolling Message', 'noticepulse' ),
 								'click_to_call' => __( 'Headline Message', 'noticepulse' ),
 								'countdown'     => __( 'Bar Message', 'noticepulse' ),
 								'email_capture' => __( 'Headline Message', 'noticepulse' ),
 								'coupon_copy'   => __( 'Bar Message', 'noticepulse' ),
+								'woo_free_shipping' => __( 'Progress Message', 'noticepulse' ),
 							);
 							echo esc_html( $np_msg_labels[ $np_cur_type ] ?? __( 'Message', 'noticepulse' ) );
 							?> <span class="np-required">*</span>
@@ -206,6 +218,10 @@ $np_bar_types = array(
 								esc_html_e( 'Accept & Decline buttons are added automatically below this message.', 'noticepulse' );
 							} elseif ( 'ticker' === $np_cur_type ) {
 								esc_html_e( 'Add your rotating messages below. This text is shown only if JS is disabled.', 'noticepulse' );
+							} elseif ( 'marquee' === $np_cur_type ) {
+								esc_html_e( 'This message scrolls continuously across the bar. Separate items with a · or | if you like. Supports: <strong>, <em>, <a>. Emoji ✓', 'noticepulse' );
+							} elseif ( 'woo_free_shipping' === $np_cur_type ) {
+								echo wp_kses( __( 'Use tokens: <code>{free_shipping_left}</code>, <code>{free_shipping_goal}</code>, <code>{cart_total}</code>. They update live as the cart changes.', 'noticepulse' ), array( 'code' => array() ) );
 							} else {
 								esc_html_e( 'Supports: <strong>, <em>, <a>, <br>. Emoji ✓', 'noticepulse' );
 							}
@@ -315,8 +331,51 @@ $np_bar_types = array(
 					</div>
 				</div>
 
-				<!-- ─── CLICK-TO-CALL: Phone fields ───────────────────── -->
-				<div class="np-panel-section np-bt-section" data-show-for="click_to_call">
+					<!-- MARQUEE: Scroll settings -->
+					<div class="np-panel-section np-bt-section" data-show-for="marquee">
+						<h3 class="np-section-title"><?php esc_html_e( 'Marquee Settings', 'noticepulse' ); ?></h3>
+						<div class="np-field-row">
+							<div class="np-field">
+								<label class="np-field__lbl"><?php esc_html_e( 'Direction', 'noticepulse' ); ?></label>
+								<div class="np-radio-inline">
+									<label><input type="radio" name="marquee_direction" value="left"  <?php checked( $np_marquee['direction'] ?? 'left', 'left' ); ?>><?php esc_html_e( 'Left', 'noticepulse' ); ?></label>
+									<label><input type="radio" name="marquee_direction" value="right" <?php checked( $np_marquee['direction'] ?? 'left', 'right' ); ?>><?php esc_html_e( 'Right', 'noticepulse' ); ?></label>
+								</div>
+							</div>
+							<div class="np-field">
+								<label class="np-field__lbl"><?php esc_html_e( 'Speed (pixels / second)', 'noticepulse' ); ?></label>
+								<input type="number" name="marquee_speed" value="<?php echo esc_attr( $np_marquee['speed'] ?? 60 ); ?>" min="10" max="300" step="5" class="small-text">
+							</div>
+							<div class="np-field">
+								<label class="np-field__lbl"><?php esc_html_e( 'Gap between repeats (px)', 'noticepulse' ); ?></label>
+								<input type="number" name="marquee_gap" value="<?php echo esc_attr( $np_marquee['gap'] ?? 50 ); ?>" min="0" max="300" step="5" class="small-text">
+							</div>
+						</div>
+						<div class="np-field">
+							<div class="np-checks-row">
+								<label><input type="checkbox" name="marquee_pause_hover" value="1" <?php checked( $np_marquee['pause_hover'] ?? 1, 1 ); ?>><?php esc_html_e( 'Pause on hover', 'noticepulse' ); ?></label>
+							</div>
+							<p class="np-field__desc"><?php esc_html_e( 'The message repeats seamlessly to fill the bar. Visitors with reduce-motion enabled see it static.', 'noticepulse' ); ?></p>
+						</div>
+					</div>
+
+					<!-- WOO FREE SHIPPING: settings -->
+					<div class="np-panel-section np-bt-section" data-show-for="woo_free_shipping">
+						<h3 class="np-section-title">🚚 <?php esc_html_e( 'Free Shipping Settings', 'noticepulse' ); ?></h3>
+						<div class="np-field">
+							<label><?php esc_html_e( '“Goal reached” message (optional)', 'noticepulse' ); ?></label>
+							<input type="text" name="woo_reached_message" value="<?php echo esc_attr( $np_woo['reached_message'] ?? '' ); ?>" class="large-text" placeholder="<?php esc_attr_e( '🎉 You’ve unlocked FREE shipping!', 'noticepulse' ); ?>">
+							<p class="np-field__desc"><?php esc_html_e( 'Shown once the cart qualifies. Leave blank to keep showing the progress message.', 'noticepulse' ); ?></p>
+						</div>
+						<div class="np-field">
+							<label><?php esc_html_e( 'Manual goal override (optional)', 'noticepulse' ); ?></label>
+							<input type="number" name="woo_goal_override" value="<?php echo esc_attr( $np_woo['goal_override'] ?? '' ); ?>" min="0" step="0.01" class="small-text" placeholder="0">
+							<p class="np-field__desc"><?php esc_html_e( 'Leave at 0 to auto-detect the threshold from your WooCommerce free-shipping method. Set a value to force a fixed goal.', 'noticepulse' ); ?></p>
+						</div>
+					</div>
+
+					<!-- CLICK-TO-CALL: Phone fields -->
+					<div class="np-panel-section np-bt-section" data-show-for="click_to_call">
 					<h3 class="np-section-title">📞 <?php esc_html_e( 'Click-to-Call Settings', 'noticepulse' ); ?></h3>
 					<div class="np-field-row">
 						<div class="np-field">

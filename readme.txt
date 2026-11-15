@@ -1,33 +1,33 @@
 === NoticePulse — Notification Bar, Announcement Bar & Cookie Notice ===
 Contributors:      rayetun
 Donate link:       https://wise.com/pay/me/mdrayhanu2
-Tags:              notification bar, announcement bar, cookie notice, countdown timer, header bar
+Tags:              notification bar, announcement bar, cookie notice, promo bar, free shipping bar
 Requires at least: 6.2
 Tested up to:      7.1
 Requires PHP:      7.4
-Stable tag:        2.2.0
+Stable tag:        2.3.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Notification bar plugin. CTA Bar, Header bar, footer bar, cookie notice, countdown timer, text carousel, email capture, coupon copy & more - all free.
+Notification & announcement bar. Cookie notice, countdown timer, marquee, free shipping bar, email capture, coupon & more — all free.
 
 == Description ==
 
-**NoticePulse** is the most complete free notification bar plugin for WordPress. Display stunning announcement bars, GDPR cookie notices, countdown timers, rotating text carousels, email capture bars, click-to-copy coupon bars, and click-to-call bars — all from one clean, professional dashboard.
+**NoticePulse** is the most complete free notification bar plugin for WordPress. Display stunning announcement bars, GDPR cookie notices, countdown timers, rotating text carousels, scrolling marquee bars, WooCommerce free-shipping progress bars, email capture bars, click-to-copy coupon bars, and click-to-call bars — all from one clean, professional dashboard.
 
-Whether you need a sticky top header bar for a flash sale, a GDPR cookie consent notice at the bottom of your site, a live countdown for a limited-time offer, or an inline email capture bar to grow your list — NoticePulse delivers everything out of the box.
+Whether you need a sticky top header bar for a flash sale, a cookie notice at the bottom of your site, a live countdown for a limited-time offer, or an inline email capture bar to grow your list — NoticePulse delivers everything out of the box.
 
-> **NoticePulse is 100% free.** Unlimited bars, all bar types, full analytics, A/B testing, geo-targeting, email integrations — no premium tier, no feature gates, no upgrade prompts. Ever.
+> **NoticePulse is free.** Unlimited bars, all 9 bar types, full analytics, A/B testing, geo-targeting, and email integrations — no feature gates and no upgrade nags inside the plugin.
 
 ---
 
-= 🔔 7 Bar Types — One Plugin =
+= 🔔 9 Bar Types — One Plugin =
 
 **1. Announcement Bar**
 The essential notification bar. Display promotions, shipping offers, product launches, or any message at the top or bottom of your site. Full color control, optional CTA button, and a real-time live preview that updates as you type.
 
-**2. Cookie / GDPR Consent Bar**
-A fully compliant cookie consent bar with Accept, Decline, and Privacy Policy link buttons. Choice stored in visitor's browser — configurable expiry from 1 to 3,650 days. Ready for GDPR, CCPA, and ePrivacy compliance.
+**2. Cookie / GDPR Notice Bar**
+A cookie notice bar with Accept, Decline, and Privacy Policy link buttons. The visitor's choice is stored in their browser — configurable expiry from 1 to 3,650 days. It's a clear building block for your cookie policy; for full GDPR/CCPA script-blocking before consent, pair it with a dedicated consent-management plugin.
 
 **3. Countdown Timer Bar**
 Build urgency with a live ticking countdown. Set an end date and time — the bar auto-hides when the timer hits zero. Fully customizable day, hour, minute, and second labels. Perfect for flash sales, limited offers, and product launches.
@@ -44,11 +44,17 @@ Display a promo code with a copy-to-clipboard button. One click copies the code 
 **7. Click-to-Call Bar**
 Show a phone number with a tap-to-call button for mobile visitors. Works with tel: links for instant dialing. Can be set to appear on mobile only so desktop visitors see a different bar.
 
+**8. Marquee / News Ticker Bar**
+A continuously scrolling announcement bar — perfect for news tickers, rotating promos, or a running list of highlights. Adjustable scroll direction, speed, and spacing, with pause-on-hover. Respects the visitor's "reduce motion" preference and shows a static message instead.
+
+**9. WooCommerce Free-Shipping Bar**
+Turn cart value into sales. Show live free-shipping progress — "You're $20 away from FREE shipping!" — using the {free_shipping_left} merge tag. The threshold is read from your WooCommerce free-shipping method (or set your own), an optional "goal reached" message celebrates qualifying carts, and the bar updates live as the cart changes. Appears only when WooCommerce is active.
+
 ---
 
-= 🎨 25 Pre-Built Templates — Launch in Seconds =
+= 🎨 30+ Pre-Built Templates — Launch in Seconds =
 
-NoticePulse includes **25 professionally designed templates** organized by bar type, including gradient, light, and dark designs. One click applies the full design — colors, message, CTA, and settings pre-filled. A WYSIWYG preview shows exactly what you will get. Customize to your brand and publish.
+NoticePulse includes **30+ professionally designed templates** organized by bar type, including gradient, light, and dark designs. One click applies the full design — colors, message, CTA, and settings pre-filled. A WYSIWYG preview shows exactly what you will get. Customize to your brand and publish.
 
 **Announcement:** Free Shipping, Black Friday, Summer Sale, New Arrival, Flash Sale
 **GDPR:** GDPR Minimal, GDPR Friendly
@@ -57,6 +63,8 @@ NoticePulse includes **25 professionally designed templates** organized by bar t
 **Coupon:** 20% Off, Welcome 10%
 **Click-to-Call:** Call Us Now
 **Text Carousel:** Promo Carousel, Feature Highlights, Announcements
+**Marquee:** News Ticker, Sale Scroller, Trust Highlights
+**WooCommerce (Free Shipping):** Free Shipping Progress, Free Shipping Reward
 
 ---
 
@@ -121,7 +129,7 @@ NoticePulse includes **25 professionally designed templates** organized by bar t
 * WYSIWYG live preview dock — renders the real bar with a desktop/mobile toggle, updating in real time as you design
 * Per-element show/hide controls — toggle the icon, message, CTA, and decline button per bar
 * No-reload editing — bars save over AJAX with no page refresh
-* Template library with 25 pre-built designs and instant one-click apply
+* Template library with 30+ pre-built designs and instant one-click apply
 * Export all bars as a JSON backup
 * Import bars from a JSON file — existing bars are always preserved
 * Danger Zone — delete all data with a single confirmed click
@@ -153,13 +161,14 @@ NoticePulse includes **25 professionally designed templates** organized by bar t
 
 = 🌐 Who Uses NoticePulse? =
 
-* **eCommerce stores** — free shipping announcements, flash sale countdowns, coupon codes
-* **Agencies** — GDPR cookie consent bars for client sites
-* **SaaS companies** — product launch announcements, feature update banners
-* **Bloggers & media** — newsletter signups, breaking news carousels
+* **WooCommerce stores** — live free-shipping progress bars ("You're $20 away from FREE shipping!"), flash-sale countdowns, auto-copy coupon codes
+* **Agencies** — cookie notice bars and promo bars for client sites
+* **SaaS companies** — product launch announcements, feature update banners, scrolling release notes
+* **Bloggers & media** — newsletter signups, scrolling news tickers, breaking-news carousels
 * **Restaurants & local businesses** — click-to-call bars for mobile visitors
 * **Event organizers** — ticket sale countdowns, registration deadline timers
 * **Email marketers** — inline capture bars synced to Mailchimp, Klaviyo, and more
+* **Deal & affiliate sites** — scrolling marquee strips of rotating offers and promo bars
 
 ---
 
@@ -169,12 +178,12 @@ NoticePulse optionally connects to external services for specific features. Each
 
 ---
 
-**ipapi.co — Geo-Targeting Country Detection**
+**ipapi.co — Geo-Targeting Country Detection (optional fallback, off by default)**
 
-Used when a bar has Geo-Targeting enabled. The visitor's IP address is sent to ipapi.co to determine their two-letter country code (e.g. "US", "DE"). The result is cached server-side for one hour — no repeat API calls are made for the same IP within that window. If no active bar has geo-targeting enabled, no request is ever made.
+Geo-targeting detects the visitor's country from your server/CDN request headers (e.g. Cloudflare) first, which sends no data anywhere. ipapi.co is only used as a fallback, and only if you turn it on under Settings → Privacy & Geo-Targeting. When enabled, the visitor's IP address is sent to ipapi.co to determine their two-letter country code (e.g. "US", "DE"), cached server-side for one hour. With the fallback off (the default), or when a country header is present, no request is ever made. No request is made if no active bar has geo-targeting enabled.
 
-Data sent: visitor IP address.
-Sent when: a page loads containing an active bar with geo-targeting configured.
+Data sent: visitor IP address (only when the fallback is enabled and no country header is available).
+Sent when: a page loads containing an active bar with geo-targeting configured, the ipapi.co fallback is enabled, and no CDN/host country header is present.
 Service URL: https://ipapi.co
 Terms of Service: https://ipapi.co/terms/
 Privacy Policy: https://ipapi.co/privacy/
@@ -253,7 +262,7 @@ Privacy Policy: https://www.brevo.com/legal/privacypolicy/
 
 = Is NoticePulse completely free? =
 
-Yes. Every feature — all 7 bar types, unlimited bars, analytics, 25 templates, email integrations, A/B testing, geo-targeting, and exit intent — is completely free. There is no paid version.
+Yes. Every bar type and feature in the NoticePulse plugin — all 9 bar types, unlimited bars, analytics, 30+ templates, email integrations, A/B testing, geo-targeting, and exit intent — is free, with no feature gates or upgrade nags. (A separate, optional add-on for WooCommerce stores is on the roadmap; the core plugin stays free.)
 
 = How many notification bars can I have? =
 
@@ -273,7 +282,7 @@ Yes. Each bar has Page Visibility settings — show on all pages or restrict to 
 
 = How does the GDPR cookie bar work? =
 
-The GDPR bar shows Accept, Decline, and an optional Privacy Policy link. The visitor's choice is stored in a browser cookie. You control how many days the bar stays hidden — from 1 day to 3,650 days.
+The bar shows Accept, Decline, and an optional Privacy Policy link, and stores the visitor's choice in a browser cookie (you control how long, from 1 to 3,650 days). Note: it displays your notice and records the visitor's choice — it does not block scripts or cookies before consent. For automatic script-blocking, use it alongside a dedicated consent-management plugin.
 
 = How does email capture work? =
 
@@ -335,6 +344,16 @@ https://rayetun.com
 
 == Changelog ==
 
+= 2.3.0 =
+* New: Marquee / News Ticker bar — a continuously-scrolling announcement bar with adjustable direction, speed, and gap. Pauses on hover and respects the visitor's "reduce motion" preference (shows static).
+* New: WooCommerce free-shipping bar — show live cart progress with the {free_shipping_left}, {free_shipping_goal}, and {cart_total} tokens. The threshold is read from your WooCommerce free-shipping method (or a manual goal), an optional "goal reached" message is supported, and the bar updates live as the cart changes. Loads only when WooCommerce is active.
+* New: 5 more templates (30+ total) — Marquee designs (News Ticker, Sale Scroller, Trust Highlights) and WooCommerce free-shipping designs.
+* New: Developer hooks for extending bar types — noticepulse_valid_bar_types, noticepulse_render_bar_type, and the noticepulse_bar_message merge-token filter, plus a window.NoticePulse front-end event bus.
+* Privacy: Country targeting now reads the visitor's country from your server/CDN headers (Cloudflare, etc.) with no third-party request. The previous ipapi.co lookup is now an optional fallback, off by default, with a toggle under Settings. Existing geo-targeting users are automatically kept on the fallback so their targeting is unaffected.
+* Change: Clearer wording for the Cookie / Notice bar — it's a building block for your cookie policy; pair it with a dedicated consent-management plugin for full GDPR/CCPA script-blocking before consent.
+* Tested up to WordPress 7.1.
+* All existing bars and settings are preserved — this is a non-breaking update with no database changes.
+
 = 2.2.0 =
 * New: True WYSIWYG live preview — a full-width preview dock at the bottom of the editor renders the actual bar as visitors will see it, with a desktop/mobile device toggle. Updates instantly as you type, with no page reload.
 * New: Per-element show/hide controls — toggle the leading icon, message text, CTA button, and GDPR decline button on or off per bar. Controls appear only for the elements a bar type actually supports.
@@ -392,6 +411,9 @@ https://rayetun.com
 ---
 
 == Upgrade Notice ==
+
+= 2.3.0 =
+New Marquee bar, a WooCommerce free-shipping progress bar, and privacy-friendly country targeting (reads CDN headers, no third-party request by default). All existing bars preserved, no database changes. Safe to update.
 
 = 2.2.0 =
 Premium editor rebuild — WYSIWYG live preview, per-element show/hide controls, no-reload saving, 25 templates, and fully responsive bars. All existing bars preserved, no database changes. Safe to update.

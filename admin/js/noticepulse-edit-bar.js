@@ -14,10 +14,12 @@
 		standard:      'Message',
 		gdpr:          'Cookie Notice Message',
 		ticker:        'Fallback Message (shown if JS disabled)',
+		marquee:       'Scrolling Message',
 		click_to_call: 'Headline Message',
 		countdown:     'Bar Message',
 		email_capture: 'Headline Message',
 		coupon_copy:   'Bar Message',
+		woo_free_shipping: 'Progress Message',
 	};
 
 	// ── Bar type selector ──────────────────────────────────────────────────────
@@ -56,9 +58,9 @@
 			//    (Carousel has no standalone message/CTA; only standard & countdown
 			//     use the core CTA; Decline belongs to the GDPR bar.)
 			var elVisible = {
-				icon:    true,
+				icon:    ( 'ticker' !== type && 'marquee' !== type ),
 				message: 'ticker' !== type,
-				cta:     ( 'standard' === type || 'countdown' === type ),
+				cta:     ( 'standard' === type || 'countdown' === type || 'woo_free_shipping' === type ),
 				decline: ( 'gdpr' === type )
 			};
 			document.querySelectorAll( '.np-element-row[data-el]' ).forEach( function ( row ) {

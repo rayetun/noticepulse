@@ -42,7 +42,7 @@ class NoticePulse_Templates {
 	 * @return array
 	 */
 	public static function get_all_templates() {
-		return array(
+		$templates = array(
 
 			// ── Announcement ────────────────────────────────────────────────
 
@@ -593,8 +593,106 @@ class NoticePulse_Templates {
 				),
 			),
 
+			// ── Marquee / News Ticker ───────────────────────────────────────
+
+			array(
+				'id'       => 'marquee-news',
+				'name'     => 'News Ticker',
+				'category' => 'marquee',
+				'emoji'    => '📣',
+				'preview'  => '📣 Breaking news · scrolling ticker',
+				'fields'   => array(
+					'bar_type'    => 'marquee',
+					'message'     => '📣 Breaking: new features just launched · Read the changelog · Follow us for updates · Thanks for being here',
+					'bg_color'    => '#0f172a',
+					'text_color'  => '#e2e8f0',
+					'bar_padding' => 'normal',
+					'bar_meta'    => array( 'marquee' => array( 'direction' => 'left', 'speed' => 60, 'gap' => 60, 'pause_hover' => 1 ) ),
+				),
+			),
+
+			array(
+				'id'       => 'marquee-sale',
+				'name'     => 'Sale Scroller',
+				'category' => 'marquee',
+				'emoji'    => '🔥',
+				'preview'  => '🔥 Mega Sale — up to 70% off',
+				'fields'   => array(
+					'bar_type'    => 'marquee',
+					'message'     => '🔥 MEGA SALE — up to 70% off · Use code SAVE70 · Ends Sunday · Free shipping over $50',
+					'bg_color'    => '#dc2626',
+					'text_color'  => '#ffffff',
+					'bar_meta'    => array( 'marquee' => array( 'direction' => 'left', 'speed' => 80, 'gap' => 50, 'pause_hover' => 1 ) ),
+				),
+			),
+
+			array(
+				'id'       => 'marquee-trust',
+				'name'     => 'Trust Highlights',
+				'category' => 'marquee',
+				'emoji'    => '✅',
+				'preview'  => '✅ Free shipping · 30-day returns · 24/7 support',
+				'fields'   => array(
+					'bar_type'    => 'marquee',
+					'message'     => '✅ Free shipping over $50 · ↩ 30-day returns · 🔒 Secure checkout · 💬 24/7 support · ⭐ 10,000+ happy customers',
+					'bg_color'    => '#16a34a',
+					'text_color'  => '#ffffff',
+					'bar_meta'    => array( 'marquee' => array( 'direction' => 'left', 'speed' => 50, 'gap' => 70, 'pause_hover' => 1 ) ),
+				),
+			),
+
+		);
+
+		// WooCommerce-only templates are appended only when WooCommerce is
+		// active, so the woo_free_shipping type is registerable on save.
+		if ( class_exists( 'WooCommerce' ) ) {
+			$templates = array_merge( $templates, self::woo_templates() );
+		}
+
+		return $templates;
+	}
+
+	/**
+	 * WooCommerce free-shipping bar templates.
+	 *
+	 * @return array
+	 */
+	private static function woo_templates() {
+		return array(
+
+			array(
+				'id'       => 'woo-free-shipping',
+				'name'     => 'Free Shipping Progress',
+				'category' => 'woo_free_shipping',
+				'emoji'    => '🚚',
+				'preview'  => '🚚 You are $20 away from FREE shipping!',
+				'fields'   => array(
+					'bar_type'    => 'woo_free_shipping',
+					'message'     => '🚚 You are only {free_shipping_left} away from FREE shipping!',
+					'bg_color'    => '#2563eb',
+					'text_color'  => '#ffffff',
+					'bar_meta'    => array( 'woo' => array( 'goal_override' => 0, 'reached_message' => '🎉 You have unlocked FREE shipping!' ) ),
+				),
+			),
+
+			array(
+				'id'       => 'woo-free-shipping-reward',
+				'name'     => 'Free Shipping Reward',
+				'category' => 'woo_free_shipping',
+				'emoji'    => '🎁',
+				'preview'  => '🎁 Add $20 more for free shipping',
+				'fields'   => array(
+					'bar_type'    => 'woo_free_shipping',
+					'message'     => '🎁 Add {free_shipping_left} more to your cart and shipping is on us!',
+					'bg_color'    => '#7c3aed',
+					'text_color'  => '#ffffff',
+					'bar_meta'    => array( 'woo' => array( 'goal_override' => 0, 'reached_message' => '🎉 Nice! You qualify for FREE shipping.' ) ),
+				),
+			),
+
 		);
 	}
+
 
 	/**
 	 * Get a single template by ID.

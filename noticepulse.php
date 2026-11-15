@@ -3,7 +3,7 @@
  * Plugin Name:       NoticePulse — Notification Bar, Announcement Bar & Cookie Notice
  * Plugin URI:        https://wordpress.org/plugins/noticepulse/
  * Description:       The most powerful free notification bar plugin for WordPress. Countdown timers, exit-intent, A/B testing, geo-targeting, email capture, gradients, animations, Google Fonts, and more — all free.
- * Version:           2.2.0
+ * Version:           2.3.0
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            Md Rayhan Uddin
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NOTICEPULSE_VERSION',         '2.2.0' );
+define( 'NOTICEPULSE_VERSION',         '2.3.0' );
 define( 'NOTICEPULSE_PLUGIN_DIR',      plugin_dir_path( __FILE__ ) );
 define( 'NOTICEPULSE_PLUGIN_URL',      plugin_dir_url( __FILE__ ) );
 define( 'NOTICEPULSE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -56,7 +56,9 @@ final class NoticePulse {
 		// Plugin works fine if a feature ZIP has not been installed yet.
 		$feature_files = array(
 			'includes/class-np-gdpr-bar.php',
-			'includes/class-np-ticker.php',			
+			'includes/class-np-ticker.php',
+			'includes/class-np-marquee.php',
+			'includes/class-np-woo-shipping.php',
 			'includes/class-np-click-to-call.php',
 			'includes/class-np-countdown.php',
 			'includes/class-np-email-capture.php',
@@ -107,6 +109,8 @@ final class NoticePulse {
 		// Boot only classes that were successfully loaded.
 		if ( class_exists( 'NoticePulse_GDPR_Bar' ) )       { NoticePulse_GDPR_Bar::get_instance(); }
 		if ( class_exists( 'NoticePulse_Ticker' ) )          { NoticePulse_Ticker::get_instance(); }
+		if ( class_exists( 'NoticePulse_Marquee' ) )         { NoticePulse_Marquee::get_instance(); }
+		if ( class_exists( 'NoticePulse_Woo_Shipping' ) && class_exists( 'WooCommerce' ) ) { NoticePulse_Woo_Shipping::get_instance(); }
 		if ( class_exists( 'NoticePulse_Click_To_Call' ) )   { NoticePulse_Click_To_Call::get_instance(); }
 		if ( class_exists( 'NoticePulse_Countdown' ) )       { NoticePulse_Countdown::get_instance(); }
 		if ( class_exists( 'NoticePulse_Email_Capture' ) )   { NoticePulse_Email_Capture::get_instance(); }

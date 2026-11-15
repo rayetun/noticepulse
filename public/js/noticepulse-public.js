@@ -13,6 +13,43 @@
 	'use strict';
 
 	/**
+	 * Public event bus + helpers — exposed as window.NoticePulse.
+	 *
+	 * Lets bundled feature modules (and a future add-on) react to bars without
+	 * touching core: subscribe with .on(), broadcast with .emit(), and swap a
+	 * bar's message text with .refreshBar(). Namespaced — adds no other globals.
+	 * Each emit also dispatches a DOM CustomEvent of the same name on document.
+	 */
+	var npListeners = {};
+	var NoticePulse = {
+		on: function ( evt, cb ) {
+			( npListeners[ evt ] = npListeners[ evt ] || [] ).push( cb );
+			return NoticePulse;
+		},
+		off: function ( evt, cb ) {
+			if ( npListeners[ evt ] ) {
+				npListeners[ evt ] = npListeners[ evt ].filter( function ( fn ) { return fn !== cb; } );
+			}
+			return NoticePulse;
+		},
+		emit: function ( evt, detail ) {
+			( npListeners[ evt ] || [] ).forEach( function ( fn ) {
+				try { fn( detail ); } catch ( e ) {}
+			} );
+			try { document.dispatchEvent( new CustomEvent( evt, { detail: detail } ) ); } catch ( e ) {}
+			return NoticePulse;
+		},
+		refreshBar: function ( barId, html ) {
+			var bar = document.querySelector( '.np-bar[data-bar-id="' + barId + '"]' );
+			if ( ! bar ) { return false; }
+			var msg = bar.querySelector( '.np-bar__message' );
+			if ( msg ) { msg.innerHTML = html; }
+			return !! msg;
+		},
+	};
+	window.NoticePulse = window.NoticePulse || NoticePulse;
+
+	/**
 	 * Cookie helpers.
 	 */
 	var Cookie = {
@@ -183,6 +220,7 @@
 			return;
 		}
 		bars.forEach( initBar );
+		NoticePulse.emit( 'np:bars-rendered', { count: bars.length } );
 	}
 
 	/**

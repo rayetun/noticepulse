@@ -300,6 +300,20 @@
 			setCheckbox( 'input[name="ticker_show_dots"]',   barMeta.ticker.show_dots );
 		}
 
+		// ── 10b. Marquee bar_meta fields ─────────────────────────────────────
+		if ( barMeta.marquee ) {
+			setRadioByName( 'marquee_direction',             barMeta.marquee.direction );
+			setField( 'input[name="marquee_speed"]',         barMeta.marquee.speed );
+			setField( 'input[name="marquee_gap"]',           barMeta.marquee.gap );
+			setCheckbox( 'input[name="marquee_pause_hover"]', barMeta.marquee.pause_hover );
+		}
+
+		// ── 10c. WooCommerce free-shipping bar_meta fields ───────────────────
+		if ( barMeta.woo ) {
+			setField( 'input[name="woo_reached_message"]', barMeta.woo.reached_message );
+			setField( 'input[name="woo_goal_override"]',   barMeta.woo.goal_override );
+		}
+
 		// ── 11. Switch to Content tab so user sees the pre-filled fields ──────
 		var $contentTab = $( '.np-tab-btn[data-tab="content"]' );
 		if ( $contentTab.length && ! $contentTab.hasClass( 'np-tab-btn--active' ) ) {

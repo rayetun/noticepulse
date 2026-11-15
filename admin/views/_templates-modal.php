@@ -28,7 +28,14 @@ $np_categories = array(
 	'coupon_copy'   => '🎟 ' . __( 'Coupon', 'noticepulse' ),
 	'click_to_call' => '📞 ' . __( 'Call', 'noticepulse' ),
 	'ticker'        => '🎠 ' . __( 'Carousel', 'noticepulse' ),
+	'marquee'       => '🏃 ' . __( 'Marquee', 'noticepulse' ),
 );
+
+// WooCommerce templates only make sense (and the type is only registerable)
+// when WooCommerce is active.
+if ( class_exists( 'WooCommerce' ) ) {
+	$np_categories['woo_free_shipping'] = '🚚 ' . __( 'Free Shipping', 'noticepulse' );
+}
 ?>
 
 <!-- ── TEMPLATE LIBRARY MODAL ──────────────────────────────────────────── -->
