@@ -14,6 +14,7 @@
 		standard:      'Message',
 		gdpr:          'Cookie Notice Message',
 		ticker:        'Fallback Message (shown if JS disabled)',
+		marquee:       'Scrolling Message',
 		click_to_call: 'Headline Message',
 		countdown:     'Bar Message',
 		email_capture: 'Headline Message',
@@ -56,7 +57,7 @@
 			//    (Carousel has no standalone message/CTA; only standard & countdown
 			//     use the core CTA; Decline belongs to the GDPR bar.)
 			var elVisible = {
-				icon:    true,
+				icon:    ( 'ticker' !== type && 'marquee' !== type ),
 				message: 'ticker' !== type,
 				cta:     ( 'standard' === type || 'countdown' === type ),
 				decline: ( 'gdpr' === type )

@@ -104,6 +104,7 @@ class NoticePulse_Admin {
 			'announcement' => '<path d="m3 11 15-4v10L3 13z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
 			'cookie'       => '<path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/>',
 			'carousel'     => '<path d="M2 7v10"/><path d="M6 5v14"/><rect width="12" height="18" x="10" y="3" rx="2"/>',
+			'marquee'      => '<path d="m18 8 4 4-4 4"/><path d="M2 12h20"/><path d="m6 8-4 4 4 4"/>',
 			'phone'        => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
 			'clock'        => '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
 			'mail'         => '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
@@ -289,6 +290,7 @@ class NoticePulse_Admin {
 					'standard'      => __( '🎉 Free shipping on all orders today!', 'noticepulse' ),
 					'gdpr'          => __( 'We use cookies to improve your experience.', 'noticepulse' ),
 					'ticker'        => __( 'Shown in the preview — your carousel messages appear here.', 'noticepulse' ),
+					'marquee'       => __( '🚚 Free shipping on all orders · 🎉 20% off this week · 📞 Call us anytime', 'noticepulse' ),
 					'click_to_call' => __( 'Get a free quote today! Call us now.', 'noticepulse' ),
 					'countdown'     => __( '⏳ Sale ends in:', 'noticepulse' ),
 					'email_capture' => __( '📧 Get 10% off — join our newsletter!', 'noticepulse' ),
@@ -486,10 +488,12 @@ class NoticePulse_Admin {
 		$is_new = ! $bar_id;
 
 		// All bar types accepted — feature classes add their own via filter.
-		$valid_types = array(
+		// The noticepulse_valid_bar_types filter lets bundled feature classes
+		// (and a future add-on) register new types without editing core.
+		$valid_types = apply_filters( 'noticepulse_valid_bar_types', array(
 			'standard', 'gdpr', 'ticker', 'click_to_call',
 			'countdown', 'email_capture', 'coupon_copy',
-		);
+		) );
 
 		$raw_type = sanitize_key( wp_unslash( $_POST['bar_type'] ?? 'standard' ) );
 		$bar_type = in_array( $raw_type, $valid_types, true ) ? $raw_type : 'standard';
@@ -854,9 +858,12 @@ class NoticePulse_Admin {
 				$insert['cta_url'] = esc_url_raw( (string) $bar['cta_url'] );
 			}
 
-			// bar_type — allowlisted values only.
-			$valid_bar_types = array( 'standard', 'gdpr', 'ticker', 'click_to_call',
-				'countdown', 'email_capture', 'coupon_copy' );
+			// bar_type — allowlisted values only. Same filter as the save path so
+			// externally-registered types survive an import/export round-trip.
+			$valid_bar_types = apply_filters( 'noticepulse_valid_bar_types', array(
+				'standard', 'gdpr', 'ticker', 'click_to_call',
+				'countdown', 'email_capture', 'coupon_copy',
+			) );
 			if ( isset( $bar['bar_type'] ) && in_array( $bar['bar_type'], $valid_bar_types, true ) ) {
 				$insert['bar_type'] = $bar['bar_type'];
 			}

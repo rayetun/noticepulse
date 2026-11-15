@@ -1,0 +1,60 @@
+/**
+ * NoticePulse — Marquee / News Ticker styles.
+ *
+ * Loaded only when a marquee bar is active. The JS builds the track; this file
+ * provides the clipping viewport and the scroll keyframe.
+ *
+ * @since 2.3.0
+ */
+
+/* The content node normally centers children with flex; for a marquee it must
+   become a clipping viewport the track can overflow. */
+.np-marquee-bar .np-bar__content {
+	display: block;
+	width: 100%;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.np-marquee {
+	width: 100%;
+	overflow: hidden;
+}
+
+.np-marquee__track {
+	display: inline-flex;
+	flex-wrap: nowrap;
+	white-space: nowrap;
+	will-change: transform;
+	animation-name: np-marquee-x;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+.np-marquee__item {
+	display: inline-block;
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+@keyframes np-marquee-x {
+	from { transform: translateX( 0 ); }
+	to   { transform: translateX( var( --np-mq-shift, -100% ) ); }
+}
+
+/* Pause while the pointer is over the bar (opt-in via the pause-hover class). */
+.np-marquee--pause-hover:hover .np-marquee__track {
+	animation-play-state: paused;
+}
+
+/* Reduced motion: no scroll, let the single message wrap/read normally. */
+.np-marquee-bar--static .np-bar__message {
+	white-space: normal;
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.np-marquee__track {
+		animation: none;
+		transform: none;
+	}
+}
