@@ -189,8 +189,10 @@ class NoticePulse_Woo_Shipping {
 			return $data;
 		}
 
+		$goal = isset( $_POST['woo_goal_override'] ) ? (float) wp_unslash( $_POST['woo_goal_override'] ) : 0;
+
 		$values = array(
-			'goal_override'   => max( 0, (float) ( $_POST['woo_goal_override'] ?? 0 ) ),
+			'goal_override'   => max( 0, $goal ),
 			'reached_message' => sanitize_text_field( wp_unslash( $_POST['woo_reached_message'] ?? '' ) ),
 		);
 		$data['bar_meta'] = NoticePulse_DB::set_meta( $data['bar_meta'] ?? '', 'woo', $values );
