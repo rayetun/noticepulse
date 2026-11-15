@@ -116,6 +116,17 @@ class NoticePulse_DB {
 	 * @return void
 	 */
 	public static function maybe_upgrade_db() {
+		// 2.3.0 one-time geo-targeting migration (runs once, independent of the
+		// schema-version short-circuit below). Country detection moved from the
+		// ipapi.co lookup to request headers (Cloudflare/CDN/host). To avoid
+		// silently breaking anyone who already relies on geo-targeting, keep the
+		// ipapi.co fallback ON for installs that already use it; new installs and
+		// non-geo users default to headers-only (no third-party call).
+		if ( ! get_option( 'noticepulse_geo_migrated' ) ) {
+			update_option( 'noticepulse_geo_ipapi_fallback', self::install_uses_geo() ? 1 : 0 );
+			update_option( 'noticepulse_geo_migrated', 1 );
+		}
+
 		$installed = get_option( 'noticepulse_db_version', '1.0.0' );
 		if ( version_compare( $installed, '2.1.0', '>=' ) ) {
 			return;
@@ -164,6 +175,22 @@ class NoticePulse_DB {
 
 		// Create leads table if missing (fresh 2.1 install over old DB).
 		self::create_tables();
+	}
+
+	/**
+	 * Whether this install already has at least one geo-targeted bar.
+	 * Used by the 2.3.0 migration to decide the ipapi.co fallback default.
+	 *
+	 * @return bool
+	 */
+	private static function install_uses_geo() {
+		foreach ( self::get_all_bars() as $bar ) {
+			$meta = self::get_meta( $bar, 'geo' );
+			if ( ! empty( $meta['enabled'] ) && ! empty( $meta['countries'] ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

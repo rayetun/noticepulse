@@ -52,6 +52,7 @@ class NoticePulse_Admin {
 		add_action( 'admin_post_noticepulse_reset_stats',                 array( $this, 'handle_reset_stats' ) );
 		add_action( 'admin_post_noticepulse_export',                      array( $this, 'handle_export' ) );
 		add_action( 'admin_post_noticepulse_import',                      array( $this, 'handle_import' ) );
+		add_action( 'admin_post_noticepulse_save_privacy',                array( $this, 'handle_save_privacy' ) );
 		add_action( 'admin_post_noticepulse_reset_all',                   array( $this, 'handle_reset_all' ) );
 		add_filter( 'plugin_action_links_' . NOTICEPULSE_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
 		add_action( 'admin_init',                                         array( 'NoticePulse_DB', 'maybe_upgrade_db' ) );
@@ -774,6 +775,7 @@ class NoticePulse_Admin {
 			'all_reset'    => array( 'success', __( 'All data deleted.', 'noticepulse' ) ),
 			'imported'     => array( 'success', __( 'Bars imported successfully.', 'noticepulse' ) ),
 			'import_error' => array( 'error',   __( 'Import failed — check the file.', 'noticepulse' ) ),
+			'privacy_saved' => array( 'success', __( 'Privacy setting saved.', 'noticepulse' ) ),
 			'error'        => array( 'error',   __( 'An error occurred. Please try again.', 'noticepulse' ) ),
 			'missing_name' => array( 'error',   __( 'Bar name is required.', 'noticepulse' ) ),
 		);
@@ -797,6 +799,19 @@ class NoticePulse_Admin {
 	}
 
 	/** Handle JSON import. */
+	/**
+	 * Save the privacy setting (ipapi.co geo fallback toggle).
+	 */
+	public function handle_save_privacy() {
+		if ( ! current_user_can( 'manage_options' ) ) { wp_die( esc_html__( 'Permission denied.', 'noticepulse' ) ); }
+		check_admin_referer( 'noticepulse_save_privacy', 'noticepulse_privacy_nonce' );
+
+		update_option( 'noticepulse_geo_ipapi_fallback', isset( $_POST['geo_ipapi_fallback'] ) ? 1 : 0 );
+
+		wp_safe_redirect( admin_url( 'admin.php?page=noticepulse-settings&np_notice=privacy_saved' ) );
+		exit;
+	}
+
 	public function handle_import() {
 		if ( ! current_user_can( 'manage_options' ) ) { wp_die( esc_html__( 'Permission denied.', 'noticepulse' ) ); }
 		check_admin_referer( 'noticepulse_import', 'noticepulse_import_nonce' );

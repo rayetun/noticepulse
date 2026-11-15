@@ -24,6 +24,8 @@ NoticePulse_DB::drop_tables();
 
 // Remove plugin options.
 delete_option( 'noticepulse_db_version' );
+delete_option( 'noticepulse_geo_ipapi_fallback' );
+delete_option( 'noticepulse_geo_migrated' );
 
 // Clean up on multisite.
 if ( is_multisite() ) {
@@ -32,6 +34,8 @@ if ( is_multisite() ) {
 		switch_to_blog( $np_site->blog_id );
 		NoticePulse_DB::drop_tables();
 		delete_option( 'noticepulse_db_version' );
+		delete_option( 'noticepulse_geo_ipapi_fallback' );
+		delete_option( 'noticepulse_geo_migrated' );
 		restore_current_blog();
 	}
 }

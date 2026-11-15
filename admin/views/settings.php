@@ -152,6 +152,41 @@ $np_notice = isset( $_GET['np_notice'] ) ? sanitize_key( $_GET['np_notice'] ) : 
 					</form>
 				</div>
 			</div>
+				<!-- Privacy / Geo-targeting -->
+				<?php $np_geo_fallback = (int) get_option( 'noticepulse_geo_ipapi_fallback', 0 ); ?>
+				<div class="np-settings-card">
+					<div class="np-settings-card__header">
+						<div class="np-settings-card__icon np-settings-card__icon--info">🌍</div>
+						<div>
+							<h2 class="np-settings-card__title">
+								<?php esc_html_e( 'Privacy & Geo-Targeting', 'noticepulse' ); ?>
+							</h2>
+							<p class="np-settings-card__desc">
+								<?php esc_html_e( 'Country targeting reads the visitor country from your server/CDN headers (Cloudflare, etc.) — no third-party request. Enable the fallback only if your host does not provide a country header.', 'noticepulse' ); ?>
+							</p>
+						</div>
+					</div>
+					<div class="np-settings-card__body">
+						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+							<input type="hidden" name="action" value="noticepulse_save_privacy">
+							<?php wp_nonce_field( 'noticepulse_save_privacy', 'noticepulse_privacy_nonce' ); ?>
+							<label class="np-checks-row" style="display:flex; gap:8px; align-items:flex-start;">
+								<input type="checkbox" name="geo_ipapi_fallback" value="1" <?php checked( $np_geo_fallback, 1 ); ?>>
+								<span>
+									<?php esc_html_e( 'Use ipapi.co as a fallback when no country header is present', 'noticepulse' ); ?><br>
+									<span class="np-settings-card__desc" style="font-size:12px;">
+										<?php esc_html_e( 'Sends the visitor IP to ipapi.co (cached 1 hour). Off by default for privacy.', 'noticepulse' ); ?>
+									</span>
+								</span>
+							</label>
+							<button type="submit" class="np-settings-btn np-settings-btn--primary" style="margin-top:12px;">
+								<span>💾</span>
+								<?php esc_html_e( 'Save Privacy Setting', 'noticepulse' ); ?>
+							</button>
+						</form>
+					</div>
+				</div>
+
 		</div><!-- /left column -->
 
 		<!-- RIGHT COLUMN -->
