@@ -143,9 +143,10 @@ stub.
 
 | Version | Tier | Ships |
 |---|---|---|
-| **2.3.0** | free | **Marquee / News Ticker** + §4 hook surface + **basic free-shipping bar** + **header-based country targeting** + compliance-wording bundle. |
-| **2.4.0** | free | "Save as template" (previously queued as 2.3.0; now after Marquee). |
-| **2.5.0+** | free | WooCommerce depth: §3 A–G as demand shows, each as a hook-attached module. |
+| **2.3.0** | free | **Marquee / News Ticker** + §4 hook surface + **basic free-shipping bar** + **header-based country targeting** + compliance-wording bundle + Marquee/Woo templates. **Shipped to branch.** |
+| **2.4.0** | free | **Gutenberg blocks** — 2–3 server-rendered dynamic blocks (Countdown, Marquee, WooCommerce Free-Shipping) reusing the render + feature classes and the §4 hook seam. Inline variant of the global bars; new block-directory discovery channel. |
+| **2.5.0** | free | "Save as template" (bumped from 2.4.0 for the Gutenberg blocks). |
+| **2.6.0+** | free | WooCommerce depth: §3 A–G as demand shows, each as a hook-attached module. |
 | **Pro v1.0** | paid | **Deferred.** Revisit at ~2–3k installs; revenue analytics (§3-E) as the lead feature. See §6. |
 
 ---
