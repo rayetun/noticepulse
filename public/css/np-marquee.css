@@ -7,13 +7,28 @@
  * @since 2.3.0
  */
 
+/* Full-bleed: the marquee should scroll across the entire bar width, so drop
+   the centered max-width/padding the core applies to the inner + content. */
+.np-marquee-bar .np-bar__inner {
+	max-width: none;
+	padding-left: 0;
+	padding-right: 0;
+}
+
 /* The content node normally centers children with flex; for a marquee it must
-   become a clipping viewport the track can overflow. */
+   become a full-width clipping viewport the track can overflow. */
 .np-marquee-bar .np-bar__content {
 	display: block;
 	width: 100%;
+	max-width: none;
 	min-width: 0;
 	overflow: hidden;
+}
+
+/* Keep the scrolling text clear of the (absolutely-positioned) close button
+   on the right, in browsers that support :has(). */
+.np-marquee-bar .np-bar__inner:has( .np-bar__close ) .np-marquee {
+	padding-right: 44px;
 }
 
 .np-marquee {
