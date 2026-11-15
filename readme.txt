@@ -1,7 +1,7 @@
 === NoticePulse — Notification Bar, Announcement Bar & Cookie Notice ===
 Contributors:      rayetun
 Donate link:       https://wise.com/pay/me/mdrayhanu2
-Tags:              notification bar, announcement bar, cookie notice, countdown timer, header bar
+Tags:              notification bar, announcement bar, cookie notice, countdown timer, free shipping bar
 Requires at least: 6.2
 Tested up to:      7.1
 Requires PHP:      7.4
@@ -9,19 +9,19 @@ Stable tag:        2.3.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Notification bar plugin. CTA Bar, Header bar, footer bar, cookie notice, countdown timer, text carousel, email capture, coupon copy & more - all free.
+Notification & announcement bar. Cookie notice, countdown timer, marquee, free shipping bar, email capture, coupon & more — all free.
 
 == Description ==
 
-**NoticePulse** is the most complete free notification bar plugin for WordPress. Display stunning announcement bars, GDPR cookie notices, countdown timers, rotating text carousels, email capture bars, click-to-copy coupon bars, and click-to-call bars — all from one clean, professional dashboard.
+**NoticePulse** is the most complete free notification bar plugin for WordPress. Display stunning announcement bars, GDPR cookie notices, countdown timers, rotating text carousels, scrolling marquee bars, WooCommerce free-shipping progress bars, email capture bars, click-to-copy coupon bars, and click-to-call bars — all from one clean, professional dashboard.
 
 Whether you need a sticky top header bar for a flash sale, a cookie notice at the bottom of your site, a live countdown for a limited-time offer, or an inline email capture bar to grow your list — NoticePulse delivers everything out of the box.
 
-> **NoticePulse is free.** Unlimited bars, all 7 bar types, full analytics, A/B testing, geo-targeting, and email integrations — no feature gates and no upgrade nags inside the plugin.
+> **NoticePulse is free.** Unlimited bars, all 9 bar types, full analytics, A/B testing, geo-targeting, and email integrations — no feature gates and no upgrade nags inside the plugin.
 
 ---
 
-= 🔔 7 Bar Types — One Plugin =
+= 🔔 9 Bar Types — One Plugin =
 
 **1. Announcement Bar**
 The essential notification bar. Display promotions, shipping offers, product launches, or any message at the top or bottom of your site. Full color control, optional CTA button, and a real-time live preview that updates as you type.
@@ -44,11 +44,17 @@ Display a promo code with a copy-to-clipboard button. One click copies the code 
 **7. Click-to-Call Bar**
 Show a phone number with a tap-to-call button for mobile visitors. Works with tel: links for instant dialing. Can be set to appear on mobile only so desktop visitors see a different bar.
 
+**8. Marquee / News Ticker Bar**
+A continuously scrolling announcement bar — perfect for news tickers, rotating promos, or a running list of highlights. Adjustable scroll direction, speed, and spacing, with pause-on-hover. Respects the visitor's "reduce motion" preference and shows a static message instead.
+
+**9. WooCommerce Free-Shipping Bar**
+Turn cart value into sales. Show live free-shipping progress — "You're $20 away from FREE shipping!" — using the {free_shipping_left} merge tag. The threshold is read from your WooCommerce free-shipping method (or set your own), an optional "goal reached" message celebrates qualifying carts, and the bar updates live as the cart changes. Appears only when WooCommerce is active.
+
 ---
 
-= 🎨 25 Pre-Built Templates — Launch in Seconds =
+= 🎨 30+ Pre-Built Templates — Launch in Seconds =
 
-NoticePulse includes **25 professionally designed templates** organized by bar type, including gradient, light, and dark designs. One click applies the full design — colors, message, CTA, and settings pre-filled. A WYSIWYG preview shows exactly what you will get. Customize to your brand and publish.
+NoticePulse includes **30+ professionally designed templates** organized by bar type, including gradient, light, and dark designs. One click applies the full design — colors, message, CTA, and settings pre-filled. A WYSIWYG preview shows exactly what you will get. Customize to your brand and publish.
 
 **Announcement:** Free Shipping, Black Friday, Summer Sale, New Arrival, Flash Sale
 **GDPR:** GDPR Minimal, GDPR Friendly
@@ -57,6 +63,8 @@ NoticePulse includes **25 professionally designed templates** organized by bar t
 **Coupon:** 20% Off, Welcome 10%
 **Click-to-Call:** Call Us Now
 **Text Carousel:** Promo Carousel, Feature Highlights, Announcements
+**Marquee:** News Ticker, Sale Scroller, Trust Highlights
+**WooCommerce (Free Shipping):** Free Shipping Progress, Free Shipping Reward
 
 ---
 
