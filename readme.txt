@@ -15,9 +15,9 @@ Notification bar plugin. CTA Bar, Header bar, footer bar, cookie notice, countdo
 
 **NoticePulse** is the most complete free notification bar plugin for WordPress. Display stunning announcement bars, GDPR cookie notices, countdown timers, rotating text carousels, email capture bars, click-to-copy coupon bars, and click-to-call bars — all from one clean, professional dashboard.
 
-Whether you need a sticky top header bar for a flash sale, a GDPR cookie consent notice at the bottom of your site, a live countdown for a limited-time offer, or an inline email capture bar to grow your list — NoticePulse delivers everything out of the box.
+Whether you need a sticky top header bar for a flash sale, a cookie notice at the bottom of your site, a live countdown for a limited-time offer, or an inline email capture bar to grow your list — NoticePulse delivers everything out of the box.
 
-> **NoticePulse is 100% free.** Unlimited bars, all bar types, full analytics, A/B testing, geo-targeting, email integrations — no premium tier, no feature gates, no upgrade prompts. Ever.
+> **NoticePulse is free.** Unlimited bars, all 7 bar types, full analytics, A/B testing, geo-targeting, and email integrations — no feature gates and no upgrade nags inside the plugin.
 
 ---
 
@@ -26,8 +26,8 @@ Whether you need a sticky top header bar for a flash sale, a GDPR cookie consent
 **1. Announcement Bar**
 The essential notification bar. Display promotions, shipping offers, product launches, or any message at the top or bottom of your site. Full color control, optional CTA button, and a real-time live preview that updates as you type.
 
-**2. Cookie / GDPR Consent Bar**
-A fully compliant cookie consent bar with Accept, Decline, and Privacy Policy link buttons. Choice stored in visitor's browser — configurable expiry from 1 to 3,650 days. Ready for GDPR, CCPA, and ePrivacy compliance.
+**2. Cookie / GDPR Notice Bar**
+A cookie notice bar with Accept, Decline, and Privacy Policy link buttons. The visitor's choice is stored in their browser — configurable expiry from 1 to 3,650 days. It's a clear building block for your cookie policy; for full GDPR/CCPA script-blocking before consent, pair it with a dedicated consent-management plugin.
 
 **3. Countdown Timer Bar**
 Build urgency with a live ticking countdown. Set an end date and time — the bar auto-hides when the timer hits zero. Fully customizable day, hour, minute, and second labels. Perfect for flash sales, limited offers, and product launches.
@@ -253,7 +253,7 @@ Privacy Policy: https://www.brevo.com/legal/privacypolicy/
 
 = Is NoticePulse completely free? =
 
-Yes. Every feature — all 7 bar types, unlimited bars, analytics, 25 templates, email integrations, A/B testing, geo-targeting, and exit intent — is completely free. There is no paid version.
+Yes. Every bar type and feature in the NoticePulse plugin — all 7 bar types, unlimited bars, analytics, 25 templates, email integrations, A/B testing, geo-targeting, and exit intent — is free, with no feature gates or upgrade nags. (A separate, optional add-on for WooCommerce stores is on the roadmap; the core plugin stays free.)
 
 = How many notification bars can I have? =
 
@@ -273,7 +273,7 @@ Yes. Each bar has Page Visibility settings — show on all pages or restrict to 
 
 = How does the GDPR cookie bar work? =
 
-The GDPR bar shows Accept, Decline, and an optional Privacy Policy link. The visitor's choice is stored in a browser cookie. You control how many days the bar stays hidden — from 1 day to 3,650 days.
+The bar shows Accept, Decline, and an optional Privacy Policy link, and stores the visitor's choice in a browser cookie (you control how long, from 1 to 3,650 days). Note: it displays your notice and records the visitor's choice — it does not block scripts or cookies before consent. For automatic script-blocking, use it alongside a dedicated consent-management plugin.
 
 = How does email capture work? =
 
