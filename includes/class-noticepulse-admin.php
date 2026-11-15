@@ -356,7 +356,8 @@ class NoticePulse_Admin {
 				'np-live-preview',
 				'noticepulsePreview',
 				array(
-					'publicCss' => NOTICEPULSE_PLUGIN_URL . 'public/css/noticepulse-public.css?ver=' . NOTICEPULSE_VERSION,
+					'publicCss'  => NOTICEPULSE_PLUGIN_URL . 'public/css/noticepulse-public.css?ver=' . NOTICEPULSE_VERSION,
+					'marqueeCss' => NOTICEPULSE_PLUGIN_URL . 'public/css/np-marquee.css?ver=' . NOTICEPULSE_VERSION,
 				)
 			);
 		}

@@ -141,7 +141,12 @@
 			tickSpeed:   parseInt( val( 'ticker_speed' ) || '4', 10 ),
 			tickTrans:   radio( 'ticker_transition' ) || 'fade',
 			tickArrows:  checked( 'ticker_show_arrows' ),
-			tickDots:    checked( 'ticker_show_dots' )
+			tickDots:    checked( 'ticker_show_dots' ),
+			// Marquee.
+			marqueeDir:   radio( 'marquee_direction' ) || 'left',
+			marqueeSpeed: parseInt( val( 'marquee_speed' ) || '60', 10 ),
+			marqueeGap:   parseInt( val( 'marquee_gap' ) || '50', 10 ),
+			marqueePause: hasField( 'marquee_pause_hover' ) ? checked( 'marquee_pause_hover' ) : true
 		};
 	}
 
@@ -163,12 +168,15 @@
 	// ── Iframe skeleton (written once; CSS persists across renders) ─────────────
 	function writeSkeleton() {
 		doc = frame.contentDocument;
-		var css = ( typeof noticepulsePreview !== 'undefined' && noticepulsePreview.publicCss ) ? noticepulsePreview.publicCss : '';
+		var pv  = ( typeof noticepulsePreview !== 'undefined' ) ? noticepulsePreview : {};
+		var css = pv.publicCss || '';
+		var mqCss = pv.marqueeCss || '';
 		doc.open();
 		doc.write(
 			'<!doctype html><html><head><meta charset="utf-8">' +
 			'<meta name="viewport" content="width=device-width, initial-scale=1">' +
 			( css ? '<link rel="stylesheet" href="' + css + '">' : '' ) +
+			( mqCss ? '<link rel="stylesheet" href="' + mqCss + '">' : '' ) +
 			'<style>' + frameCss() + '</style></head>' +
 			'<body><div class="np-pv-page" id="np-pv-page"></div></body></html>'
 		);
@@ -209,6 +217,7 @@
 		// Start dynamic behaviours that need owned timers.
 		if ( 'countdown' === v.type ) { startCountdown( bar, v ); }
 		if ( 'ticker' === v.type )    { startTicker( bar, v ); }
+		if ( 'marquee' === v.type )   { startMarquee( bar, v ); }
 
 		// Fit the dock to the bar's real height (now, and once CSS/fonts settle).
 		autoSize();
@@ -286,8 +295,8 @@
 			content.appendChild( ic );
 		}
 
-		// The carousel needs the message node to exist, so force it on for ticker.
-		if ( v.msgOn || 'ticker' === v.type ) {
+		// The carousel/marquee need the message node to exist, so force it on.
+		if ( v.msgOn || 'ticker' === v.type || 'marquee' === v.type ) {
 			var msg = doc.createElement( 'span' );
 			msg.className = 'np-bar__message';
 			msg.innerHTML = v.message || placeholderFor( v.type );
@@ -317,6 +326,7 @@
 			gdpr:          'We use cookies to improve your experience.',
 			countdown:     '⏳ Sale ends in:',
 			ticker:        'Your rotating messages appear here.',
+			marquee:       '🚚 Free shipping over $50 · 🎉 Save 20% today · 📞 Call us anytime',
 			email_capture: '📧 Join our newsletter for 10% off!',
 			coupon_copy:   '🎟 Use the code for 20% off!',
 			click_to_call: 'Questions? Call our team now.'
@@ -530,6 +540,47 @@
 				}
 			}, Math.max( 1, v.tickSpeed ) * 1000 );
 		}
+	}
+
+	// ── Marquee (CSS-animated; no owned timer — dies with the rebuilt bar) ──────
+	function startMarquee( bar, v ) {
+		var content = bar.querySelector( '.np-bar__content' );
+		var msg     = content ? content.querySelector( '.np-bar__message' ) : null;
+		if ( ! content || ! msg ) { return; }
+
+		bar.classList.add( 'np-marquee-bar' );
+		var gap     = isNaN( v.marqueeGap ) ? 50 : v.marqueeGap;
+		var htmlStr = msg.innerHTML;
+
+		var marquee = doc.createElement( 'div' );
+		marquee.className = 'np-marquee' + ( v.marqueePause ? ' np-marquee--pause-hover' : '' );
+		var track = doc.createElement( 'div' );
+		track.className = 'np-marquee__track';
+		marquee.appendChild( track );
+
+		function makeItem( hidden ) {
+			var item = doc.createElement( 'span' );
+			item.className = 'np-marquee__item';
+			item.style.paddingRight = gap + 'px';
+			item.innerHTML = htmlStr;
+			if ( hidden ) { item.setAttribute( 'aria-hidden', 'true' ); }
+			return item;
+		}
+
+		var first = makeItem( false );
+		track.appendChild( first );
+		content.innerHTML = '';
+		content.appendChild( marquee );
+
+		var itemWidth = first.getBoundingClientRect().width || content.getBoundingClientRect().width || 300;
+		var containerWidth = content.getBoundingClientRect().width || itemWidth;
+		var copies = Math.ceil( containerWidth / itemWidth ) + 1;
+		for ( var i = 0; i < copies; i++ ) { track.appendChild( makeItem( true ) ); }
+
+		var speed = isNaN( v.marqueeSpeed ) || v.marqueeSpeed < 10 ? 60 : v.marqueeSpeed;
+		track.style.setProperty( '--np-mq-shift', '-' + itemWidth + 'px' );
+		track.style.animationDuration = ( itemWidth / speed ).toFixed( 2 ) + 's';
+		track.style.animationDirection = ( 'right' === v.marqueeDir ) ? 'reverse' : 'normal';
 	}
 
 	function esc( s ) {
