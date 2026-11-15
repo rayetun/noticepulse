@@ -121,7 +121,7 @@ NoticePulse includes **25 professionally designed templates** organized by bar t
 * WYSIWYG live preview dock — renders the real bar with a desktop/mobile toggle, updating in real time as you design
 * Per-element show/hide controls — toggle the icon, message, CTA, and decline button per bar
 * No-reload editing — bars save over AJAX with no page refresh
-* Template library with 25 pre-built designs and instant one-click apply
+* Template library with 30+ pre-built designs and instant one-click apply
 * Export all bars as a JSON backup
 * Import bars from a JSON file — existing bars are always preserved
 * Danger Zone — delete all data with a single confirmed click
@@ -253,7 +253,7 @@ Privacy Policy: https://www.brevo.com/legal/privacypolicy/
 
 = Is NoticePulse completely free? =
 
-Yes. Every bar type and feature in the NoticePulse plugin — all 7 bar types, unlimited bars, analytics, 25 templates, email integrations, A/B testing, geo-targeting, and exit intent — is free, with no feature gates or upgrade nags. (A separate, optional add-on for WooCommerce stores is on the roadmap; the core plugin stays free.)
+Yes. Every bar type and feature in the NoticePulse plugin — all 9 bar types, unlimited bars, analytics, 30+ templates, email integrations, A/B testing, geo-targeting, and exit intent — is free, with no feature gates or upgrade nags. (A separate, optional add-on for WooCommerce stores is on the roadmap; the core plugin stays free.)
 
 = How many notification bars can I have? =
 
@@ -338,6 +338,7 @@ https://rayetun.com
 = 2.3.0 =
 * New: Marquee / News Ticker bar — a continuously-scrolling announcement bar with adjustable direction, speed, and gap. Pauses on hover and respects the visitor's "reduce motion" preference (shows static).
 * New: WooCommerce free-shipping bar — show live cart progress with the {free_shipping_left}, {free_shipping_goal}, and {cart_total} tokens. The threshold is read from your WooCommerce free-shipping method (or a manual goal), an optional "goal reached" message is supported, and the bar updates live as the cart changes. Loads only when WooCommerce is active.
+* New: 5 more templates (30+ total) — Marquee designs (News Ticker, Sale Scroller, Trust Highlights) and WooCommerce free-shipping designs.
 * New: Developer hooks for extending bar types — noticepulse_valid_bar_types, noticepulse_render_bar_type, and the noticepulse_bar_message merge-token filter, plus a window.NoticePulse front-end event bus.
 * Privacy: Country targeting now reads the visitor's country from your server/CDN headers (Cloudflare, etc.) with no third-party request. The previous ipapi.co lookup is now an optional fallback, off by default, with a toggle under Settings. Existing geo-targeting users are automatically kept on the fallback so their targeting is unaffected.
 * Change: Clearer wording for the Cookie / Notice bar — it's a building block for your cookie policy; pair it with a dedicated consent-management plugin for full GDPR/CCPA script-blocking before consent.
