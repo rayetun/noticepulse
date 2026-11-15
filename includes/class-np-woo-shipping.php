@@ -189,7 +189,9 @@ class NoticePulse_Woo_Shipping {
 			return $data;
 		}
 
-		$goal = isset( $_POST['woo_goal_override'] ) ? (float) wp_unslash( $_POST['woo_goal_override'] ) : 0;
+		$goal = isset( $_POST['woo_goal_override'] )
+			? (float) sanitize_text_field( wp_unslash( $_POST['woo_goal_override'] ) )
+			: 0;
 
 		$values = array(
 			'goal_override'   => max( 0, $goal ),
