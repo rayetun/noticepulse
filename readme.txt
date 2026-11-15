@@ -5,7 +5,7 @@ Tags:              notification bar, announcement bar, cookie notice, countdown 
 Requires at least: 6.2
 Tested up to:      7.1
 Requires PHP:      7.4
-Stable tag:        2.2.0
+Stable tag:        2.3.0
 License:           GPLv2 or later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -335,6 +335,15 @@ https://rayetun.com
 
 == Changelog ==
 
+= 2.3.0 =
+* New: Marquee / News Ticker bar — a continuously-scrolling announcement bar with adjustable direction, speed, and gap. Pauses on hover and respects the visitor's "reduce motion" preference (shows static).
+* New: WooCommerce free-shipping bar — show live cart progress with the {free_shipping_left}, {free_shipping_goal}, and {cart_total} tokens. The threshold is read from your WooCommerce free-shipping method (or a manual goal), an optional "goal reached" message is supported, and the bar updates live as the cart changes. Loads only when WooCommerce is active.
+* New: Developer hooks for extending bar types — noticepulse_valid_bar_types, noticepulse_render_bar_type, and the noticepulse_bar_message merge-token filter, plus a window.NoticePulse front-end event bus.
+* Privacy: Country targeting now reads the visitor's country from your server/CDN headers (Cloudflare, etc.) with no third-party request. The previous ipapi.co lookup is now an optional fallback, off by default, with a toggle under Settings. Existing geo-targeting users are automatically kept on the fallback so their targeting is unaffected.
+* Change: Clearer wording for the Cookie / Notice bar — it's a building block for your cookie policy; pair it with a dedicated consent-management plugin for full GDPR/CCPA script-blocking before consent.
+* Tested up to WordPress 7.1.
+* All existing bars and settings are preserved — this is a non-breaking update with no database changes.
+
 = 2.2.0 =
 * New: True WYSIWYG live preview — a full-width preview dock at the bottom of the editor renders the actual bar as visitors will see it, with a desktop/mobile device toggle. Updates instantly as you type, with no page reload.
 * New: Per-element show/hide controls — toggle the leading icon, message text, CTA button, and GDPR decline button on or off per bar. Controls appear only for the elements a bar type actually supports.
@@ -392,6 +401,9 @@ https://rayetun.com
 ---
 
 == Upgrade Notice ==
+
+= 2.3.0 =
+New Marquee bar, a WooCommerce free-shipping progress bar, and privacy-friendly country targeting (reads CDN headers, no third-party request by default). All existing bars preserved, no database changes. Safe to update.
 
 = 2.2.0 =
 Premium editor rebuild — WYSIWYG live preview, per-element show/hide controls, no-reload saving, 25 templates, and fully responsive bars. All existing bars preserved, no database changes. Safe to update.
