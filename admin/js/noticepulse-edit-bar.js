@@ -19,6 +19,7 @@
 		countdown:     'Bar Message',
 		email_capture: 'Headline Message',
 		coupon_copy:   'Bar Message',
+		woo_free_shipping: 'Progress Message',
 	};
 
 	// ── Bar type selector ──────────────────────────────────────────────────────
@@ -59,7 +60,7 @@
 			var elVisible = {
 				icon:    ( 'ticker' !== type && 'marquee' !== type ),
 				message: 'ticker' !== type,
-				cta:     ( 'standard' === type || 'countdown' === type ),
+				cta:     ( 'standard' === type || 'countdown' === type || 'woo_free_shipping' === type ),
 				decline: ( 'gdpr' === type )
 			};
 			document.querySelectorAll( '.np-element-row[data-el]' ).forEach( function ( row ) {

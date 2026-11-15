@@ -58,6 +58,7 @@ final class NoticePulse {
 			'includes/class-np-gdpr-bar.php',
 			'includes/class-np-ticker.php',
 			'includes/class-np-marquee.php',
+			'includes/class-np-woo-shipping.php',
 			'includes/class-np-click-to-call.php',
 			'includes/class-np-countdown.php',
 			'includes/class-np-email-capture.php',
@@ -109,6 +110,7 @@ final class NoticePulse {
 		if ( class_exists( 'NoticePulse_GDPR_Bar' ) )       { NoticePulse_GDPR_Bar::get_instance(); }
 		if ( class_exists( 'NoticePulse_Ticker' ) )          { NoticePulse_Ticker::get_instance(); }
 		if ( class_exists( 'NoticePulse_Marquee' ) )         { NoticePulse_Marquee::get_instance(); }
+		if ( class_exists( 'NoticePulse_Woo_Shipping' ) && class_exists( 'WooCommerce' ) ) { NoticePulse_Woo_Shipping::get_instance(); }
 		if ( class_exists( 'NoticePulse_Click_To_Call' ) )   { NoticePulse_Click_To_Call::get_instance(); }
 		if ( class_exists( 'NoticePulse_Countdown' ) )       { NoticePulse_Countdown::get_instance(); }
 		if ( class_exists( 'NoticePulse_Email_Capture' ) )   { NoticePulse_Email_Capture::get_instance(); }
